@@ -12,6 +12,9 @@ Same criteria, but 3 numbers.
 ### task 1
 Given inputs, find how many password are valid. The rule:
 ```
-1-4 x: lkmdxlkmxeej
+1-4 x: lkmxlkmxeej
 ```
 The letter `x` needs to appear between `1` and `4` times in the password. The above password is valid, because `x` appears `2` times.
+
+### task 2
+Given same inputs, the rules now changed. The numbers represent character positions in the password in a one indexed way. Only one of them should contain the given letter. If neither, or both have the given letter, like first and fourth character of the password, then the pw is invalid.

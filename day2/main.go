@@ -17,6 +17,7 @@ var reError = errors.New("did not find matches in the line for the pattern")
 
 func main() {
 	goodPasswords := 0
+	goodPasswordsT2 := 0
 	for _, l := range getInputs() {
 		if l == "" {
 			continue
@@ -29,9 +30,13 @@ func main() {
 		if checkPassword(min, max, letter, pw) {
 			goodPasswords++
 		}
+
+		if checkPasswordTask2(min, max, letter, pw) {
+			goodPasswordsT2++
+		}
 	}
 
-	fmt.Printf("there were %d good passwords", goodPasswords)
+	fmt.Printf("there were %d good passwords\nbut also %d passwords according to the new rule", goodPasswords, goodPasswordsT2)
 }
 
 func checkPassword(min, max int, letter, pw string) bool {
@@ -39,6 +44,10 @@ func checkPassword(min, max int, letter, pw string) bool {
 	fmt.Printf("checking %s for %s between %d and %d. count is %d\n", pw, letter, min, max, c)
 
 	return min <= c && max >= c
+}
+
+func checkPasswordTask2(pos1, pos2 int, letter, pw string) bool {
+	return (letter == string(pw[pos1-1])) != (letter == string(pw[pos2-1]))
 }
 
 // parseLine takes a line of policy and password, and returns the min, max, letter, and password from the line. If there

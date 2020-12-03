@@ -55,7 +55,7 @@ func task2(slope []string) {
 	fmt.Printf("after having checked all the slopes, the product is %d\n", pTrees)
 }
 
-// getInputs reads the input.txt file, and arranges the contents into a map of unique numbers.
+// getInputs reads the input.txt file and returns them as a slice of strings for each row.
 func getInputs() []string {
 	data, err := ioutil.ReadFile(filename)
 	if err != nil {

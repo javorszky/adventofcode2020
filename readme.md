@@ -18,3 +18,8 @@ The letter `x` needs to appear between `1` and `4` times in the password. The ab
 
 ### task 2
 Given same inputs, the rules now changed. The numbers represent character positions in the password in a one indexed way. Only one of them should contain the given letter. If neither, or both have the given letter, like first and fourth character of the password, then the pw is invalid.
+
+## day3
+### task 1
+
+Given the input that repeats to the right infinite times, count how many trees I would encounter (`#`) on the way down if the slope is right 3 down 1.

@@ -20,3 +20,9 @@ func getInputs() []string {
 
 	return strings.Split(string(data), "\n")
 }
+
+// isTree returns whether the ground at the given coordinates is a tree or not. Column is arbitrary number, is not
+// constrained by width of the map.
+func isTree(row, column int, slope []string) bool {
+	return false
+}

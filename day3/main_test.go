@@ -121,3 +121,49 @@ func Test_step(t *testing.T) {
 		})
 	}
 }
+
+func Test_varStep(t *testing.T) {
+	type args struct {
+		n          int
+		varStepRow int
+		varStepCol int
+	}
+	tests := []struct {
+		name  string
+		args  args
+		want  int
+		want1 int
+	}{
+		{
+			name: "returns correct row / column for step 2, rowstep 3, colstep 4",
+			args: args{
+				n:          2,
+				varStepRow: 3,
+				varStepCol: 4,
+			},
+			want:  6,
+			want1: 8,
+		},
+		{
+			name: "returns correct row / column for step 1, rowstep 1, colstep 1",
+			args: args{
+				n:          1,
+				varStepRow: 1,
+				varStepCol: 1,
+			},
+			want:  1,
+			want1: 1,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, got1 := varStep(tt.args.n, tt.args.varStepRow, tt.args.varStepCol)
+			if got != tt.want {
+				t.Errorf("varStep() got = %v, want %v", got, tt.want)
+			}
+			if got1 != tt.want1 {
+				t.Errorf("varStep() got1 = %v, want %v", got1, tt.want1)
+			}
+		})
+	}
+}

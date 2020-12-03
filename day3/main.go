@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"strings"
 )
@@ -12,7 +13,15 @@ const startCol = 0
 const stepCol = 3
 
 func main() {
-
+	slope := getInputs()
+	trees := 0
+	for i := 0; i < len(slope); i++ {
+		r, c := step(i)
+		if isTree(r, c, slope) {
+			trees++
+		}
+	}
+	fmt.Printf("We encountered %d trees.", trees)
 }
 
 // getInputs reads the input.txt file, and arranges the contents into a map of unique numbers.
@@ -38,6 +47,10 @@ func isTree(row, column int, slope []string) bool {
 	trueColumn := column % len(slope[0])
 
 	r := slope[row]
+
+	if len(r) == 0 {
+		return false
+	}
 
 	return "#" == string(r[trueColumn])
 }

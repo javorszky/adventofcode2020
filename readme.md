@@ -23,3 +23,6 @@ Given same inputs, the rules now changed. The numbers represent character positi
 ### task 1
 
 Given the input that repeats to the right infinite times, count how many trees I would encounter (`#`) on the way down if the slope is right 3 down 1.
+
+### task 2
+Same as above, but multiple steps, and teh trees need to be multiplied together.

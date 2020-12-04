@@ -26,3 +26,10 @@ Given the input that repeats to the right infinite times, count how many trees I
 
 ### task 2
 Same as above, but multiple steps, and teh trees need to be multiplied together.
+
+## day 4
+### task 1
+Process things, ignore cyd, everything should be not empty.
+
+### task 2
+Same as above, but additional restrictions.

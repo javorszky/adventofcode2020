@@ -3,12 +3,19 @@ package day5
 import (
 	"fmt"
 	"io/ioutil"
+	"sort"
 	"strings"
 )
 
 const filename = "day5/input.txt"
 
 func Tasks() {
+	task1()
+
+	task2()
+}
+
+func task1() {
 	highSeat := 0
 	for _, pass := range getInputs() {
 		if pass == "" {
@@ -20,7 +27,35 @@ func Tasks() {
 		}
 	}
 
-	fmt.Printf("highest seat number is %d\n", highSeat)
+	fmt.Printf("task 1: highest seat number is %d\n", highSeat)
+}
+
+func task2() {
+	seats := make([]int, 0)
+	for _, pass := range getInputs() {
+		if pass == "" {
+			continue
+		}
+		seats = append(seats, findSeat(pass))
+	}
+
+	sort.Ints(seats)
+
+	previous := 0
+	var seat int
+	for _, i := range seats {
+		if previous == 0 {
+			previous = i
+			continue
+		}
+		if i-previous == 2 {
+			seat = i - 1
+			break
+		}
+		previous = i
+	}
+
+	fmt.Printf("task 2: my seat: %d\n", seat)
 }
 
 // getInputs reads the input.txt file and returns them as a slice of strings for each row.

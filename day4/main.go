@@ -1,4 +1,4 @@
-package main
+package day4
 
 import (
 	"fmt"
@@ -103,7 +103,7 @@ func (i identity) hgtValid() bool {
 //ecl:gry pid:860033327 eyr:2020 hcl:#fffffd
 //iyr:1937 iyr:2017 cid:147 hgt:183cm
 
-func main() {
+func Tasks() {
 	valid := 0
 	for _, s := range getInputs() {
 		i := parseData(s)

@@ -1,4 +1,4 @@
-package main
+package day1
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ import (
 const filename = "input.txt"
 const target = 2020
 
-func main() {
+func Tasks() {
 	m := getInputs()
 
 	p1, p2, err := findPair(m)

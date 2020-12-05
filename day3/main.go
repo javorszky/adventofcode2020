@@ -1,4 +1,4 @@
-package main
+package day3
 
 import (
 	"fmt"
@@ -12,7 +12,7 @@ const stepRow = 1
 const startCol = 0
 const stepCol = 3
 
-func main() {
+func Tasks() {
 	slope := getInputs()
 	task1(slope)
 

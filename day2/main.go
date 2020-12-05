@@ -1,4 +1,4 @@
-package main
+package day2
 
 import (
 	"errors"
@@ -15,7 +15,7 @@ const lineParseRegex = `(\d+)-(\d+) ([a-z]): (\w+)`
 var re = regexp.MustCompile(lineParseRegex)
 var reError = errors.New("did not find matches in the line for the pattern")
 
-func main() {
+func Tasks() {
 	goodPasswords := 0
 	goodPasswordsT2 := 0
 	for _, l := range getInputs() {

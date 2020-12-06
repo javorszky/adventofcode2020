@@ -10,6 +10,8 @@ const filename = "day6/input.txt"
 
 func Tasks() {
 	task1()
+
+	task2()
 }
 
 func task1() {
@@ -27,6 +29,27 @@ func task1() {
 
 	}
 	fmt.Printf("day 6 task 1: total number of yes answers: %d\n\n", count)
+}
+
+func task2() {
+	count := 0
+	for _, group := range getInputs() {
+		yes := make(map[string]int)
+		people := strings.Fields(group)
+		lenp := len(people)
+		for _, person := range people {
+			for _, answer := range strings.Split(person, "") {
+				yes[answer] = yes[answer] + 1
+			}
+		}
+
+		for _, v := range yes {
+			if v == lenp {
+				count++
+			}
+		}
+	}
+	fmt.Printf("day 6 task 2: number of answers where everyone answered yes to in a group: %d\n\n", count)
 }
 
 // getInputs reads the input.txt file and returns them as a slice of strings for each row.

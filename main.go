@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/javorszky/adventofcode2020/day6"
+	"github.com/javorszky/adventofcode2020/day7"
 )
 
 func main() {
@@ -15,5 +15,7 @@ func main() {
 
 	//day5.Tasks()
 
-	day6.Tasks()
+	//day6.Tasks()
+
+	day7.Tasks()
 }

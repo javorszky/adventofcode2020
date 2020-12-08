@@ -1,7 +1,11 @@
 package day8
 
 import (
+	"errors"
+	"fmt"
 	"io/ioutil"
+	"os"
+	"strconv"
 	"strings"
 )
 
@@ -13,8 +17,83 @@ func Tasks() {
 	task2()
 }
 
-func task1() {
+type infiniteLoop struct {
+	Message string
+}
 
+func (i infiniteLoop) Error() string {
+	return fmt.Sprintf("infinite loop error: %s", i.Message)
+}
+
+func task1() {
+	// instructions line by line as a slice of strings.
+	instructions := getInputs()
+
+	// accumulator starts at 0.
+	acc := 0
+
+	// keep track of previous code executions so we know when we're about to hit an infinite loop.
+	jumps := make(map[int]struct{}, 0)
+
+	// kick off running the program on line 0.
+	l := 0
+
+	var infiniErr infiniteLoop
+	var err error
+
+	// create reusable function to execute the code. Accumulator and instruction set are outside of this func.
+	var run func(int) (int, error)
+	run = func(line int) (int, error) {
+		var next int
+
+		// have we run this previously?
+		if _, ok := jumps[line]; ok == true {
+			return next, infiniteLoop{Message: fmt.Sprintf("we encountered line %d again", line)}
+		}
+		jumps[line] = struct{}{}
+
+		inst := instructions[line]
+		n, err := t1Number(inst[4:])
+		if err != nil {
+			return next, fmt.Errorf("error parsing instruction number code: %w", err)
+		}
+		switch inst[:4] {
+		case "acc ":
+			acc = acc + n
+			fallthrough
+		case "nop ":
+			next = line + 1
+		case "jmp ":
+			next = line + n
+		default:
+			return 0, fmt.Errorf("unknown instruction received: %s\nterminating...\n", inst)
+		}
+
+		return next, nil
+	}
+
+	for {
+		l, err = run(l)
+		if errors.As(err, &infiniErr) {
+			fmt.Printf("day 8 task 1: current state of accumulator is %d", acc)
+			os.Exit(0)
+		}
+		if err != nil {
+			fmt.Printf("big oof, bad code: %s", err)
+			os.Exit(1)
+		}
+	}
+}
+
+func t1Number(s string) (int, error) {
+	n, err := strconv.Atoi(s[1:])
+	if err != nil {
+		return 0, fmt.Errorf("failed to parse into number: %s: %w", s, err)
+	}
+	if string(s[0]) == "-" {
+		return 0 - n, nil
+	}
+	return n, nil
 }
 
 func task2() {
@@ -31,5 +110,5 @@ func getInputs() []string {
 	// strip the trailing newline
 	sData := strings.TrimRight(string(data), "\n")
 
-	return strings.Split(sData, "\n\n")
+	return strings.Split(sData, "\n")
 }

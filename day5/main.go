@@ -27,7 +27,7 @@ func task1() {
 		}
 	}
 
-	fmt.Printf("task 1: highest seat number is %d\n", highSeat)
+	fmt.Printf("\nDay 5 task 1: highest seat number is %d\n", highSeat)
 }
 
 func task2() {
@@ -55,7 +55,7 @@ func task2() {
 		previous = i
 	}
 
-	fmt.Printf("task 2: my seat: %d\n", seat)
+	fmt.Printf("Day 5 task 2: my seat: %d\n", seat)
 }
 
 // getInputs reads the input.txt file and returns them as a slice of strings for each row.

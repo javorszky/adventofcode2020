@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-const filename = "input.txt"
+const filename = "day2/input.txt"
 const lineParseRegex = `(\d+)-(\d+) ([a-z]): (\w+)`
 
 var re = regexp.MustCompile(lineParseRegex)
@@ -36,13 +36,12 @@ func Tasks() {
 		}
 	}
 
-	fmt.Printf("there were %d good passwords\nbut also %d passwords according to the new rule", goodPasswords, goodPasswordsT2)
+	fmt.Printf("\nDay 2 task 1: there were %d good passwords\n"+
+		"Day 2 task 2: also %d passwords according to the new rule\n", goodPasswords, goodPasswordsT2)
 }
 
 func checkPassword(min, max int, letter, pw string) bool {
 	c := strings.Count(pw, letter)
-	fmt.Printf("checking %s for %s between %d and %d. count is %d\n", pw, letter, min, max, c)
-
 	return min <= c && max >= c
 }
 

@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-const filename = "input.txt"
+const filename = "day3/input.txt"
 const startRow = 0
 const stepRow = 1
 const startCol = 0
@@ -27,7 +27,7 @@ func task1(slope []string) {
 			trees++
 		}
 	}
-	fmt.Printf("We encountered %d trees.\n", trees)
+	fmt.Printf("\nDay 3 task 1: We encountered %d trees.\n", trees)
 }
 
 func task2(slope []string) {
@@ -52,7 +52,7 @@ func task2(slope []string) {
 		pTrees = pTrees * localTree
 	}
 
-	fmt.Printf("after having checked all the slopes, the product is %d\n", pTrees)
+	fmt.Printf("Day 3 task 2: after having checked all the slopes, the product is %d\n", pTrees)
 }
 
 // getInputs reads the input.txt file and returns them as a slice of strings for each row.

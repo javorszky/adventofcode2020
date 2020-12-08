@@ -3,12 +3,11 @@ package day1
 import (
 	"fmt"
 	"io/ioutil"
-	"os"
 	"strconv"
 	"strings"
 )
 
-const filename = "input.txt"
+const filename = "day1/input.txt"
 const target = 2020
 
 func Tasks() {
@@ -17,17 +16,17 @@ func Tasks() {
 	p1, p2, err := findPair(m)
 	if err != nil {
 		fmt.Printf("could not find pair... %s", err)
-		os.Exit(1)
+		return
 	}
-	fmt.Printf("found the pair for %d: %d and %d. Their sum is %d and product is %d\n", target, p1, p2, p1+p2, p1*p2)
+	fmt.Printf("Day 1 task 1: found the pair for %d: %d and %d. Their sum is %d and product is %d\n", target, p1, p2, p1+p2, p1*p2)
 
 	t1, t2, t3, err := findTriplet(m)
 	if err != nil {
 		fmt.Printf("could not find triplet: %s", err)
-		os.Exit(1)
+		return
 	}
-	fmt.Printf("found the triplet: %d, %d, and %d. Their sum is %d, and their product is %d\n", t1, t2, t3, t1+t2+t3, t1*t2*t3)
-	os.Exit(0)
+	fmt.Printf("Day 1 task 2: found the triplet: %d, %d, and %d. Their sum is %d, and their product is %d\n", t1, t2, t3, t1+t2+t3, t1*t2*t3)
+	return
 }
 
 // getInputs reads the input.txt file, and arranges the contents into a map of unique numbers.

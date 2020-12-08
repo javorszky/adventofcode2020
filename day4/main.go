@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	filename = "input.txt"
+	filename = "day4/input.txt"
 )
 
 var (
@@ -21,7 +21,7 @@ type identity struct {
 	ECL, PID, EYR, HCL, BYR, IYR, CID, HGT string
 }
 
-func (i identity) IsValid() bool {
+func (i identity) IsValidv2() bool {
 	return i.eclValid() &&
 		i.pidValid() &&
 		i.eyrValid() &&
@@ -29,6 +29,16 @@ func (i identity) IsValid() bool {
 		i.byrValid() &&
 		i.iyrValid() &&
 		i.hgtValid()
+}
+
+func (i identity) IsValidv1() bool {
+	return i.ECL != "" &&
+		i.PID != "" &&
+		i.EYR != "" &&
+		i.HCL != "" &&
+		i.BYR != "" &&
+		i.IYR != "" &&
+		i.HGT != ""
 }
 
 // eclValid return whether eye colour is valid: exactly one of: amb blu brn gry grn hzl oth.
@@ -104,14 +114,32 @@ func (i identity) hgtValid() bool {
 //iyr:1937 iyr:2017 cid:147 hgt:183cm
 
 func Tasks() {
+
+	task1()
+	task2()
+
+}
+
+func task1() {
 	valid := 0
 	for _, s := range getInputs() {
 		i := parseData(s)
-		if i.IsValid() {
+		if i.IsValidv1() {
 			valid++
 		}
 	}
-	fmt.Printf("there are %d valid data", valid)
+	fmt.Printf("\nDay 4 task 1: there are %d valid data\n", valid)
+}
+
+func task2() {
+	valid := 0
+	for _, s := range getInputs() {
+		i := parseData(s)
+		if i.IsValidv2() {
+			valid++
+		}
+	}
+	fmt.Printf("Day 4 task 2: there are %d valid data\n", valid)
 }
 
 // getInputs reads the input.txt file and returns them as a slice of strings for each row.

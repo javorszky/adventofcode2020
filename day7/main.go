@@ -64,7 +64,7 @@ func task1() {
 
 	_ = f(shinyGold)
 
-	fmt.Printf("Day 7 task 1: the number of different colours an outermost bag can be for a shiny gold is %d\n", len(endBags)-1)
+	fmt.Printf("\nDay 7 task 1: the number of different colours an outermost bag can be for a shiny gold is %d\n", len(endBags)-1)
 }
 
 func task2() {

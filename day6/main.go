@@ -28,7 +28,7 @@ func task1() {
 		count = count + len(yes)
 
 	}
-	fmt.Printf("day 6 task 1: total number of yes answers: %d\n\n", count)
+	fmt.Printf("\nDay 6 task 1: total number of yes answers: %d\n", count)
 }
 
 func task2() {
@@ -49,7 +49,7 @@ func task2() {
 			}
 		}
 	}
-	fmt.Printf("day 6 task 2: number of answers where everyone answered yes to in a group: %d\n\n", count)
+	fmt.Printf("Day 6 task 2: number of answers where everyone answered yes to in a group: %d\n", count)
 }
 
 // getInputs reads the input.txt file and returns them as a slice of strings for each row.

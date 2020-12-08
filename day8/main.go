@@ -52,7 +52,7 @@ func task1() int {
 	for {
 		acc, l, jumps, err = run(acc, l, jumps, instructions)
 		if errors.As(err, &infiniErr) {
-			fmt.Printf("day 8 task 1: infinite code current state of accumulator is %d\n", acc)
+			fmt.Printf("\nDay 8 task 1: infinite code current state of accumulator is %d\n", acc)
 			return 0
 		}
 		if err != nil {
@@ -107,7 +107,7 @@ func task2() int {
 		for {
 			acc, l, jumps, err = run(acc, l, jumps, changedInstructions)
 			if errors.As(err, &term) {
-				fmt.Printf("day 8 task 2: program terminated.\nHad to change line %d from\n%s to\n%s\nAccumulator is %d\n", i, instructions[i], changedInstructions[i], acc)
+				fmt.Printf("Day 8 task 2: program terminated.\nHad to change line %d from\n%s to\n%s\nAccumulator is %d\n", i, instructions[i], changedInstructions[i], acc)
 				return 0
 			}
 			if err != nil {

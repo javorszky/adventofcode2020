@@ -107,13 +107,15 @@ func task2() int {
 		for {
 			acc, l, jumps, err = run(acc, l, jumps, changedInstructions)
 			if errors.As(err, &term) {
-				fmt.Printf("day 8 task 2: program terminated.\nHad to change line %d from\n%s to\n%s\nAccumulator is %d", i, instructions[i], changedInstructions[i], acc)
+				fmt.Printf("day 8 task 2: program terminated.\nHad to change line %d from\n%s to\n%s\nAccumulator is %d\n", i, instructions[i], changedInstructions[i], acc)
 				return 0
 			}
-			break
+			if err != nil {
+				break
+			}
 		}
 	}
-	fmt.Printf("um, couldn't find the thing... something's wrong")
+	fmt.Printf("um, couldn't find the thing... something's wrong\n")
 	return 1
 }
 

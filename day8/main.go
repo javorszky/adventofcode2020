@@ -42,40 +42,11 @@ func task1() {
 	var err error
 
 	// create reusable function to execute the code. Accumulator and instruction set are outside of this func.
-	var run func(int) (int, error)
-	run = func(line int) (int, error) {
-		var next int
-
-		// have we run this previously?
-		if _, ok := jumps[line]; ok == true {
-			return next, infiniteLoop{Message: fmt.Sprintf("we encountered line %d again", line)}
-		}
-		jumps[line] = struct{}{}
-
-		inst := instructions[line]
-		n, err := t1Number(inst[4:])
-		if err != nil {
-			return next, fmt.Errorf("error parsing instruction number code: %w", err)
-		}
-		switch inst[:4] {
-		case "acc ":
-			acc = acc + n
-			fallthrough
-		case "nop ":
-			next = line + 1
-		case "jmp ":
-			next = line + n
-		default:
-			return 0, fmt.Errorf("unknown instruction received: %s\nterminating...\n", inst)
-		}
-
-		return next, nil
-	}
 
 	for {
-		l, err = run(l)
+		acc, l, jumps, err = run(acc, l, jumps, instructions)
 		if errors.As(err, &infiniErr) {
-			fmt.Printf("day 8 task 1: current state of accumulator is %d", acc)
+			fmt.Printf("day 8 task 1: infinite code current state of accumulator is %d", acc)
 			os.Exit(0)
 		}
 		if err != nil {
@@ -98,6 +69,35 @@ func t1Number(s string) (int, error) {
 
 func task2() {
 
+}
+
+func run(acc, line int, jumps map[int]struct{}, program []string) (int, int, map[int]struct{}, error) {
+	var next int
+
+	// have we run this previously?
+	if _, ok := jumps[line]; ok == true {
+		return acc, next, jumps, infiniteLoop{Message: fmt.Sprintf("we encountered line %d again", line)}
+	}
+	jumps[line] = struct{}{}
+
+	inst := program[line]
+	n, err := t1Number(inst[4:])
+	if err != nil {
+		return acc, next, jumps, fmt.Errorf("error parsing instruction number code: %w", err)
+	}
+	switch inst[:4] {
+	case "acc ":
+		acc = acc + n
+		fallthrough
+	case "nop ":
+		next = line + 1
+	case "jmp ":
+		next = line + n
+	default:
+		return acc, next, jumps, fmt.Errorf("unknown instruction received: %s\nterminating...\n", inst)
+	}
+
+	return acc, next, jumps, nil
 }
 
 // getInputs reads the input.txt file and returns them as a slice of strings for each row.

@@ -1,9 +1,11 @@
 package day9
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -14,25 +16,29 @@ const (
 )
 
 func Tasks() {
-	task1()
+	num, err := task1()
+	if err != nil {
+		fmt.Printf("\nDay 9 task 1: %s\n", err)
+	}
+	fmt.Printf("\nDay 9 task 1: the number %d is not valid\n", num)
 
-	task2()
+	sum, err := task2(num)
+	if err != nil {
+		fmt.Printf("Day 9 task 2: %s\n", err)
+	}
+	fmt.Printf("Day 9 task 2: the sum of the lowest and highest number in the slice is %d\n", sum)
 }
-func task1() {
+
+func task1() (int, error) {
 	inputs := getInputs()
 
-	found := false
 	for i, n := range inputs[preambleLength:] {
 		valid := t1checkNumber(inputs[i:i+preambleLength], n)
 		if !valid {
-			found = true
-			fmt.Printf("\nDay 9 task 1: the number %d is not valid\n", n)
-			break
+			return n, nil
 		}
 	}
-	if !found {
-		fmt.Println("E_SOLUTION_NOT_FOUND: Day 9 task 1 no solution... something's wrong")
-	}
+	return 0, errors.New("no sum number not found")
 }
 
 func t1checkNumber(previous []int, num int) bool {
@@ -51,7 +57,26 @@ func t1checkNumber(previous []int, num int) bool {
 	return false
 }
 
-func task2() {}
+func task2(num int) (int, error) {
+	// find the contiguous list in the numbers and add the smallest and largest in the list.
+	inputs := getInputs()
+	for i := range inputs {
+		sum := 0
+		for j, n := range inputs[i:] {
+			sum = sum + n
+			if sum == num {
+				cont := make([]int, len(inputs[i:i+j]))
+				copy(cont, inputs[i:i+j])
+				sort.Ints(cont)
+				return cont[0] + cont[len(cont)-1], nil
+			}
+			if sum > num {
+				break
+			}
+		}
+	}
+	return 0, errors.New("not found")
+}
 
 // getInputs reads the input.txt file and returns them as a slice of strings for each row.
 func getInputs() []int {

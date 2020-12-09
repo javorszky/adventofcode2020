@@ -19,7 +19,20 @@ func Tasks() {
 	task2()
 }
 func task1() {
-	//inputs := getInputs()
+	inputs := getInputs()
+
+	found := false
+	for i, n := range inputs[preambleLength:] {
+		valid := t1checkNumber(inputs[i:i+preambleLength], n)
+		if !valid {
+			found = true
+			fmt.Printf("\nDay 9 task 1: the number %d is not valid\n", n)
+			break
+		}
+	}
+	if !found {
+		fmt.Println("E_SOLUTION_NOT_FOUND: Day 9 task 1 no solution... something's wrong")
+	}
 }
 
 func t1checkNumber(previous []int, num int) bool {
@@ -50,7 +63,8 @@ func getInputs() []int {
 	// strip the trailing newline
 	sData := strings.TrimRight(string(data), "\n")
 	stringSlice := strings.Split(sData, "\n")
-	values := make([]int, 0, len(stringSlice))
+	values := make([]int, len(stringSlice), len(stringSlice))
+
 	for i, v := range stringSlice {
 		num, err := strconv.Atoi(v)
 		if err != nil {

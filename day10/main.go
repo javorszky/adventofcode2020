@@ -45,6 +45,7 @@ func task2() {
 	fmt.Printf("Day 10 task 2: the total number of different combinations is %d\n", acc)
 }
 
+// horribly inefficient brute force "let's walk on every branch of the tree" solution.
 func countBranch(start, end int, joltageMap map[int]struct{}) int {
 	var f func(int)
 	branches := 0
@@ -66,8 +67,8 @@ func countBranch(start, end int, joltageMap map[int]struct{}) int {
 	return branches
 }
 
+// sliding window fibonacci solution.
 func countBranchEasier(input []int) int {
-	fmt.Printf("%#v\n", input)
 	joltageMapCount := make(map[int]int, 0)
 	for _, j := range input {
 		joltageMapCount[j] = 0

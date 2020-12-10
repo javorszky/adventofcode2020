@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/javorszky/adventofcode2020/day1"
+	"github.com/javorszky/adventofcode2020/day10"
 	"github.com/javorszky/adventofcode2020/day2"
 	"github.com/javorszky/adventofcode2020/day3"
 	"github.com/javorszky/adventofcode2020/day4"
@@ -30,4 +31,6 @@ func main() {
 	day8.Tasks()
 
 	day9.Tasks()
+
+	day10.Tasks()
 }

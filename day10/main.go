@@ -1,7 +1,11 @@
 package day10
 
 import (
+	"fmt"
 	"io/ioutil"
+	"os"
+	"sort"
+	"strconv"
 	"strings"
 )
 
@@ -13,7 +17,26 @@ func Tasks() {
 }
 
 func task1() {
-	_ = getInputs()
+	joltageMap := make(map[int]struct{}, 0)
+	input := getInputs()
+	for _, j := range input {
+		joltageMap[j] = struct{}{}
+	}
+
+	sort.Ints(input)
+	input = append(input, input[len(input)-1]+3)
+	ones, threes, previous := 0, 0, 0
+	for _, k := range input {
+		switch k - previous {
+		case 1:
+			ones++
+		case 3:
+			threes++
+		}
+		previous = k
+	}
+
+	fmt.Printf("\nDay 10 task 1: product of nDiff1 and nDiff3 is %d\n", ones*threes)
 }
 
 func task2() {
@@ -21,11 +44,22 @@ func task2() {
 }
 
 // getInputs reads the input.txt file and returns them as a slice of strings for each row.
-func getInputs() []string {
+func getInputs() []int {
 	data, err := ioutil.ReadFile(filename)
 	if err != nil {
 		panic(err)
 	}
 
-	return strings.Split(strings.TrimRight(string(data), "\n"), "\n")
+	stringSlice := strings.Split(strings.TrimRight(string(data), "\n"), "\n")
+	values := make([]int, len(stringSlice), len(stringSlice))
+
+	for i, v := range stringSlice {
+		num, err := strconv.Atoi(v)
+		if err != nil {
+			fmt.Printf("could not turn string %s into an int: %s\n", v, err)
+			os.Exit(1)
+		}
+		values[i] = num
+	}
+	return values
 }

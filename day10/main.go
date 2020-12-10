@@ -17,11 +17,7 @@ func Tasks() {
 }
 
 func task1() {
-	joltageMap := make(map[int]struct{}, 0)
 	input := getInputs()
-	for _, j := range input {
-		joltageMap[j] = struct{}{}
-	}
 
 	sort.Ints(input)
 	input = append(input, input[len(input)-1]+3)
@@ -40,7 +36,56 @@ func task1() {
 }
 
 func task2() {
-	_ = getInputs()
+	input := getInputs()
+	sort.Ints(input)
+	device := input[len(input)-1] + 3
+	input = append(input, device)
+	input = append([]int{0}, input...)
+	acc := countBranchEasier(input)
+	fmt.Printf("Day 10 task 2: the total number of different combinations is %d\n", acc)
+}
+
+func countBranch(start, end int, joltageMap map[int]struct{}) int {
+	var f func(int)
+	branches := 0
+	f = func(value int) {
+		if value == end {
+			branches++
+		}
+		if _, ok := joltageMap[value+1]; ok {
+			f(value + 1)
+		}
+		if _, ok := joltageMap[value+2]; ok {
+			f(value + 2)
+		}
+		if _, ok := joltageMap[value+3]; ok {
+			f(value + 3)
+		}
+	}
+	f(start)
+	return branches
+}
+
+func countBranchEasier(input []int) int {
+	fmt.Printf("%#v\n", input)
+	joltageMapCount := make(map[int]int, 0)
+	for _, j := range input {
+		joltageMapCount[j] = 0
+	}
+	joltageMapCount[0] = 1
+	end := input[len(input)-1]
+	for _, v := range input[1:] {
+		local := 0
+		for i := 1; i < 4; i++ {
+			c, ok := joltageMapCount[v-i]
+			if ok {
+				local = local + c
+			}
+		}
+		joltageMapCount[v] = local
+	}
+
+	return joltageMapCount[end]
 }
 
 // getInputs reads the input.txt file and returns them as a slice of strings for each row.

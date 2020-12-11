@@ -13,84 +13,84 @@ func t1normalize(input []string) (int, string) {
 	return lineLength, sb.String()
 }
 
-func topLeft(c, lineLength int, input string) string {
+func topLeft(c, lineLength int, input string) (int, string) {
 	tl := c - lineLength - 1
 	// if we're out of bounds or in the left column.
 	if 0 > tl || len(input)-1 < tl || c%lineLength == 0 {
-		return ""
+		return -1, ""
 	}
 
-	return string(input[tl])
+	return tl, string(input[tl])
 }
 
-func top(c, lineLength int, input string) string {
+func top(c, lineLength int, input string) (int, string) {
 	tl := c - lineLength
 	// if we're out of bounds or in the left column.
 	if 0 > tl || len(input)-1 < tl {
-		return ""
+		return -1, ""
 	}
 
-	return string(input[tl])
+	return tl, string(input[tl])
 }
 
-func topRight(c, lineLength int, input string) string {
+func topRight(c, lineLength int, input string) (int, string) {
 	tl := c - lineLength + 1
 	// if we're out of bounds or in the left column.
 	if 0 > tl || len(input)-1 < tl || c%lineLength == lineLength-1 {
-		return ""
+		return -1, ""
 	}
 
-	return string(input[tl])
+	return tl, string(input[tl])
 }
 
-func right(c, lineLength int, input string) string {
+func right(c, lineLength int, input string) (int, string) {
 	tl := c + 1
 	// if we're out of bounds or in the left column.
 	if 0 > tl || len(input)-1 < tl || c%lineLength == lineLength-1 {
-		return ""
+		return -1, ""
 	}
 
-	return string(input[tl])
+	return tl, string(input[tl])
 }
 
-func bottomRight(c, lineLength int, input string) string {
+func bottomRight(c, lineLength int, input string) (int, string) {
 	tl := c + lineLength + 1
 	// if we're out of bounds or in the left column.
 	if 0 > tl || len(input)-1 < tl || c%lineLength == lineLength-1 {
-		return ""
+		return -1, ""
 	}
 
-	return string(input[tl])
+	return tl, string(input[tl])
 }
 
-func bottom(c, lineLength int, input string) string {
+func bottom(c, lineLength int, input string) (int, string) {
 	tl := c + lineLength
 	// if we're out of bounds or in the left column.
 	if 0 > tl || len(input)-1 < tl {
-		return ""
+		return -1, ""
 	}
 
-	return string(input[tl])
+	return tl, string(input[tl])
 }
 
-func bottomLeft(c, lineLength int, input string) string {
+func bottomLeft(c, lineLength int, input string) (int, string) {
 	tl := c + lineLength - 1
 	// if we're out of bounds or in the left column.
 	if 0 > tl || len(input)-1 < tl || c%lineLength == 0 {
-		return ""
+		return -1, ""
 	}
 
-	return string(input[tl])
+	return tl, string(input[tl])
 }
 
-func left(c, lineLength int, input string) string {
+func left(c, lineLength int, input string) (int, string) {
 	tl := c - 1
 	// if we're out of bounds or in the left column.
 	if 0 > tl || len(input)-1 < tl || c%lineLength == 0 {
-		return ""
+		return -1, ""
 	}
 
-	return string(input[tl])
+	return tl, string(input[tl])
 }
 
 // t1adjacent returns the number of occupied seats adjacent to the one specified by the coordinates. The coordinates h,v
@@ -99,16 +99,54 @@ func left(c, lineLength int, input string) string {
 //
 // Returns error if the coordinate is a floor, or if the coordinate is out of bounds.
 func t1adjacentOccupied(c, lineLength int, input string) int {
+	fs := []func(int, int, string) (int, string){
+		top,
+		topRight,
+		right,
+		bottomRight,
+		bottom,
+		bottomLeft,
+		left,
+		topLeft,
+	}
 	var sb strings.Builder
-	sb.WriteString(top(c, lineLength, input))
-	sb.WriteString(topRight(c, lineLength, input))
-	sb.WriteString(right(c, lineLength, input))
-	sb.WriteString(bottomRight(c, lineLength, input))
-	sb.WriteString(bottom(c, lineLength, input))
-	sb.WriteString(bottomLeft(c, lineLength, input))
-	sb.WriteString(left(c, lineLength, input))
-	sb.WriteString(topLeft(c, lineLength, input))
+	for _, f := range fs {
+		_, seat := f(c, lineLength, input)
+		sb.WriteString(seat)
+	}
+
 	return strings.Count(sb.String(), "#")
+}
+
+func t2directionOccupied(c, lineLength int, input string) int {
+	fs := []func(int, int, string) (int, string){
+		top,
+		topRight,
+		right,
+		bottomRight,
+		bottom,
+		bottomLeft,
+		left,
+		topLeft,
+	}
+	var sb strings.Builder
+	for _, f := range fs {
+		sb.WriteString(walk(c, lineLength, input, f))
+	}
+
+	return strings.Count(sb.String(), "#")
+}
+
+func walk(c, lineLength int, input string, f func(int, int, string) (int, string)) string {
+	cn := c
+	for {
+		cnext, seat := f(cn, lineLength, input)
+		switch seat {
+		case "L", "#", "":
+			return seat
+		}
+		cn = cnext
+	}
 }
 
 func t1flip(lineLength int, input string) string {
@@ -129,6 +167,33 @@ func t1flip(lineLength int, input string) string {
 		case "#":
 			// field is occupied, is it going to be empty?
 			if t1adjacentOccupied(idx, lineLength, input) >= 4 {
+				sb.WriteString("L")
+			} else {
+				sb.WriteString("#")
+			}
+		}
+	}
+	return sb.String()
+}
+
+func t2flip(lineLength int, input string) string {
+	var sb strings.Builder
+
+	for idx, c := range input {
+		// floors never change
+		switch string(c) {
+		case ".":
+			sb.WriteString(".")
+		case "L":
+			// field is empty, can we make it occupied?
+			if t1adjacentOccupied(idx, lineLength, input) == 0 {
+				sb.WriteString("#")
+			} else {
+				sb.WriteString("L")
+			}
+		case "#":
+			// field is occupied, is it going to be empty?
+			if t1adjacentOccupied(idx, lineLength, input) >= 5 {
 				sb.WriteString("L")
 			} else {
 				sb.WriteString("#")

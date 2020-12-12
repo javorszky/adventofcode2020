@@ -6,15 +6,17 @@ import (
 	"strings"
 )
 
-var rotMap = map[int]int{
-	90:  270,
-	180: 180,
-	270: 90,
-}
-
 type ship struct {
 	X, Y      int
 	Direction string
+}
+
+func (s ship) posX() int {
+	return s.X
+}
+
+func (s ship) posY() int {
+	return s.Y
 }
 
 func task1() {

@@ -5,8 +5,19 @@ import (
 	"strings"
 )
 
-func manhattanDistance(s ship) int {
-	return abs(s.X) + abs(s.Y)
+var rotMap = map[int]int{
+	90:  270,
+	180: 180,
+	270: 90,
+}
+
+type mover interface {
+	posX() int
+	posY() int
+}
+
+func manhattanDistance(s mover) int {
+	return abs(s.posX()) + abs(s.posY())
 }
 
 func abs(x int) int {

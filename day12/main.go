@@ -14,9 +14,16 @@ const (
 	west     = "W"
 	north    = "N"
 	forward  = "F"
-	rotate   = "R"
+	right    = "R"
+	left     = "L"
 	rotation = "ESWN"
 )
+
+var rotMap = map[int]int{
+	90:  270,
+	180: 180,
+	270: 90,
+}
 
 func Tasks() {
 	task1()
@@ -34,12 +41,23 @@ func task1() {
 		Y:         0,
 		Direction: east,
 	}
-	for _, ins := range getInputs() {
-		fmt.Printf("instruction: '%s'\n", ins)
-		s = moveShip(s, ins)
-	}
 
-	fmt.Printf("\nDay 12 task 1: the total movement of the ship was %d\n", abs(s.X)+abs(s.Y))
+	ins := getInputs()
+
+	newS := navigate(s, ins)
+
+	fmt.Printf("\nDay 12 task 1: the total movement of the ship was %d\n", manhattanDistance(newS))
+}
+
+func navigate(s ship, ins []string) ship {
+	for _, cmd := range ins {
+		s = moveShip(s, cmd)
+	}
+	return s
+}
+
+func manhattanDistance(s ship) int {
+	return abs(s.X) + abs(s.Y)
 }
 
 func abs(x int) int {
@@ -51,7 +69,6 @@ func abs(x int) int {
 
 func moveShip(s ship, instruction string) ship {
 	c := instruction[0:1]
-	fmt.Printf("- ack: %s, %s, %s\n", instruction, c, instruction[1:])
 	amnt, err := strconv.Atoi(instruction[1:])
 	if err != nil {
 		panic(fmt.Sprintf("moveship inst: %s: %s", instruction, err))
@@ -60,9 +77,9 @@ func moveShip(s ship, instruction string) ship {
 	switch c {
 	case forward:
 		return moveShip(s, fmt.Sprintf("%s%d", s.Direction, amnt))
-	case rotate:
+	case right, left:
 		return ship{
-			Direction: newDirection(s.Direction, amnt),
+			Direction: newDirection(s.Direction, c, amnt),
 			X:         s.X,
 			Y:         s.Y,
 		}
@@ -97,7 +114,10 @@ func moveShip(s ship, instruction string) ship {
 }
 
 // newDirection receives a base (E, S, W, N), and an amount (90, 180, 270), and sends back a new direction.
-func newDirection(base string, amnt int) string {
+func newDirection(base, dir string, amnt int) string {
+	if dir == "L" {
+		return newDirection(base, "R", rotMap[amnt])
+	}
 	idx := strings.Index(rotation, base)
 	if idx == -1 {
 		panic(fmt.Sprintf("invalid base: %s", base))

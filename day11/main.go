@@ -8,24 +8,6 @@ import (
 
 const filename = "day11/input.txt"
 
-type floorIsLave struct {
-	Message string
-}
-
-// Error returns the string representation of the error.
-func (f floorIsLave) Error() string {
-	return f.Message
-}
-
-type outOfBounds struct {
-	Message string
-}
-
-// Error returns the string representation of the error.
-func (o outOfBounds) Error() string {
-	return o.Message
-}
-
 func Tasks() {
 	task1()
 	task2()

@@ -76,7 +76,9 @@ func earliestTime(in map[int][]int) int {
 func t2formatInput(in []string) map[int][]int {
 	b := strings.Split(in[1], ",")
 	buses := make(map[int][]int, 0)
+	// let's turn each bus id into an offset with id.
 	for idx, bus := range b {
+		// we don't care about exes.
 		if bus == "x" {
 			continue
 		}
@@ -85,10 +87,13 @@ func t2formatInput(in []string) map[int][]int {
 			fmt.Printf("buses: could not turn bus number %s into int: %s\n", bus, err)
 			continue
 		}
+		// if the index is bigger than the bus id, we can reduce the index to be only the mod. If idx is 50 and bus id
+		// is 19, then 50 % 19 and 12 % 19 give us the same result, so let's use 12 instead.
 		if idx >= busNum {
 			idx = idx % busNum
 		}
 
+		// after reducing the indexes, a bunch of bus ids will be on the same difference.
 		buses[idx] = append(buses[idx], busNum)
 	}
 
@@ -99,6 +104,7 @@ func t2formatInput(in []string) map[int][]int {
 			buses[0] = remove(buses[0], i)
 		}
 	}
+	// if we don't have a bus for an offset, get rid of the offset.
 	if len(buses[0]) == 0 {
 		delete(buses, 0)
 	}

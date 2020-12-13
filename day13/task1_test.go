@@ -36,3 +36,37 @@ func Test_t1formatInput(t *testing.T) {
 		})
 	}
 }
+
+func Test_t1next(t *testing.T) {
+	type args struct {
+		t        int
+		interval int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{
+			name: "returns 0 if t is divisible by interval",
+			args: args{
+				t:        95,
+				interval: 5,
+			},
+			want: 0,
+		},
+		{
+			name: "returns 4 if the next multiple of interval is 4 from t",
+			args: args{
+				t:        96,
+				interval: 5,
+			},
+			want: 4,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, t1next(tt.args.t, tt.args.interval))
+		})
+	}
+}

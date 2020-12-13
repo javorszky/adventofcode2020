@@ -190,7 +190,7 @@ func pg2() {
 	}
 
 	for i := 0; i < newNum; i++ {
-		n := base*i + baseMod
+		n := base*(27+i*newNum) + baseMod
 		m := n % newNum
 		t := ""
 		if m == newMod {

@@ -161,7 +161,6 @@ func playground() {
 func pg2() {
 	base := 823 * 29 * 37 * 19
 	baseMod := 19
-	factor := 1
 	//m := map[int]int{
 	//	9: 41,
 	//}
@@ -183,12 +182,13 @@ func pg2() {
 	newNum := 41
 	newMod := 9
 	for i := 0; i < newNum; i++ {
-		n := base*factor*i + baseMod
+		n := base*i + baseMod
 		m := n % newNum
 		t := ""
 		fmt.Printf("%3d, %3d, %3d %s\n", m, newMod, i, t)
 	}
 
+	factor := 1
 	for i := 0; i < newNum; i++ {
 		n := base*(27+i*newNum) + baseMod
 		m := n % newNum
@@ -196,8 +196,10 @@ func pg2() {
 		if m == newMod {
 			factor = i + newNum
 			t = "<---"
+			fmt.Printf("%3d, %3d, %3d, %3d %s\n", m, newMod, i, factor, t)
+			break
 		}
-		fmt.Printf("%3d, %3d, %3d %s\n", m, newMod, i, t)
+		fmt.Printf("%3d, %3d, %3d, %3d %s\n", m, newMod, i, factor, t)
 	}
 }
 

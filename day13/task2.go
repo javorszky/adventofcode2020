@@ -8,69 +8,40 @@ import (
 
 // the numbers are all primes.
 func task2() {
-	e := t2formatInput(getInputs())
-	//
-	fmt.Printf("the map of offsets and bus ids: %#v\n", e)
-	//
-	//final := earliestTime(e)
-	//
-	//for offset, intervals := range e {
-	//	for _, int := range intervals {
-	//		fmt.Printf("%d mod %d is %d, should be %d\n", final, int, final%int, offset)
-	//	}
-	//}
-	//earliestTime(e)
-	//pf := getPrimeFactors(98237489723)
-	//fmt.Printf("prime factors of %d are %#v\n", 98237489723, pf)
-
-	//playground()
+	_ = earliestTime(t2formatInput(getInputs()))
 
 	pg2()
+}
+
+// togetherBus takes two buses, and returns a new one that envelops both of them.
+func togetherBus(bus1ID, bus1offset, bus2ID, bus2offset int) (int, int) {
+	if bus1ID == 1 {
+		return bus2ID, bus2offset
+	}
+	newBusID := bus1ID * bus2ID
+	newBusOffset := bus2ID + bus2offset
+	fmt.Printf("bus %9d / %9d and %9d / %9d results in %9d / %9d\n",
+		bus1ID, bus1offset,
+		bus2ID, bus2offset,
+		newBusID, newBusOffset,
+	)
+	return bus1ID * bus2ID, bus2ID + bus2offset
 }
 
 // earliestTime returns the time at which all buses leave according to their offsets. The structure of the map is
 // map[offset]interval.
 func earliestTime(in map[int][]int) int {
-	// let's find the largest interval to do the least amount of calculations.
-	largest := 0
-	offsetLargest := 0
-	for offset, intervals := range in {
-		product := 1
-		for _, int := range intervals {
-			product = product * int
-		}
-		if product > largest {
-			largest = product
-			offsetLargest = offset
+	lastBusID, lastBusOffset := 0, 0
+	for offset, buses := range in {
+		for _, bus := range buses {
+			if lastBusID == 0 {
+				lastBusID, lastBusOffset = bus, offset
+				continue
+			}
+			lastBusID, lastBusOffset = togetherBus(lastBusID, lastBusOffset, bus, offset)
 		}
 	}
-	fmt.Printf("num %d at %d is good\n", largest, offsetLargest)
-	//n := largest + offsetLargest
-	//for _, c := range in[offsetLargest] {
-	//	fmt.Printf("%d mod %d is %d\n", n, c, n%c)
-	//}
-	//delete(in, offsetLargest)
-	//busFactors := make(map[int]int, 0)
-	//for offset, intervals := range in {
-	//	for _, int := range intervals {
-	//		n2 := int
-	//		needMod := offset
-	//		for i := 0; i < n2; i++ {
-	//			m := (largest * i) % n2
-	//			if needMod == m {
-	//				busFactors[int] = i
-	//				break
-	//			}
-	//		}
-	//	}
-	//}
-	//fmt.Printf("bus factor is %v\n", busFactors)
-	//final := largest
-	//for n2, factor := range busFactors {
-	//	final = final * (n2 + factor)
-	//}
-
-	return 19
+	return lastBusID + lastBusOffset
 }
 
 func t2formatInput(in []string) map[int][]int {
@@ -165,47 +136,19 @@ func playground() {
 }
 
 func pg2() {
-	base := 823 * 29 * 37 * 19
-	baseMod := 19
-	//m := map[int]int{
-	//	9: 41,
-	//}
-	//for newMod, newNum := range m {
-	//	for i := 0; i < newNum; i++ {
-	//		n := base*factor*i + baseMod
-	//		m := n % newNum
-	//		t := ""
-	//		if m == newMod {
-	//			factor = factor * (i + newNum)
-	//			t = "<---"
-	//		}
-	//		fmt.Printf("%3d, %3d, %3d %s\n", m, newMod, i, t)
-	//	}
-	//}
-	//
-	//fmt.Printf("new one, factor is %d\n", factor)
+	base := 41
 
-	newNum := 41
-	newMod := 9
-	for i := 0; i < newNum; i++ {
-		n := base*i + baseMod
-		m := n % newNum
-		t := ""
-		fmt.Printf("%3d, %3d, %3d %s\n", m, newMod, i, t)
-	}
+	newNum := 823
+	newMod := 19
 
-	factor := 1
-	for i := 0; i < newNum; i++ {
-		n := base*(27+i*newNum) + baseMod
+	for i := 0; i < 10; i++ {
+		n := 842 + (base * newNum)
 		m := n % newNum
 		t := ""
 		if m == newMod {
-			factor = i + newNum
 			t = "<---"
-			fmt.Printf("%3d, %3d, %3d, %3d %s\n", m, newMod, i, factor, t)
-			break
+			fmt.Printf("mod: %3d, wantmod: %3d, iter: %3d, number: %5d %s\n", m, newMod, i, n, t)
 		}
-		fmt.Printf("%3d, %3d, %3d, %3d %s\n", m, newMod, i, factor, t)
 	}
 }
 

@@ -130,6 +130,17 @@ func Test_togetherBus(t *testing.T) {
 		want1 int
 	}{
 		{
+			name: "buses 3o1 / 4o0 will give 12o4",
+			args: args{
+				bus1ID:     3,
+				bus1offset: 1,
+				bus2ID:     4,
+				bus2offset: 0,
+			},
+			want:  12,
+			want1: 4,
+		},
+		{
 			name: "given two buses, returns a new bus that both buses will be encompassed by",
 			args: args{
 				bus1ID:     19,

@@ -14,34 +14,35 @@ func task2() {
 }
 
 // togetherBus takes two buses, and returns a new one that envelops both of them.
-func togetherBus(bus1ID, bus1offset, bus2ID, bus2offset int) (int, int) {
-	if bus1ID == 1 {
-		return bus2ID, bus2offset
+func togetherBus(bus1Start, bus1ID, bus1offset, bus2Start, bus2ID, bus2offset int) (int, int, int) {
+	if bus1ID == 0 {
+		return bus2Start, bus2ID, bus2offset
 	}
-	newBusID := bus1ID * bus2ID
-	newBusOffset := bus2ID + bus2offset
-	fmt.Printf("bus %9d / %9d and %9d / %9d results in %9d / %9d\n",
-		bus1ID, bus1offset,
-		bus2ID, bus2offset,
-		newBusID, newBusOffset,
-	)
-	return bus1ID * bus2ID, bus2ID + bus2offset
+	// let's step bus 1, and see when that step plus bus 2's offset matches bus 2 id
+	for i := 0; i < bus1ID*bus2ID; i++ {
+		nStart := bus1Start + (i * bus1ID) + bus1offset
+		n := nStart - bus2Start - bus2offset
+		if n%bus2ID == 0 {
+			return nStart, bus1ID * bus2ID, 0
+		}
+	}
+	return 0, 0, 0
 }
 
 // earliestTime returns the time at which all buses leave according to their offsets. The structure of the map is
 // map[offset]interval.
 func earliestTime(in map[int][]int) int {
-	lastBusID, lastBusOffset := 0, 0
+	lastBusStart, lastBusID, lastBusOffset := 0, 0, 0
 	for offset, buses := range in {
 		for _, bus := range buses {
 			if lastBusID == 0 {
-				lastBusID, lastBusOffset = bus, offset
+				lastBusStart, lastBusID, lastBusOffset = 0, bus, offset
 				continue
 			}
-			lastBusID, lastBusOffset = togetherBus(lastBusID, lastBusOffset, bus, offset)
+			lastBusStart, lastBusID, lastBusOffset = togetherBus(lastBusStart, lastBusID, lastBusOffset, 0, bus, offset)
 		}
 	}
-	return lastBusID + lastBusOffset
+	return lastBusStart
 }
 
 func t2formatInput(in []string) map[int][]int {
@@ -136,6 +137,7 @@ func playground() {
 }
 
 func pg2() {
+	return
 	base := 41
 
 	newNum := 823

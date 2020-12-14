@@ -81,6 +81,16 @@ func Test_extrapolateAddresses(t *testing.T) {
 				"110111011",
 			},
 		},
+		{
+			name: "returns the string as is if there are no Xes in it",
+			args: args{
+				prefix: "",
+				s:      "011010101",
+			},
+			want: []string{
+				"011010101",
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

@@ -44,10 +44,13 @@ func earliestTime(in map[int][]int) int {
 				lastBusStart, lastBusID, lastBusOffset = 0, bus, offset
 				continue
 			}
-			lastBusStart, lastBusID, lastBusOffset = togetherBus(lastBusStart, lastBusID, lastBusOffset, 0, bus, offset)
+			inStart, inID, inOffset := togetherBus(lastBusStart, lastBusID, lastBusOffset, 0, bus, offset)
+			fmt.Printf("combining buses %d/%d/%d and %d/%d/%d to get %d/%d/%d\n",
+				lastBusStart, lastBusID, lastBusOffset, 0, bus, offset, inStart, inID, inOffset)
+			lastBusStart, lastBusID, lastBusOffset = inStart, inID, inOffset
 		}
 	}
-	return lastBusStart
+	return lastBusStart + lastBusID
 }
 
 func t2formatInput(in []string) map[int][]int {

@@ -16,20 +16,27 @@ func Test_decimalToBinary(t *testing.T) {
 		want string
 	}{
 		{
-			name: "converts decimal to binary string",
+			name: "converts decimal to binary string where value is all 1s",
 			args: args{
 				// 2^37-1, should overflow
 				i: 137438953472 - 1,
 			},
-			want: "11111111111111111111111111111111111",
+			want: "111111111111111111111111111111111111",
 		},
 		{
-			name: "converts decimal to binary string",
+			name: "converts decimal to binary string where decimal overflows",
 			args: args{
 				// 2^41, should overflow
 				i: 2199023255552,
 			},
-			want: "00000000000000000000000000000000000",
+			want: "000000000000000000000000000000000000",
+		},
+		{
+			name: "converts decimal to binary string",
+			args: args{
+				i: 1,
+			},
+			want: "000000000000000000000000000000000001",
 		},
 	}
 	for _, tt := range tests {

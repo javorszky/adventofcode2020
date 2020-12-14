@@ -37,7 +37,6 @@ func decimalToBinary(i int64) string {
 	default:
 		return strings.Repeat("0", 36-len(b)) + b
 	}
-
 }
 
 func binaryToDecimal(s string) int64 {

@@ -8,9 +8,9 @@ import (
 
 // the numbers are all primes.
 func task2() {
-	_ = earliestTime(t2formatInput(getInputs()))
-
-	pg2()
+	start := earliestTime(t2formatInput(getInputs()))
+	fmt.Printf("Day 13 task 2: the timestamp is %d\n", start)
+	//pg2()
 }
 
 // togetherBus takes two buses, and returns a new one that envelops both of them.
@@ -20,8 +20,13 @@ func togetherBus(bus1Start, bus1ID, bus1offset, bus2Start, bus2ID, bus2offset in
 	}
 	// let's step bus 1, and see when that step plus bus 2's offset matches bus 2 id
 	for i := 0; i < bus1ID*bus2ID; i++ {
+		// this is the step that bus1 is going to do each iteration. Start + offset + i * bus id.
 		nStart := bus1Start + (i * bus1ID) + bus1offset
+
+		// this takes the number that bus1 arrived on, subtracts bus2 offset, and bus2 start, to check for mod bus 2 id.
 		n := nStart - bus2Start - bus2offset
+
+		// if we have a mod 0, that means that the buses will overlap at this time, starts and offsets accounted for.
 		if n%bus2ID == 0 {
 			return nStart, bus1ID * bus2ID, 0
 		}

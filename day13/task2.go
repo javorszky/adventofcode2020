@@ -45,8 +45,6 @@ func earliestTime(in map[int][]int) int {
 				continue
 			}
 			inStart, inID, inOffset := togetherBus(lastBusStart, lastBusID, lastBusOffset, 0, bus, offset)
-			fmt.Printf("combining buses %d/%d/%d and %d/%d/%d to get %d/%d/%d\n",
-				lastBusStart, lastBusID, lastBusOffset, 0, bus, offset, inStart, inID, inOffset)
 			lastBusStart, lastBusID, lastBusOffset = inStart, inID, inOffset
 		}
 	}

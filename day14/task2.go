@@ -2,11 +2,40 @@ package day14
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 )
 
 func task2() {
-	_ = getInputs()
+	input := getInputs()
+	mask := "000000000000000000000000000000000000"
+	memory := make(map[int64]int64, 0)
+	for _, line := range input {
+		switch line[:3] {
+		case "mas":
+			mask = line[7:]
+		case "mem":
+			matches := reMem.FindStringSubmatch(line)
+			address, err := strconv.ParseInt(matches[1], 10, 64)
+			if err != nil {
+				panic(fmt.Sprintf("can't turn string %s into int64: %s", matches[1], err))
+			}
+			value, err := strconv.ParseInt(matches[2], 10, 64)
+			if err != nil {
+				panic(fmt.Sprintf("can't turn string %s into int64: %s", matches[2], err))
+			}
+
+			for _, add := range extrapolateAddresses("", applyMaskT2(mask, decimalToBinary(address))) {
+				extrapolatedAddress := binaryToDecimal(add)
+				memory[extrapolatedAddress] = value
+			}
+		}
+	}
+	sum := int64(0)
+	for _, value := range memory {
+		sum = sum + value
+	}
+	fmt.Printf("Day 14 task 2: the sum of all values in memory is %d\n", sum)
 }
 
 func applyMaskT2(mask, binary string) string {

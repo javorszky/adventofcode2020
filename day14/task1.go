@@ -2,12 +2,9 @@ package day14
 
 import (
 	"fmt"
-	"regexp"
 	"strconv"
 	"strings"
 )
-
-var reMem = regexp.MustCompile(`^mem\[(\d+)\] = (\d+)$`)
 
 func task1() {
 	input := getInputs()
@@ -36,27 +33,6 @@ func task1() {
 		sum = sum + value
 	}
 	fmt.Printf("\nDay 14 task 1: the sum of all values in memory is %d\n", sum)
-}
-
-func decimalToBinary(i int64) string {
-	b := strconv.FormatInt(i, 2)
-	switch {
-	case len(b) == 36:
-		return b
-	case len(b) > 36:
-		return b[len(b)-36:]
-	default:
-		return strings.Repeat("0", 36-len(b)) + b
-	}
-
-}
-
-func binaryToDecimal(s string) int64 {
-	d, err := strconv.ParseInt(s[len(s)-36:], 2, 64)
-	if err != nil {
-		panic(fmt.Sprintf("converting %s to binary failed: %s", s, err))
-	}
-	return d
 }
 
 func applyMask(mask, binary string) string {

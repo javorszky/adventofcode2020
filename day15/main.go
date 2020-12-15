@@ -11,7 +11,7 @@ const filename = "day15/input.txt"
 
 func Tasks() {
 	task1()
-	//task2()
+	task2()
 }
 
 // getInputs reads the input.txt file and returns them as a slice of strings for each row.

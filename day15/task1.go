@@ -2,10 +2,10 @@ package day15
 
 import "fmt"
 
-const task1NumberthNumber = 2020
+const task1NthNumber = 2020
 
 func task1() {
-	num := nthNumber(getInputs(), task1NumberthNumber)
+	num := nthNumber(getInputs(), task1NthNumber)
 
 	fmt.Printf("\nDay 15 task 1: last number is %d\n", num)
 }

@@ -2,10 +2,10 @@ package day15
 
 import "fmt"
 
-func task1() {
+const task1NumberthNumber = 2020
 
-	n := 7
-	num := nthNumber(getInputs(), n)
+func task1() {
+	num := nthNumber(getInputs(), task1NumberthNumber)
 
 	fmt.Printf("\nDay 15 task 1: last number is %d\n", num)
 }
@@ -25,11 +25,9 @@ func nthNumber(in []int, n int) int {
 }
 
 func nthNewNumber(in map[int]int, last, n int) int {
-	for i := len(in) + 1; i <= n; i++ {
-		fmt.Printf("new: looking for %d, last number was %d\nmap: %#v\n", i, last, in)
+	for i := len(in) + 1; i < n; i++ {
 		idx, ok := in[last]
 		if !ok {
-			fmt.Printf("new: last was not found, so setting 0 and last 0 as %d, and continuing\n", i)
 			in[last] = i
 			last = 0
 			continue
@@ -37,5 +35,6 @@ func nthNewNumber(in map[int]int, last, n int) int {
 		in[last] = i
 		last = i - idx
 	}
+
 	return last
 }

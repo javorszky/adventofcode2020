@@ -43,9 +43,7 @@ func newRule(name, n1, n2 string) rule {
 }
 
 func task2() {
-	_, _, _ = getInputs()
-
-	ruleStrings, _, nearbyTickets := getInputs()
+	ruleStrings, myTicket, nearbyTickets := getInputs()
 	values := make(map[int]struct{}, 0)
 	allRules := make(map[string]struct{}, 0)
 	for _, rule := range ruleStrings {
@@ -67,7 +65,24 @@ func task2() {
 		possibilities = append(possibilities, parseTicketPossibilities(validTicket, rules))
 	}
 
-	sherlockPossibilities(possibilities, allRules)
+	collapsedRules := sherlockPossibilities(possibilities, allRules)
+
+	// and once we have the titles of the columns, let's parse my ticket
+	myTicketInts := make([]int, 0)
+	for _, val := range strings.Split(myTicket, ",") {
+		valInt, err := strconv.Atoi(val)
+		if err != nil {
+			panic(fmt.Sprintf("parsing my ticket. String %s parse error: %s", val, err))
+		}
+		myTicketInts = append(myTicketInts, valInt)
+	}
+	product := 1
+	for col, title := range collapsedRules {
+		if strings.HasPrefix(title, "departure") {
+			product = product * myTicketInts[col-1]
+		}
+	}
+	fmt.Printf("Day 16 task 2: the product of all values on my ticket with departure is %d\n", product)
 }
 
 func filterInvalidTickets(values map[int]struct{}, nearbyTickets []string) []string {

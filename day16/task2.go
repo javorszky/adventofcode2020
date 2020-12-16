@@ -72,13 +72,13 @@ func filterInvalidTickets(values map[int]struct{}, nearbyTickets []string) []str
 	return validTix
 }
 
-//
-//func createRules(rules []string) []rule {
-//	rs := make([]rule, 0)
-//	for _, r := range rules {
-//		matches := reRule.FindStringSubmatch(r)
-//		values = mergeRanges(values, matches[2], matches[3])
-//		values = mergeRanges(values, matches[4], matches[5])
-//	}
-//	return nil
-//}
+// createRules takes a slice of rule strings, and returns a slice of individual rules.
+func createRules(rules []string) []rule {
+	rs := make([]rule, 0)
+	for _, r := range rules {
+		matches := reRule.FindStringSubmatch(r)
+		rs = append(rs, newRule(matches[1], matches[2], matches[3]))
+		rs = append(rs, newRule(matches[1], matches[4], matches[5]))
+	}
+	return rs
+}

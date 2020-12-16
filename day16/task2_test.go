@@ -85,3 +85,51 @@ func Test_newRule(t *testing.T) {
 		})
 	}
 }
+
+func Test_createRules(t *testing.T) {
+	type args struct {
+		rules []string
+	}
+	tests := []struct {
+		name string
+		args args
+		want []rule
+	}{
+		{
+			name: "creates rules for slice of strings",
+			args: args{
+				rules: []string{
+					"departure location: 35-796 or 811-953",
+					"departure station: 25-224 or 248-952",
+				},
+			},
+			want: []rule{
+				{
+					name: "departure location",
+					min:  35,
+					max:  796,
+				},
+				{
+					name: "departure location",
+					min:  811,
+					max:  953,
+				},
+				{
+					name: "departure station",
+					min:  25,
+					max:  224,
+				},
+				{
+					name: "departure station",
+					min:  248,
+					max:  952,
+				},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, createRules(tt.args.rules))
+		})
+	}
+}

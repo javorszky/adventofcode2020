@@ -25,8 +25,8 @@ func Tasks() {
 func task1() {
 	// deps has the format of "colour is contained in these other colours", so
 	// "wavy yellow": {
-	//   "dull purple": struct{}{},
-	//   "pale purple": struct{}{},
+	//   "dull purple":{},
+	//   "pale purple":{},
 	// },
 	// means that dull purple and pale purple both contain wavy yellow.
 	//

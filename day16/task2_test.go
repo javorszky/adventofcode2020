@@ -133,3 +133,60 @@ func Test_createRules(t *testing.T) {
 		})
 	}
 }
+
+func Test_parseTicketPossibilities(t *testing.T) {
+	type args struct {
+		ticket string
+		rules  []rule
+	}
+	tests := []struct {
+		name string
+		args args
+		want map[int][]string
+	}{
+		{
+			name: "parses possibilities correctly for ticket based on rules",
+			args: args{
+				ticket: "12,15,78,99",
+				rules: []rule{
+					{
+						name: "rule1",
+						min:  1,
+						max:  78,
+					},
+					{
+						name: "rule1",
+						min:  80,
+						max:  110,
+					},
+					{
+						name: "rule2",
+						min:  16,
+						max:  78,
+					},
+					{
+						name: "rule3",
+						min:  79,
+						max:  108,
+					},
+					{
+						name: "rule4",
+						min:  15,
+						max:  61,
+					},
+				},
+			},
+			want: map[int][]string{
+				1: {"rule1"},
+				2: {"rule1", "rule4"},
+				3: {"rule1", "rule2"},
+				4: {"rule1", "rule3"},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, parseTicketPossibilities(tt.args.ticket, tt.args.rules))
+		})
+	}
+}

@@ -12,11 +12,7 @@ var reRule = regexp.MustCompile(`^(.+): (\d+)-(\d+) or (\d+)-(\d+)$`)
 
 func Tasks() {
 	task1()
-	//task2()
-}
-
-func task2() {
-	_, _, _ = getInputs()
+	task2()
 }
 
 // getInputs reads the input.txt file and returns three sets of data: rules, your ticket, nearby tickets.

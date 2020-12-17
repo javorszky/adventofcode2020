@@ -27,7 +27,7 @@ func (g hyperGrid) neighbours(x, y, z, w int) hyperGrid {
 				n[x+i][y+j][z+k] = make(map[int]string, 0)
 				for l := -1; l <= 1; l++ {
 					// but skip the coordinate we want the neighbours for.
-					if i == 0 && j == 0 && k == 0 {
+					if i == 0 && j == 0 && k == 0 && l == 0 {
 						continue
 					}
 					n[x+i][y+j][z+k][w+l] = g.state(x+i, y+j, z+k, w+l)

@@ -107,13 +107,25 @@ func (g grid) edges() map[int]map[int]map[int]struct{} {
 // cycle will apply the rules of conway cubes to the current state of the grid, and returns a new grid where all the
 // coördinates were applied, and the grid has grown.
 func (g grid) cycle() grid {
+	newGrid := make(grid, 0)
 	// step 1: get the edges. This is where the grid is going to grow next.
+	for x, yz := range g.edges() {
+		for y, zStructs := range yz {
+			for z := range zStructs {
+				// step 2: get the neighbours of all the cubes in the edged (grown) space.
+				n := g.neighbours(x, y, z)
 
-	// step 2: get the neighbours of every point in the edges. This will be used to evaluate what should happen with the
-	// cube at the given coördinate.
+				// step 3: figure out what the new state should be at a given point in the edged (grown) space.
+				newState := next(g.state(x, y, z), n)
 
-	// step 3: set the cube at given coördinate to whatever the rule says.
-	return nil
+				// step 4: set that state into the grid.
+				newGrid.setStateAt(x, y, z, newState)
+			}
+		}
+	}
+
+	// step 5: return the new grid at the end of the cycle.
+	return newGrid
 }
 
 func (g grid) actives() int {

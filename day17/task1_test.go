@@ -1490,3 +1490,112 @@ func Test_grid_actives(t *testing.T) {
 		})
 	}
 }
+
+func Test_grid_cycle(t *testing.T) {
+	tests := []struct {
+		name string
+		g    grid
+		want grid
+	}{
+		{
+			name: "calculates a cycle correctly",
+			g: grid{
+				0: {
+					0: {
+						0: active,
+						1: active,
+					},
+					1: {
+						0: active,
+						1: inactive,
+					},
+				},
+			},
+			want: grid{
+				-1: {
+					-1: {
+						-1: inactive,
+						0:  inactive,
+						1:  inactive,
+						2:  inactive,
+					},
+					0: {
+						-1: inactive,
+						0:  active,
+						1:  active,
+						2:  inactive,
+					},
+					1: {
+						-1: inactive,
+						0:  active,
+						1:  active,
+						2:  inactive,
+					},
+					2: {
+						-1: inactive,
+						0:  inactive,
+						1:  inactive,
+						2:  inactive,
+					},
+				},
+				0: {
+					-1: {
+						-1: inactive,
+						0:  inactive,
+						1:  inactive,
+						2:  inactive,
+					},
+					0: {
+						-1: inactive,
+						0:  active,
+						1:  active,
+						2:  inactive,
+					},
+					1: {
+						-1: inactive,
+						0:  active,
+						1:  active,
+						2:  inactive,
+					},
+					2: {
+						-1: inactive,
+						0:  inactive,
+						1:  inactive,
+						2:  inactive,
+					},
+				},
+				1: {
+					-1: {
+						-1: inactive,
+						0:  inactive,
+						1:  inactive,
+						2:  inactive,
+					},
+					0: {
+						-1: inactive,
+						0:  active,
+						1:  active,
+						2:  inactive,
+					},
+					1: {
+						-1: inactive,
+						0:  active,
+						1:  active,
+						2:  inactive,
+					},
+					2: {
+						-1: inactive,
+						0:  inactive,
+						1:  inactive,
+						2:  inactive,
+					},
+				},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, tt.g.cycle())
+		})
+	}
+}

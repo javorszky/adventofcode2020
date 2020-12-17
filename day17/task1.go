@@ -5,7 +5,10 @@ import (
 	"strings"
 )
 
-const zStart = 0
+const (
+	zStart   = 0
+	t1cycles = 6
+)
 
 // x (left/right), y (front/back), z (up/down) coordinates. The starting state is all on z=0, with top left tile on
 // x=0 and y=0.
@@ -176,5 +179,9 @@ func task1() {
 		}
 	}
 
-	fmt.Printf("%#v\n", world)
+	for i := 0; i < t1cycles; i++ {
+		world = world.cycle()
+	}
+
+	fmt.Printf("\nDay 17 task 1: after 6 cycles there are %d active cubes in the grid\n", world.actives())
 }

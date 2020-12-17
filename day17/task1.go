@@ -66,8 +66,35 @@ func (g grid) setStateAt(x, y, z int, state string) grid {
 	return g
 }
 
-type world struct {
-	Grid grid
+// edges returns a list of coordinates that have at least one neighbour that exists in our current grid. This is useful
+// to walk when we want to consider the next cycle.
+//
+// In essence the list is the unique union of neighbours of all known cubes.
+func (g grid) edges() map[int]map[int]map[int]struct{} {
+	e := make(map[int]map[int]map[int]struct{}, 0)
+	for x, yz := range g {
+		for y, zCubes := range yz {
+			for z := range zCubes {
+				n := g.neighbours(x, y, z)
+				for nx, nyz := range n {
+					if e[nx] == nil {
+						e[nx] = make(map[int]map[int]struct{}, 0)
+					}
+					for ny, nzCubes := range nyz {
+						if e[nx][ny] == nil {
+							e[nx][ny] = make(map[int]struct{}, 0)
+						}
+						for nz := range nzCubes {
+							e[nx][ny][nz] = struct{}{}
+						}
+					}
+				}
+				// neighbours leaves out the actual cube, but we need it here.
+				e[x][y][z] = struct{}{}
+			}
+		}
+	}
+	return e
 }
 
 func task1() {

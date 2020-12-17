@@ -167,9 +167,9 @@ func next(state string, neighbours grid) string {
 }
 
 func task1() {
+	// load our initial state into the world.
 	starter := getInputs()
 	world := make(grid, 0)
-
 	for x, ys := range starter {
 		for y, state := range strings.Split(ys, "") {
 			world = world.setStateAt(x, y, zStart, state)

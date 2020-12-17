@@ -1599,3 +1599,46 @@ func Test_grid_cycle(t *testing.T) {
 		})
 	}
 }
+
+func Test_grid_actives_after_cycling(t *testing.T) {
+	tests := []struct {
+		name   string
+		g      grid
+		cycles int
+		want   int
+	}{
+		{
+			name: "aoc task 1 example input and 6 cycle",
+			g: grid{
+				0: {
+					0: {
+						0: inactive,
+						1: active,
+						2: inactive,
+					},
+					1: {
+						0: inactive,
+						1: inactive,
+						2: active,
+					},
+					2: {
+						0: active,
+						1: active,
+						2: active,
+					},
+				},
+			},
+			cycles: 6,
+			want:   112,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			g := tt.g
+			for i := 0; i < tt.cycles; i++ {
+				g = g.cycle()
+			}
+			assert.Equal(t, tt.want, g.actives())
+		})
+	}
+}

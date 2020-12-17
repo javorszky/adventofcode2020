@@ -1,5 +1,10 @@
 package day17
 
+import (
+	"fmt"
+	"strings"
+)
+
 const (
 	wStart = 0
 )
@@ -135,7 +140,7 @@ func (g hyperGrid) cycle() hyperGrid {
 					n := g.neighbours(x, y, z, w)
 
 					// step 3: figure out what the new state should be at a given point in the edged (grown) space.
-					newState := next(g.state(x, y, z, w), n)
+					newState := hyperNext(g.state(x, y, z, w), n)
 
 					// step 4: set that state into the hyperGrid.
 					newGrid.setStateAt(x, y, z, w, newState)
@@ -165,6 +170,42 @@ func (g hyperGrid) actives() int {
 	return actives
 }
 
+// hyperNext will take a current state, and its neighbours, and returns what the next state should be. The rules for
+// the state change in the 2020 advent of code day 17 task 2 are:
+//
+// - If a cube is active and exactly 2 or 3 of its neighbors are also active, the cube remains active. Otherwise, the
+//   cube becomes inactive.
+// - If a cube is inactive but exactly 3 of its neighbors are active, the cube becomes active. Otherwise, the cube
+//   remains inactive.
+func hyperNext(state string, neighbours hyperGrid) string {
+	actives := neighbours.actives()
+
+	switch state {
+	case active:
+		if actives == 2 || actives == 3 {
+			return active
+		}
+	case inactive:
+		if actives == 3 {
+			return active
+		}
+	}
+	return inactive
+}
+
 func task2() {
-	_ = getInputs()
+	// load our initial state into the world.
+	starter := getInputs()
+	world := make(hyperGrid, 0)
+	for x, ys := range starter {
+		for y, state := range strings.Split(ys, "") {
+			world = world.setStateAt(x, y, zStart, wStart, state)
+		}
+	}
+
+	for i := 0; i < cycles; i++ {
+		world = world.cycle()
+	}
+
+	fmt.Printf("Day 17 task 2: after 6 cycles there are %d active cubes in the grid\n", world.actives())
 }

@@ -104,6 +104,51 @@ func (g grid) edges() map[int]map[int]map[int]struct{} {
 	return e
 }
 
+// cycle will apply the rules of conway cubes to the current state of the grid, and returns a new grid where all the
+// coördinates were applied, and the grid has grown.
+func (g grid) cycle() grid {
+	// step 1: get the edges. This is where the grid is going to grow next.
+
+	// step 2: get the neighbours of every point in the edges. This will be used to evaluate what should happen with the
+	// cube at the given coördinate.
+
+	// step 3: set the cube at given coördinate to whatever the rule says.
+	return nil
+}
+
+// next will take a current state, and its neighbours, and returns what the next state should be. The rules for the
+// state change in the 2020 advent of code day 17 task 1 are:
+//
+// - If a cube is active and exactly 2 or 3 of its neighbors are also active, the cube remains active. Otherwise, the
+//   cube becomes inactive.
+// - If a cube is inactive but exactly 3 of its neighbors are active, the cube becomes active. Otherwise, the cube
+//   remains inactive.
+func next(state string, neighbours grid) string {
+	actives := 0
+	// count all the actives in the neighbours.
+	for _, yz := range neighbours {
+		for _, zCubes := range yz {
+			for _, cube := range zCubes {
+				if cube == active {
+					actives++
+				}
+			}
+		}
+	}
+	fmt.Printf("actives: %d\n", actives)
+	switch state {
+	case active:
+		if actives == 2 || actives == 3 {
+			return active
+		}
+	case inactive:
+		if actives == 3 {
+			return active
+		}
+	}
+	return inactive
+}
+
 func task1() {
 	starter := getInputs()
 	world := make(grid, 0)

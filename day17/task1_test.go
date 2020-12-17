@@ -815,3 +815,554 @@ func Test_grid_edges(t *testing.T) {
 		})
 	}
 }
+
+func Test_next(t *testing.T) {
+	type args struct {
+		state      string
+		neighbours grid
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			name: "active state with neighbours with 2 active will remain active",
+			args: args{
+				state: active,
+				neighbours: grid{
+					0: {
+						0: {
+							0: active,
+							1: active,
+							2: inactive,
+						},
+						1: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						2: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+					},
+					1: {
+						0: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						1: {
+							0: inactive,
+							2: inactive,
+						},
+						2: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+					},
+					2: {
+						0: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						1: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						2: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+					},
+				},
+			},
+			want: active,
+		},
+		{
+			name: "active state with neighbours with 3 active will remain active",
+			args: args{
+				state: active,
+				neighbours: grid{
+					0: {
+						0: {
+							0: active,
+							1: active,
+							2: active,
+						},
+						1: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						2: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+					},
+					1: {
+						0: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						1: {
+							0: inactive,
+							2: inactive,
+						},
+						2: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+					},
+					2: {
+						0: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						1: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						2: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+					},
+				},
+			},
+			want: active,
+		},
+		{
+			name: "active state with neighbours with 1 active will be inactive",
+			args: args{
+				state: active,
+				neighbours: grid{
+					0: {
+						0: {
+							0: active,
+							1: inactive,
+							2: inactive,
+						},
+						1: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						2: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+					},
+					1: {
+						0: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						1: {
+							0: inactive,
+							2: inactive,
+						},
+						2: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+					},
+					2: {
+						0: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						1: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						2: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+					},
+				},
+			},
+			want: inactive,
+		},
+		{
+			name: "active state with neighbours with 0 active will be inactive",
+			args: args{
+				state: active,
+				neighbours: grid{
+					0: {
+						0: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						1: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						2: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+					},
+					1: {
+						0: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						1: {
+							0: inactive,
+							2: inactive,
+						},
+						2: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+					},
+					2: {
+						0: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						1: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						2: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+					},
+				},
+			},
+			want: inactive,
+		},
+		{
+			name: "active state with neighbours with 4 active will be inactive",
+			args: args{
+				state: active,
+				neighbours: grid{
+					0: {
+						0: {
+							0: active,
+							1: active,
+							2: active,
+						},
+						1: {
+							0: active,
+							1: inactive,
+							2: inactive,
+						},
+						2: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+					},
+					1: {
+						0: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						1: {
+							0: inactive,
+							2: inactive,
+						},
+						2: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+					},
+					2: {
+						0: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						1: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						2: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+					},
+				},
+			},
+			want: inactive,
+		},
+		{
+			name: "inactive state with neighbours with 3 active will become active",
+			args: args{
+				state: inactive,
+				neighbours: grid{
+					0: {
+						0: {
+							0: active,
+							1: active,
+							2: active,
+						},
+						1: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						2: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+					},
+					1: {
+						0: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						1: {
+							0: inactive,
+							2: inactive,
+						},
+						2: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+					},
+					2: {
+						0: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						1: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						2: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+					},
+				},
+			},
+			want: active,
+		},
+		{
+			name: "inactive state with neighbours with 2 active will stay inactive",
+			args: args{
+				state: inactive,
+				neighbours: grid{
+					0: {
+						0: {
+							0: active,
+							1: active,
+							2: inactive,
+						},
+						1: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						2: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+					},
+					1: {
+						0: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						1: {
+							0: inactive,
+							2: inactive,
+						},
+						2: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+					},
+					2: {
+						0: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						1: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						2: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+					},
+				},
+			},
+			want: inactive,
+		},
+		{
+			name: "inactive state with neighbours with 4 active will stay inactive",
+			args: args{
+				state: inactive,
+				neighbours: grid{
+					0: {
+						0: {
+							0: active,
+							1: active,
+							2: active,
+						},
+						1: {
+							0: active,
+							1: inactive,
+							2: inactive,
+						},
+						2: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+					},
+					1: {
+						0: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						1: {
+							0: inactive,
+							2: inactive,
+						},
+						2: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+					},
+					2: {
+						0: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						1: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						2: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+					},
+				},
+			},
+			want: inactive,
+		},
+		{
+			name: "inactive state with neighbours with 0 active will stay inactive",
+			args: args{
+				state: inactive,
+				neighbours: grid{
+					0: {
+						0: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						1: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						2: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+					},
+					1: {
+						0: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						1: {
+							0: inactive,
+							2: inactive,
+						},
+						2: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+					},
+					2: {
+						0: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						1: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+						2: {
+							0: inactive,
+							1: inactive,
+							2: inactive,
+						},
+					},
+				},
+			},
+			want: inactive,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := next(tt.args.state, tt.args.neighbours); got != tt.want {
+				t.Errorf("next() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

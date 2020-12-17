@@ -1,5 +1,12 @@
 package day17
 
+import (
+	"fmt"
+	"strings"
+)
+
+const zStart = 0
+
 // x (left/right), y (front/back), z (up/down) coordinates. The starting state is all on z=0, with top left tile on
 // x=0 and y=0.
 type grid map[int]map[int]map[int]string
@@ -98,5 +105,14 @@ func (g grid) edges() map[int]map[int]map[int]struct{} {
 }
 
 func task1() {
-	_ = getInputs()
+	starter := getInputs()
+	world := make(grid, 0)
+
+	for x, ys := range starter {
+		for y, state := range strings.Split(ys, "") {
+			world = world.setStateAt(x, y, zStart, state)
+		}
+	}
+
+	fmt.Printf("%#v\n", world)
 }

@@ -1366,3 +1366,127 @@ func Test_next(t *testing.T) {
 		})
 	}
 }
+
+func Test_grid_actives(t *testing.T) {
+	tests := []struct {
+		name string
+		g    grid
+		want int
+	}{
+		{
+			name: "counts the number of actives on the grid correctly",
+			g: grid{
+				0: {
+					0: {
+						0: inactive,
+						1: active,
+						2: active,
+						3: inactive,
+					},
+					1: {
+						0: inactive,
+						1: active,
+						2: active,
+						3: inactive,
+					},
+					2: {
+						0: inactive,
+						1: active,
+						2: active,
+						3: inactive,
+					},
+					3: {
+						0: inactive,
+						1: active,
+						2: active,
+						3: inactive,
+					},
+				},
+				1: {
+					0: {
+						0: inactive,
+						1: active,
+						2: active,
+						3: inactive,
+					},
+					1: {
+						0: inactive,
+						1: active,
+						2: active,
+						3: inactive,
+					},
+					2: {
+						0: inactive,
+						1: active,
+						2: active,
+						3: inactive,
+					},
+					3: {
+						0: inactive,
+						1: active,
+						2: active,
+						3: inactive,
+					},
+				},
+				2: {
+					0: {
+						0: inactive,
+						1: active,
+						2: active,
+						3: inactive,
+					},
+					1: {
+						0: inactive,
+						1: active,
+						2: active,
+						3: inactive,
+					},
+					2: {
+						0: inactive,
+						1: active,
+						2: active,
+						3: inactive,
+					},
+					3: {
+						0: inactive,
+						1: active,
+						2: active,
+						3: inactive,
+					},
+				},
+				3: {
+					0: {
+						0: inactive,
+						1: active,
+						2: active,
+						3: inactive,
+					},
+					1: {
+						0: inactive,
+						1: active,
+						2: active,
+						3: inactive,
+					},
+					2: {
+						0: inactive,
+						1: active,
+						2: active,
+						3: inactive,
+					},
+					3: {
+						0: inactive,
+						1: active,
+						2: active,
+						3: inactive,
+					},
+				},
+			},
+			want: 32,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, tt.g.actives())
+		})
+	}
+}

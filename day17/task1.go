@@ -116,17 +116,10 @@ func (g grid) cycle() grid {
 	return nil
 }
 
-// next will take a current state, and its neighbours, and returns what the next state should be. The rules for the
-// state change in the 2020 advent of code day 17 task 1 are:
-//
-// - If a cube is active and exactly 2 or 3 of its neighbors are also active, the cube remains active. Otherwise, the
-//   cube becomes inactive.
-// - If a cube is inactive but exactly 3 of its neighbors are active, the cube becomes active. Otherwise, the cube
-//   remains inactive.
-func next(state string, neighbours grid) string {
+func (g grid) actives() int {
 	actives := 0
 	// count all the actives in the neighbours.
-	for _, yz := range neighbours {
+	for _, yz := range g {
 		for _, zCubes := range yz {
 			for _, cube := range zCubes {
 				if cube == active {
@@ -135,7 +128,19 @@ func next(state string, neighbours grid) string {
 			}
 		}
 	}
-	fmt.Printf("actives: %d\n", actives)
+	return actives
+}
+
+// next will take a current state, and its neighbours, and returns what the next state should be. The rules for the
+// state change in the 2020 advent of code day 17 task 1 are:
+//
+// - If a cube is active and exactly 2 or 3 of its neighbors are also active, the cube remains active. Otherwise, the
+//   cube becomes inactive.
+// - If a cube is inactive but exactly 3 of its neighbors are active, the cube becomes active. Otherwise, the cube
+//   remains inactive.
+func next(state string, neighbours grid) string {
+	actives := neighbours.actives()
+
 	switch state {
 	case active:
 		if actives == 2 || actives == 3 {

@@ -9,6 +9,9 @@ const (
 	filename = "day17/input.txt"
 	active   = "#"
 	inactive = "."
+
+	zStart = 0
+	cycles = 6
 )
 
 // getInputs reads the input.txt file and returns them as a slice of strings for each row.

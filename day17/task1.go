@@ -5,11 +5,6 @@ import (
 	"strings"
 )
 
-const (
-	zStart   = 0
-	t1cycles = 6
-)
-
 // x (left/right), y (front/back), z (up/down) coordinates. The starting state is all on z=0, with top left tile on
 // x=0 and y=0.
 type grid map[int]map[int]map[int]string
@@ -179,7 +174,7 @@ func task1() {
 		}
 	}
 
-	for i := 0; i < t1cycles; i++ {
+	for i := 0; i < cycles; i++ {
 		world = world.cycle()
 	}
 

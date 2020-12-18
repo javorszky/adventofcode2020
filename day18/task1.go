@@ -13,7 +13,6 @@ func task1() {
 	}
 
 	fmt.Printf("\nDay 18 task 1: the sum of all evaluations is %d\n", sum)
-
 }
 
 func evaluateExpression(s string) int {

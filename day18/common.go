@@ -14,5 +14,6 @@ func getInputs() []string {
 		panic(err)
 	}
 
-	return strings.Split(strings.TrimRight(string(data), "\n"), "\n")
+	spaceReplacer := strings.NewReplacer(" ", "")
+	return strings.Split(spaceReplacer.Replace(strings.TrimRight(string(data), "\n")), "\n")
 }

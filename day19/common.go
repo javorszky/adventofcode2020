@@ -5,14 +5,16 @@ import (
 	"strings"
 )
 
-const filename = "dayn/input.txt"
+const filename = "day19/input.txt"
 
-// getInputs reads the input.txt file and returns them as a slice of strings for each row.
-func getInputs() []string {
+// getInputs reads the input.txt file and returns the rules and messages as slices of strings each.
+func getInputs() ([]string, []string) {
 	data, err := ioutil.ReadFile(filename)
 	if err != nil {
 		panic(err)
 	}
 
-	return strings.Split(strings.TrimRight(string(data), "\n"), "\n")
+	input := strings.TrimRight(string(data), "\n")
+	parts := strings.Split(input, "\n\n")
+	return strings.Split(parts[0], "\n"), strings.Split(parts[1], "\n")
 }

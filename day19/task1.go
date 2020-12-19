@@ -8,6 +8,7 @@ import (
 
 var (
 	reParseRuleString = regexp.MustCompile(`^(\d+): (.*)$`)
+	despacer          = strings.NewReplacer(" ", "")
 )
 
 // task1 will do the calculations necessary to compute day 19 task 1:
@@ -15,7 +16,20 @@ var (
 // "Your goal is to determine the number of messages that completely match rule 0."
 func task1() {
 	rules, messages := getInputs()
-	fmt.Printf("rules:\n%#v\n\nmessages:\n%#v\n", rules, messages)
+	parsedRules := parseRules(rules)
+
+	ruleZero := "^" + despacer.Replace(findRule("0", parsedRules)) + "$"
+
+	reMessages := regexp.MustCompile(ruleZero)
+
+	n := 0
+	for _, message := range messages {
+		if reMessages.MatchString(message) {
+			n++
+		}
+	}
+
+	fmt.Printf("\nDay 19 task 1: there are %d messages matching the ruleset\n\nbtw the regex needed for it is:\n----\n%s\n----\n\n", n, ruleZero)
 }
 
 func parseRules(ruleStrings []string) map[string]string {
@@ -34,7 +48,7 @@ func findRule(s string, rules map[string]string) string {
 		panic(fmt.Sprintf("could not find rule %s in rules map", s))
 	}
 	switch rule {
-	case "a", "b":
+	case `"a"`, `"b"`:
 		return strings.Trim(rule, `"`)
 	default:
 		ors := strings.Split(rule, " | ")

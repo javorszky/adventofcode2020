@@ -45,3 +45,89 @@ func Test_parseTile(t *testing.T) {
 		})
 	}
 }
+
+func Test_reverseString(t *testing.T) {
+	type args struct {
+		s string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			name: "reverses string",
+			args: args{
+				s: "a string",
+			},
+			want: "gnirts a",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, reverseString(tt.args.s))
+		})
+	}
+}
+
+func Test_tile_flipV(t1 *testing.T) {
+	tests := []struct {
+		name string
+		tile tile
+		want tile
+	}{
+		{
+			name: "flips tile vertically",
+			tile: tile{
+				ID:    3391,
+				Side1: "#.......##",
+				Side2: "####.#####",
+				Side3: ".##.#.####",
+				Side4: "##.##..#..",
+			},
+			want: tile{
+				ID:    3391,
+				Side1: ".##.#.####",
+				Side2: "#####.####",
+				Side3: "#.......##",
+				Side4: "..#..##.##",
+			},
+		},
+	}
+	for _, tt := range tests {
+		t1.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, tt.tile.flipV())
+		})
+	}
+}
+
+func Test_tile_flipH(t1 *testing.T) {
+	tests := []struct {
+		name string
+		tile tile
+		want tile
+	}{
+		{
+			name: "flips tile vertically",
+			tile: tile{
+				ID:    3391,
+				Side1: "#.......##",
+				Side2: "####.#####",
+				Side3: ".##.#.####",
+				Side4: "##.##..#..",
+			},
+			want: tile{
+				ID:    3391,
+				Side1: "##.......#",
+				Side2: "##.##..#..",
+				Side3: "####.#.##.",
+				Side4: "####.#####",
+			},
+		},
+	}
+	for _, tt := range tests {
+		t1.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, tt.tile.flipH())
+		})
+	}
+}

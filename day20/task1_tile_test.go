@@ -165,3 +165,51 @@ func Test_tile_flipH(t1 *testing.T) {
 		})
 	}
 }
+
+func Test_tile_rotate(t1 *testing.T) {
+	tests := []struct {
+		name string
+		tile tile
+		want tile
+	}{
+		{
+			name: "rotates 000 tile once",
+			tile: tile{
+				ID:     "3391000",
+				Top:    "##.......#",
+				Right:  "##.##..#..",
+				Bottom: "####.#.##.",
+				Left:   "####.#####",
+			},
+			want: tile{
+				ID:     "3391001",
+				Right:  "##.......#",
+				Bottom: "##.##..#..",
+				Left:   "####.#.##.",
+				Top:    "####.#####",
+			},
+		},
+		{
+			name: "rotates 001 tile once to become a 110 tile",
+			tile: tile{
+				ID:     "3391001",
+				Top:    "##.......#",
+				Right:  "##.##..#..",
+				Bottom: "####.#.##.",
+				Left:   "####.#####",
+			},
+			want: tile{
+				ID:     "3391110",
+				Right:  "##.......#",
+				Bottom: "##.##..#..",
+				Left:   "####.#.##.",
+				Top:    "####.#####",
+			},
+		},
+	}
+	for _, tt := range tests {
+		t1.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, tt.tile.rotate())
+		})
+	}
+}

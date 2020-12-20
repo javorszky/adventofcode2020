@@ -11,49 +11,49 @@ var reTile = regexp.MustCompile(`^Tile (\d+):$`)
 
 // tile represents a tile with its ID and four sides. These are:
 //
-// Side1 - top from left to right
-// Side2 - right from top to bottom
-// Side3 - bottom from left to right
-// Side4 - left from top to bottom
+// Top - top from left to right
+// Right - right from top to bottom
+// Bottom - bottom from left to right
+// Left - left from top to bottom
 type tile struct {
-	ID                         int
-	Side1, Side2, Side3, Side4 string
+	ID                       int
+	Top, Right, Bottom, Left string
 }
 
-// flipV returns a tile that's been vertically flipped, which means Side2 and Side4 were reversed, and Side1 and Side3
+// flipV returns a tile that's been vertically flipped, which means Right and Left were reversed, and Top and Bottom
 // have switched places.
 func (t tile) flipV() tile {
-	t.Side2 = reverseString(t.Side2)
-	t.Side4 = reverseString(t.Side4)
-	tempS1 := t.Side1
-	t.Side1 = t.Side3
-	t.Side3 = tempS1
+	t.Right = reverseString(t.Right)
+	t.Left = reverseString(t.Left)
+	tempS1 := t.Top
+	t.Top = t.Bottom
+	t.Bottom = tempS1
 	return t
 }
 
-// flipH returns a tile that's been horizontally flipped, which means Side1 and Side3 have been reversed, and Side2 and
-// Side4 have switched places.
+// flipH returns a tile that's been horizontally flipped, which means Top and Bottom have been reversed, and Right and
+// Left have switched places.
 func (t tile) flipH() tile {
-	t.Side1 = reverseString(t.Side1)
-	t.Side3 = reverseString(t.Side3)
-	tempS2 := t.Side2
-	t.Side2 = t.Side4
-	t.Side4 = tempS2
+	t.Top = reverseString(t.Top)
+	t.Bottom = reverseString(t.Bottom)
+	tempS2 := t.Right
+	t.Right = t.Left
+	t.Left = tempS2
 	return t
 }
 
 // rotate will return a tile that's been rotated 90 degrees clockwise, so:
 //
-// Side1 becomes Side4
-// Side4 becomes Side3
-// Side3 becomes Side2
-// Side2 becomes Side1
+// Top becomes Left
+// Left becomes Bottom
+// Bottom becomes Right
+// Right becomes Top
 func (t tile) rotate() tile {
-	tempS1 := t.Side1 // save top
-	t.Side1 = t.Side4 // top becomes left
-	t.Side4 = t.Side3 // left becomes bottom
-	t.Side3 = t.Side2 // bottom becomes right
-	t.Side2 = tempS1
+	tempS1 := t.Top    // save top
+	t.Top = t.Left     // top becomes left
+	t.Left = t.Bottom  // left becomes bottom
+	t.Bottom = t.Right // bottom becomes right
+	t.Right = tempS1
 	return t
 }
 
@@ -89,12 +89,12 @@ func parseTile(s string) tile {
 		s2.WriteString(row[9:10])
 		switch idx {
 		case 0:
-			t.Side1 = row
+			t.Top = row
 		case 9:
-			t.Side3 = row
+			t.Bottom = row
 		}
 	}
-	t.Side2 = s2.String()
-	t.Side4 = s4.String()
+	t.Right = s2.String()
+	t.Left = s4.String()
 	return t
 }

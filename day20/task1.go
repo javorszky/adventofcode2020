@@ -3,7 +3,6 @@ package day20
 import (
 	"fmt"
 	"regexp"
-	"strconv"
 	"strings"
 )
 
@@ -16,8 +15,7 @@ var reTile = regexp.MustCompile(`^Tile (\d+):$`)
 // Bottom - bottom from left to right
 // Left - left from top to bottom
 type tile struct {
-	ID                       int
-	Top, Right, Bottom, Left string
+	ID, Top, Right, Bottom, Left string
 }
 
 // flipV returns a tile that's been vertically flipped, which means Right and Left were reversed, and Top and Bottom
@@ -28,6 +26,19 @@ func (t tile) flipV() tile {
 	tempS1 := t.Top
 	t.Top = t.Bottom
 	t.Bottom = tempS1
+
+	tempID := t.ID[:4]
+	switch t.ID[4:5] {
+	case "0":
+		tempID = tempID + "1" + t.ID[5:]
+	case "1":
+		tempID = tempID + "0" + t.ID[5:]
+	default:
+		panic(fmt.Sprintf("unexpected character in ID '%s' at position 4: '%s'", t.ID, string(t.ID[4])))
+	}
+
+	t.ID = tempID
+
 	return t
 }
 
@@ -39,6 +50,19 @@ func (t tile) flipH() tile {
 	tempS2 := t.Right
 	t.Right = t.Left
 	t.Left = tempS2
+
+	tempID := t.ID[:5]
+	switch t.ID[5:6] {
+	case "0":
+		tempID = tempID + "1" + t.ID[6:]
+	case "1":
+		tempID = tempID + "0" + t.ID[6:]
+	default:
+		panic(fmt.Sprintf("unexpected character in ID '%s' at position 5: '%s'", t.ID, string(t.ID[5])))
+	}
+
+	t.ID = tempID
+
 	return t
 }
 
@@ -72,12 +96,9 @@ func task1() {
 func parseTile(s string) tile {
 	rows := strings.Split(s, "\n")
 	m := reTile.FindStringSubmatch(rows[0])
-	mint, err := strconv.Atoi(m[1])
-	if err != nil {
-		panic(fmt.Sprintf("can't turn '%s' into an int: %s", m, err))
-	}
+
 	t := tile{
-		ID: mint,
+		ID: m[1] + "000",
 	}
 
 	var (

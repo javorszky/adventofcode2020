@@ -31,7 +31,7 @@ func Test_parseTile(t *testing.T) {
 .##.#.####`,
 			},
 			want: tile{
-				ID:     3391,
+				ID:     "3391000",
 				Top:    "#.......##",
 				Right:  "####.#####",
 				Bottom: ".##.#.####",
@@ -77,16 +77,33 @@ func Test_tile_flipV(t1 *testing.T) {
 		want tile
 	}{
 		{
-			name: "flips tile vertically",
+			name: "flips tile vertically, changes ID",
 			tile: tile{
-				ID:     3391,
+				ID:     "3391000",
 				Top:    "#.......##",
 				Right:  "####.#####",
 				Bottom: ".##.#.####",
 				Left:   "##.##..#..",
 			},
 			want: tile{
-				ID:     3391,
+				ID:     "3391100",
+				Top:    ".##.#.####",
+				Right:  "#####.####",
+				Bottom: "#.......##",
+				Left:   "..#..##.##",
+			},
+		},
+		{
+			name: "flips tile vertically, changes ID",
+			tile: tile{
+				ID:     "3391100",
+				Top:    "#.......##",
+				Right:  "####.#####",
+				Bottom: ".##.#.####",
+				Left:   "##.##..#..",
+			},
+			want: tile{
+				ID:     "3391000",
 				Top:    ".##.#.####",
 				Right:  "#####.####",
 				Bottom: "#.......##",
@@ -108,16 +125,33 @@ func Test_tile_flipH(t1 *testing.T) {
 		want tile
 	}{
 		{
-			name: "flips tile vertically",
+			name: "flips tile vertically, changes ID",
 			tile: tile{
-				ID:     3391,
+				ID:     "3391000",
 				Top:    "#.......##",
 				Right:  "####.#####",
 				Bottom: ".##.#.####",
 				Left:   "##.##..#..",
 			},
 			want: tile{
-				ID:     3391,
+				ID:     "3391010",
+				Top:    "##.......#",
+				Right:  "##.##..#..",
+				Bottom: "####.#.##.",
+				Left:   "####.#####",
+			},
+		},
+		{
+			name: "flips tile vertically, changes ID",
+			tile: tile{
+				ID:     "3391010",
+				Top:    "#.......##",
+				Right:  "####.#####",
+				Bottom: ".##.#.####",
+				Left:   "##.##..#..",
+			},
+			want: tile{
+				ID:     "3391000",
 				Top:    "##.......#",
 				Right:  "##.##..#..",
 				Bottom: "####.#.##.",

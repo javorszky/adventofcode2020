@@ -134,7 +134,7 @@ func hFlipContent(c []string) []string {
 }
 
 func rotateContent(c []string) []string {
-	rotatedC := make([]string, len(c))
+	rotatedC := make([]string, len(c[0]))
 	rotationHelper := make(map[int]strings.Builder, 0)
 
 	for idx := range c[0] {

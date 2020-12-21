@@ -10,13 +10,14 @@ import (
 // Right - right from top to bottom
 // Bottom - bottom from left to right
 // Left - left from top to bottom
-type tile struct {
+type tilev2 struct {
 	ID, Top, Right, Bottom, Left string
+	Content                      []string
 }
 
-// flipV returns a tile that's been vertically flipped, which means Right and Left were reversed, and Top and Bottom
+// flipV returns a tilev2 that's been vertically flipped, which means Right and Left were reversed, and Top and Bottom
 // have switched places.
-func (t tile) flipV() tile {
+func (t tilev2) flipV() tilev2 {
 	t.Right = reverseString(t.Right)
 	t.Left = reverseString(t.Left)
 	tempS1 := t.Top
@@ -38,9 +39,9 @@ func (t tile) flipV() tile {
 	return t
 }
 
-// flipH returns a tile that's been horizontally flipped, which means Top and Bottom have been reversed, and Right and
+// flipH returns a tilev2 that's been horizontally flipped, which means Top and Bottom have been reversed, and Right and
 // Left have switched places.
-func (t tile) flipH() tile {
+func (t tilev2) flipH() tilev2 {
 	t.Top = reverseString(t.Top)
 	t.Bottom = reverseString(t.Bottom)
 	tempS2 := t.Right
@@ -62,13 +63,13 @@ func (t tile) flipH() tile {
 	return t
 }
 
-// rotate will return a tile that's been rotated 90 degrees clockwise, so:
+// rotate will return a tilev2 that's been rotated 90 degrees clockwise, so:
 //
 // Top becomes reverse Left
 // Left becomes Bottom
 // Bottom becomes reverse Right
 // Right becomes Top
-func (t tile) rotate() tile {
+func (t tilev2) rotate() tilev2 {
 	tempS1 := t.Top                   // save top
 	t.Top = reverseString(t.Left)     // top becomes left
 	t.Left = t.Bottom                 // left becomes bottom

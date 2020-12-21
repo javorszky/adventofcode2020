@@ -85,9 +85,9 @@ func Test_stitchImage(t *testing.T) {
 							},
 							2: tilev2{
 								Content: []string{
-									"--_",
-									"#!k",
-									".,/",
+									"ABC",
+									"DEF",
+									"GHI",
 								},
 							},
 						},
@@ -101,9 +101,9 @@ func Test_stitchImage(t *testing.T) {
 				"rst321ba0",
 				"uvw654edc",
 				"xyz987hgf",
-				"kjitsr--_",
-				"nmlwvu#!k",
-				"qpozyx.,/",
+				"kjitsrABC",
+				"nmlwvuDEF",
+				"qpozyxGHI",
 			},
 		},
 	}

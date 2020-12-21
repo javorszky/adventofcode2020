@@ -2,35 +2,36 @@ package day20
 
 import (
 	"fmt"
-	"math"
 	"os"
 	"strings"
 )
 
 func task2() {
-	tss := make(tileSets2, 0)
-	// there are 144 tiles, so that's a 12x12 grid.
-	tiles := getInputs()
-	for _, tileString := range tiles {
-		tss.addTileSet(newTileSet2(parseTileTask2(tileString)))
-	}
-
-	s := int(math.Sqrt(float64(len(tiles))))
-
-	i := image2{
-		W:     s,
-		H:     s,
-		Tiles: make(map[int]map[int]tilev2, 0),
-	}
-
-	img, err := fitTileIntoImage2(i, 1, tss)
-
-	if err != nil {
-		panic("\nDay 20 task 2 failed")
-	}
+	//tss := make(tileSets2, 0)
+	//// there are 144 tiles, so that's a 12x12 grid.
+	//tiles := getInputs()
+	//for _, tileString := range tiles {
+	//	tss.addTileSet(newTileSet2(parseTileTask2(tileString)))
+	//}
+	//
+	//s := int(math.Sqrt(float64(len(tiles))))
+	//
+	//i := image2{
+	//	W:     s,
+	//	H:     s,
+	//	Tiles: make(map[int]map[int]tilev2, 0),
+	//}
+	//
+	//img, err := fitTileIntoImage2(i, 1, tss)
+	//
+	//writeFlattenedToFile(fmt.Sprintf("%#v", img))
+	//return
+	//if err != nil {
+	//	panic("\nDay 20 task 2 failed")
+	//}
 
 	// orig and rotated
-	oimg := stitchImage(img)
+	oimg := stitchImage(img2)
 	writeUnflattenedToFile(oimg)
 	roimg := rotateContent(oimg)
 	writeUnflattenedToFile(roimg)
@@ -67,38 +68,13 @@ func task2() {
 		First:   first,
 		Offsets: offsets,
 	}
-	//stitchedImage := []string{
-	//	".#.#..#.##...#.##..#####",
-	//	"###....#.#....#..#......",
-	//	"##.##.###.#.#..######...",
-	//	"###.#####...#.#####.#..#",
-	//	"##.#....#.##.####...#.##",
-	//	"...########.#....#####.#",
-	//	"....#..#...##..#.#.###..",
-	//	".####...#..#.....#......",
-	//	"#..#.##..#..###.#.##....",
-	//	"#.####..#.####.#.#.###..",
-	//	"###.#.#...#.######.#..##",
-	//	"#.####....##..########.#",
-	//	"##..##.#...#...#.#.#.#..",
-	//	"...#..#..#.#.##..###.###",
-	//	".#.#....#.##.#...###.##.",
-	//	"###.#...#..#.##.######..",
-	//	".#.#.###.##.##.#..#.##..",
-	//	".####.###.#...###.#..#.#",
-	//	"..#.#..#..#.#.#.####.###",
-	//	"#..####...#.#.#.###.###.",
-	//	"#####..#####...###....##",
-	//	"#.##..#..#...#..####...#",
-	//	".#.###..##..##..####.##.",
-	//	"...###...##...#...#..###",
-	//}
+
 	var flattenedImage string
 	for _, imgToCheck := range images {
-		flattenedImage, lineLength := flattenImage(imgToCheck)
+		flattenedImage, lineLength = flattenImage(imgToCheck)
 		// copyimage is going to be the one that gets modified
 		copyImage := flattenedImage
-		checkCoords := make([]int, 0)
+		//checkCoords := make([]int, 0)
 		// let's loop through the entire original image
 		for idx, char := range flattenedImage {
 			lastOffset := seamonster.Offsets[len(seamonster.Offsets)-1]
@@ -112,7 +88,7 @@ func task2() {
 				continue
 			}
 
-			checkCoords = append(checkCoords, idx)
+			//checkCoords = append(checkCoords, idx)
 
 			//for each hash that is in the zone of suitable candidates, let's assume we found the monster.
 			foundMonster := true
@@ -133,12 +109,11 @@ func task2() {
 			}
 			if foundMonster {
 				copyImage = replaceMonster(copyImage, monsterCoords)
+				flattenedImage = copyImage
+				break
 			}
 		}
-		copyImage = replaceMonster(copyImage, checkCoords)
 
-		// save the changed and found seamonsters into the original image and let's move on to the next seamonster.
-		flattenedImage = copyImage
 		writeUnflattenedToFile(unflattenImage(flattenedImage, lineLength))
 	}
 
@@ -168,6 +143,19 @@ func unflattenImage(img string, linelength int) []string {
 		previous = i
 	}
 	return s
+}
+
+func writeFlattenedToFile(s string) {
+	f, err := os.OpenFile("day20/images.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		panic(fmt.Sprintf("opening file failed: %s", err))
+	}
+
+	defer f.Close()
+
+	if _, err := f.WriteString("\n\n" + s); err != nil {
+		panic(fmt.Sprintf("writing string to file failed: %s", err))
+	}
 }
 
 func writeUnflattenedToFile(img []string) {

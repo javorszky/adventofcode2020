@@ -3,6 +3,7 @@ package day20
 import (
 	"errors"
 	"fmt"
+	"strings"
 )
 
 // image2 holds tiles in some configuration. W and H are the width and height of the image2. The map is a 0 based
@@ -98,4 +99,44 @@ func getXY2(i image2, n int) (int, int, error) {
 	}
 	// x is the modulo of the width
 	return (n - 1) % i.W, (n - 1) / i.H, nil
+}
+
+func stitchImage(img image2) []string {
+	stitchedImage := make([]string, 0)
+	stitchedImageRowBatch := make([][]string, len(img.Tiles))
+	stitchHelper := make(map[int]strings.Builder, 0)
+
+	for idx := range img.Tiles[0][0].Content {
+		var builder strings.Builder
+		stitchHelper[idx] = builder
+	}
+
+	// for ever row of tiles in image.
+	for ridx, cols := range img.Tiles {
+		stitchedImageBatch := make([]string, len(img.Tiles[0][0].Content))
+		// for every tile in the row.
+		for _, tile := range cols {
+			for idx, line := range tile.Content {
+				builder := stitchHelper[idx]
+				builder.WriteString(line)
+				stitchHelper[idx] = builder
+			}
+		}
+
+		for idx := range stitchHelper {
+			builder := stitchHelper[idx]
+			stitchedImageBatch[idx] = builder.String()
+			builder.Reset()
+			stitchHelper[idx] = builder
+		}
+		stitchedImageRowBatch[ridx] = stitchedImageBatch
+	}
+
+	for _, rowBatch := range stitchedImageRowBatch {
+		for _, line := range rowBatch {
+			stitchedImage = append(stitchedImage, line)
+		}
+	}
+
+	return stitchedImage
 }

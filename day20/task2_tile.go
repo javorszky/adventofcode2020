@@ -2,6 +2,7 @@ package day20
 
 import (
 	"fmt"
+	"strings"
 )
 
 // tile represents a tile with its ID and four sides. These are:
@@ -23,6 +24,7 @@ func (t tilev2) flipV() tilev2 {
 	tempS1 := t.Top
 	t.Top = t.Bottom
 	t.Bottom = tempS1
+	t.Content = vFlipContent(t.Content)
 
 	tempID := t.ID[:4]
 	switch t.ID[4:5] {
@@ -47,6 +49,7 @@ func (t tilev2) flipH() tilev2 {
 	tempS2 := t.Right
 	t.Right = t.Left
 	t.Left = tempS2
+	t.Content = hFlipContent(t.Content)
 
 	tempID := t.ID[:5]
 	switch t.ID[5:6] {
@@ -112,4 +115,44 @@ func (t tilev2) rotate() tilev2 {
 	t.ID = tempID
 
 	return t
+}
+
+func vFlipContent(c []string) []string {
+	flippedC := make([]string, len(c))
+	for idx, contentLine := range c {
+		flippedC[len(c)-idx-1] = contentLine
+	}
+	return flippedC
+}
+
+func hFlipContent(c []string) []string {
+	flippedC := make([]string, len(c))
+	for idx, contentLine := range c {
+		flippedC[idx] = reverseString(contentLine)
+	}
+	return flippedC
+}
+
+func rotateContent(c []string) []string {
+	rotatedC := make([]string, len(c))
+	rotationHelper := make(map[int]strings.Builder, 0)
+
+	for idx := range c[0] {
+		var builder strings.Builder
+		rotationHelper[idx] = builder
+	}
+
+	for _, line := range c {
+		for idx, char := range line {
+			builder := rotationHelper[idx]
+			builder.WriteString(string(char))
+			rotationHelper[idx] = builder
+		}
+	}
+
+	for col, sb := range rotationHelper {
+		rotatedC[col] = reverseString(sb.String())
+	}
+
+	return rotatedC
 }

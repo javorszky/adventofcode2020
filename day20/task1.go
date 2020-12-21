@@ -3,6 +3,7 @@ package day20
 import (
 	"fmt"
 	"regexp"
+	"strconv"
 	"strings"
 )
 
@@ -23,17 +24,20 @@ func task1() {
 		tss.addTileSet(newTileSet(parseTile(tileString)))
 	}
 	i := image{
-		W:     3,
-		H:     3,
+		W:     12,
+		H:     12,
 		Tiles: make(map[int]map[int]tile, 0),
 	}
 
 	img, err := fitTileIntoImage(i, 1, tss)
 
 	if err != nil {
-		panic("day 20 task 1 failed")
+		panic("\nDay 20 task 1 failed")
 	}
-	fmt.Printf("dy 20 t 1 we have an image\n\n%#v", img)
+
+	product := extractIDsAndMultiplyThem(img.Tiles[0][0], img.Tiles[0][11], img.Tiles[11][0], img.Tiles[11][11])
+
+	fmt.Printf("\nDay 20 task 1: the product of the ids of the tiles in the four corners is %d\n", product)
 }
 
 func parseTile(s string) tile {
@@ -61,4 +65,20 @@ func parseTile(s string) tile {
 	t.Right = s2.String()
 	t.Left = s4.String()
 	return t
+}
+
+func extractIDsAndMultiplyThem(tiles ...tile) int {
+	product := 1
+	for _, tile := range tiles {
+		tid := tile.ID[:4]
+		tidint, err := strconv.Atoi(tid)
+		fmt.Printf("multiplying %d by new tid %d\n", product, tidint)
+		if err != nil {
+			panic(fmt.Sprintf("extract ids and multiplythem: could not turn '%s' into int: %s", tid, err))
+		}
+		product = product * tidint
+		fmt.Printf("-- this gave us %d\n", product)
+	}
+
+	return product
 }

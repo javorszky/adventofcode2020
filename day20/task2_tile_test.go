@@ -110,3 +110,55 @@ func Test_rotateContent(t *testing.T) {
 		})
 	}
 }
+
+func Test_parseTileTask2(t *testing.T) {
+	type args struct {
+		s string
+	}
+	tests := []struct {
+		name string
+		args args
+		want tilev2
+	}{
+		{
+			name: "correctly parses tile image into tile struct",
+			args: args{
+				s: `Tile 3391:
+#.......##
+#..#.....#
+..#....#.#
+##...##.##
+#.##.#....
+.#.......#
+.#.......#
+#..#..#..#
+.......#.#
+.##.#.####`,
+			},
+			want: tilev2{
+				ID:     "3391000",
+				Top:    "#.......##",
+				Right:  "####.#####",
+				Bottom: ".##.#.####",
+				Left:   "##.##..#..",
+				Content: []string{
+					"..#.....",
+					".#....#.",
+					"#...##.#",
+					".##.#...",
+					"#.......",
+					"#.......",
+					"..#..#..",
+					"......#.",
+				},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := parseTileTask2(tt.args.s); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("parseTileTask2() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

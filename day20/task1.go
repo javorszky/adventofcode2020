@@ -17,13 +17,23 @@ func reverseString(s string) string {
 }
 
 func task1() {
-	tiles := make([]tile, 0)
+	tss := make(tileSets, 0)
 	// there are 144 tiles, so that's a 12x12 grid.
 	for _, tileString := range getInputs() {
-		tiles = append(tiles, parseTile(tileString))
+		tss.addTileSet(newTileSet(parseTile(tileString)))
+	}
+	i := image{
+		W:     3,
+		H:     3,
+		Tiles: make(map[int]map[int]tile, 0),
 	}
 
-	fmt.Printf("\nDay 20 task 1: there are %d tiles\n", len(tiles))
+	img, err := fitTileIntoImage(i, 1, tss)
+
+	if err != nil {
+		panic("day 20 task 1 failed")
+	}
+	fmt.Printf("dy 20 t 1 we have an image\n\n%#v", img)
 }
 
 func parseTile(s string) tile {

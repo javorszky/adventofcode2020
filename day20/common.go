@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-const filename = "day20/input.txt"
+const filename = "day20/input_example.txt"
 
 // getInputs reads the input.txt file and returns them as a slice of strings for each row.
 func getInputs() []string {
@@ -18,4 +18,8 @@ func getInputs() []string {
 	tiles := strings.Split(input, "\n\n")
 
 	return tiles
+}
+
+func remove(slice []tile, s int) []tile {
+	return append(slice[:s], slice[s+1:]...)
 }

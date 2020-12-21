@@ -69,10 +69,10 @@ func (t tile) flipH() tile {
 // Bottom becomes Right
 // Right becomes Top
 func (t tile) rotate() tile {
-	tempS1 := t.Top    // save top
-	t.Top = t.Left     // top becomes left
-	t.Left = t.Bottom  // left becomes bottom
-	t.Bottom = t.Right // bottom becomes right
+	tempS1 := t.Top                   // save top
+	t.Top = reverseString(t.Left)     // top becomes left
+	t.Left = t.Bottom                 // left becomes bottom
+	t.Bottom = reverseString(t.Right) // bottom becomes right
 	t.Right = tempS1
 
 	tempID := ""

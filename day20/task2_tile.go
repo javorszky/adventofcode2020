@@ -78,6 +78,7 @@ func (t tilev2) rotate() tilev2 {
 	t.Left = t.Bottom                 // left becomes bottom
 	t.Bottom = reverseString(t.Right) // bottom becomes right
 	t.Right = tempS1
+	t.Content = rotateContent(t.Content)
 
 	tempID := ""
 	switch t.ID[6:7] {

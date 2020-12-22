@@ -69,6 +69,8 @@ func task2() {
 		Offsets: offsets,
 	}
 
+	fmt.Printf("seamonster with line length of %d:\n%#v\n", lineLength, seamonster)
+
 	var flattenedImage string
 	for _, imgToCheck := range images {
 		flattenedImage, lineLength = flattenImage(imgToCheck)

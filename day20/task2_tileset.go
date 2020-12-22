@@ -5,12 +5,11 @@ type tileSet2 []tilev2
 type tileSets2 map[string]tileSet2
 
 func (tss tileSets2) addTileSet(ts tileSet2) tileSets2 {
-	tsID := ts[0].ID[:4]
-	tss[tsID] = ts
+	tss[ts[0].ID[:4]] = ts
 	return tss
 }
 
-// newTileSet2 takes a tile with "000" prefix, and generates all the variations of flips and rotations.
+// newTileSet2 takes a tile with "000" suffix, and generates all the variations of flips and rotations.
 func newTileSet2(t tilev2) tileSet2 {
 	tiles := make([]tilev2, 0, 8)
 

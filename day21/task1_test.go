@@ -64,7 +64,7 @@ func Test_parseInputs(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, parseInputs(tt.args.list))
+			assert.Equal(t, tt.want, createAllergenFoodMapping(tt.args.list))
 		})
 	}
 }
@@ -289,6 +289,43 @@ func Test_findHowManyTimesNoAllergenFoodsAppear(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert.Equal(t, tt.want, findHowManyTimesNoAllergenFoodsAppear(tt.args.s))
+		})
+	}
+}
+
+func Test_createFoodFrequencyMap(t *testing.T) {
+	type args struct {
+		s []string
+	}
+	tests := []struct {
+		name string
+		args args
+		want map[string]int
+	}{
+		{
+			name: "creates food frequency map from input",
+			args: args{
+				s: []string{
+					"mxmxvkd kfcds sqjhc nhms (contains dairy, fish)",
+					"trh fvjkl sbzzf mxmxvkd (contains dairy)",
+					"sqjhc fvjkl (contains soy)",
+					"sqjhc mxmxvkd sbzzf (contains fish)",
+				},
+			},
+			want: map[string]int{
+				"fvjkl":   2,
+				"kfcds":   1,
+				"mxmxvkd": 3,
+				"nhms":    1,
+				"sbzzf":   2,
+				"sqjhc":   3,
+				"trh":     1,
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, createFoodFrequencyMap(tt.args.s))
 		})
 	}
 }

@@ -7,6 +7,8 @@ import (
 
 const filename = "day21/input.txt"
 
+//const filename = "day21/input_example.txt"
+
 // getInputs reads the input.txt file and returns them as a slice of strings for each row.
 func getInputs() []string {
 	data, err := ioutil.ReadFile(filename)

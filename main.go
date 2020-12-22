@@ -1,6 +1,8 @@
 package main
 
-import "github.com/javorszky/adventofcode2020/day21"
+import (
+	"github.com/javorszky/adventofcode2020/day21"
+)
 
 func main() {
 	//day1.Tasks()

@@ -12,19 +12,14 @@ func task1() {
 }
 
 func findHowManyTimesNoAllergenFoodsAppear(s []string) int {
-	allergensAndFoods := parseInputs(s)
+	allergensAndFoods := createAllergenFoodMapping(s)
+	foodsAppear := createFoodFrequencyMap(s)
+
 	allTheFoodsHelper := make([][]string, 0)
-	foodsAppear := make(map[string]int, 0)
 	reduced := make(map[string][]string, 0)
 	for allergen, foods := range allergensAndFoods {
 		allTheFoodsHelper = append(allTheFoodsHelper, foods...)
 		reduced[allergen] = reduceElementsToCommon(foods...)
-
-		for _, foodList := range foods {
-			for _, food := range foodList {
-				foodsAppear[food]++
-			}
-		}
 	}
 
 	haveAllergenshelper := make([][]string, 0)
@@ -41,13 +36,6 @@ func findHowManyTimesNoAllergenFoodsAppear(s []string) int {
 	// all the foods that do not have allergens in them.
 	noAllergens := differenceElements(allTheFoods, haveAllergens)
 
-	//check := commonElements(haveAllergens, noAllergens)
-	//fmt.Printf("the common set of the allergens and noallergens group is\n%#v\n\n", check)
-	//
-	//fmt.Printf("the all foods counter thing is\n%#v\n\n", foodsAppear)
-	//
-	//fmt.Printf("all the foods:\n%v\n\nnoallergens:\n%v\n\n", allTheFoods, noAllergens)
-
 	sum := 0
 	for _, food := range noAllergens {
 		sum = sum + foodsAppear[food]
@@ -57,7 +45,7 @@ func findHowManyTimesNoAllergenFoodsAppear(s []string) int {
 
 }
 
-func parseInputs(list []string) map[string][][]string {
+func createAllergenFoodMapping(list []string) map[string][][]string {
 	orderedList := make(map[string][][]string, 0)
 	for _, line := range list {
 		line = strings.TrimRight(line, ")")
@@ -145,5 +133,18 @@ func differenceElements(presentInThis, butNotThis []string) []string {
 		out = append(out, v)
 	}
 
+	return out
+}
+
+func createFoodFrequencyMap(s []string) map[string]int {
+	out := make(map[string]int, 0)
+	for _, line := range s {
+		line = strings.TrimRight(line, ")")
+		parts := strings.Split(line, " (contains ")
+		foods := strings.Split(parts[0], " ")
+		for _, food := range foods {
+			out[food]++
+		}
+	}
 	return out
 }

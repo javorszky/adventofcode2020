@@ -2,36 +2,38 @@ package day20
 
 import (
 	"fmt"
+	"math"
 	"os"
 	"strings"
 )
 
 func task2() {
-	//tss := make(tileSets2, 0)
-	//// there are 144 tiles, so that's a 12x12 grid.
-	//tiles := getInputs()
-	//for _, tileString := range tiles {
-	//	tss.addTileSet(newTileSet2(parseTileTask2(tileString)))
-	//}
-	//
-	//s := int(math.Sqrt(float64(len(tiles))))
-	//
-	//i := image2{
-	//	W:     s,
-	//	H:     s,
-	//	Tiles: make(map[int]map[int]tilev2, 0),
-	//}
-	//
-	//img, err := fitTileIntoImage2(i, 1, tss)
-	//
-	//writeFlattenedToFile(fmt.Sprintf("%#v", img))
-	//return
-	//if err != nil {
-	//	panic("\nDay 20 task 2 failed")
-	//}
+	tss := make(tileSets2, 0)
+	// there are 144 tiles, so that's a 12x12 grid.
+	tiles := getInputs()
+	for _, tileString := range tiles {
+		tss.addTileSet(newTileSet2(parseTileTask2(tileString)))
+	}
+
+	s := int(math.Sqrt(float64(len(tiles))))
+
+	i := image2{
+		W:     s,
+		H:     s,
+		Tiles: make(map[int]map[int]tilev2, 0),
+	}
+
+	img, err := fitTileIntoImage2(i, 1, tss)
+
+	writeFlattenedToFile(fmt.Sprintf("%#v", img))
+
+	if err != nil {
+		panic("\nDay 20 task 2 failed")
+	}
 
 	// orig and rotated
-	oimg := stitchImage(img2)
+	//oimg := stitchImage(img2)
+	oimg := stitchImage(img)
 	writeUnflattenedToFile(oimg)
 	roimg := rotateContent(oimg)
 	writeUnflattenedToFile(roimg)
@@ -115,8 +117,6 @@ func task2() {
 				break
 			}
 		}
-
-		writeUnflattenedToFile(unflattenImage(flattenedImage, lineLength))
 	}
 
 	fmt.Printf("Day 20 task 2: the roughness of the seas is %d\n", strings.Count(flattenedImage, "#"))

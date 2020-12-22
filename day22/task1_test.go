@@ -152,3 +152,27 @@ func Test_play(t *testing.T) {
 		})
 	}
 }
+
+func Test_calculateScore(t *testing.T) {
+	type args struct {
+		in []int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{
+			name: "calculates score correctly for a given deck",
+			args: args{
+				in: []int{3, 2, 10, 6, 8, 5, 9, 4, 7, 1},
+			},
+			want: 306,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, calculateScore(tt.args.in))
+		})
+	}
+}

@@ -51,3 +51,13 @@ func play(playerOne, playerTwo []int) ([]int, []int) {
 
 	return p1Deck, p2Deck
 }
+
+func calculateScore(in []int) int {
+	i := len(in)
+	accumulator := 0
+	for _, v := range in {
+		accumulator = accumulator + v*i
+		i--
+	}
+	return accumulator
+}

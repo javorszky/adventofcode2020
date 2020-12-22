@@ -134,6 +134,15 @@ func Test_play(t *testing.T) {
 			want:  []int{6, 3, 1, 9, 5},
 			want1: []int{4, 7, 10, 8, 2},
 		},
+		{
+			name: "plays a round correctly, round 29 of example",
+			args: args{
+				playerOne: []int{1},
+				playerTwo: []int{7, 3, 2, 10, 6, 8, 5, 9, 4},
+			},
+			want:  []int{},
+			want1: []int{3, 2, 10, 6, 8, 5, 9, 4, 7, 1},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

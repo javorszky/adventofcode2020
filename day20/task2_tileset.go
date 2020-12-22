@@ -38,7 +38,7 @@ func newTileSet2(t tilev2) tileSet2 {
 	tiles = append(tiles, thr)
 
 	// 7: save the vflipped hflipped 110
-	tvh := t.flipH().flipV()
+	tvh := th.flipV()
 	tiles = append(tiles, tvh)
 
 	// 8: save the vflipped hflipped rotated 111

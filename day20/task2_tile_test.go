@@ -413,3 +413,75 @@ func Test_tilev2_flipH(t *testing.T) {
 		})
 	}
 }
+
+func Test_Orientations(t *testing.T) {
+	upright := tilev2{
+		ID:     "2311000",
+		Top:    "123456",
+		Right:  "6bhn",
+		Bottom: "ijklmn",
+		Left:   "17ci",
+		Content: []string{
+			"890a",
+			"defg",
+		},
+	}
+
+	tests := []struct {
+		name         string
+		orientation1 tilev2
+		orientation2 tilev2
+	}{
+		// upright and flipvfliph
+		{
+			name:         "rotate rotate is the same as flipv fliph",
+			orientation1: upright.rotate().rotate(),
+			orientation2: upright.flipH().flipV(),
+		},
+		{
+			name:         "rotate rotate is the same as fliph flipv",
+			orientation1: upright.rotate().rotate(),
+			orientation2: upright.flipH().flipV(),
+		},
+		{
+			name:         "rotate rotate rotate is the same as flipv fliph rotate",
+			orientation1: upright.rotate().rotate().rotate(),
+			orientation2: upright.flipH().flipV().rotate(),
+		},
+		{
+			name:         "rotate rotate rotate is the same as fliph flipv rotate",
+			orientation1: upright.rotate().rotate().rotate(),
+			orientation2: upright.flipV().flipH().rotate(),
+		},
+
+		// flipV
+		{
+			name:         "flipv-rotate-rotate is the same as fliph",
+			orientation1: upright.flipV().rotate().rotate(),
+			orientation2: upright.flipH(),
+		},
+		{
+			name:         "flipv rotate rotate rotate is the same as fliph rotate",
+			orientation1: upright.flipV().rotate().rotate().rotate(),
+			orientation2: upright.flipH().rotate(),
+		},
+
+		// flipH
+		{
+			name:         "fliph-rotate-rotate is the same as flipv",
+			orientation1: upright.flipH().rotate().rotate(),
+			orientation2: upright.flipV(),
+		},
+		{
+			name:         "fliph-rotate-rotate-rotate is the same as flipv rotate",
+			orientation1: upright.flipH().rotate().rotate().rotate(),
+			orientation2: upright.flipV().rotate(),
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.orientation1, tt.orientation2)
+		})
+	}
+}

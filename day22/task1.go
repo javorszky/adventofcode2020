@@ -18,3 +18,12 @@ func slicePop(in []int) (int, []int, error) {
 	}
 	return in[0], in[1:], nil
 }
+
+// sliceAdd will take a slice, and a number of ints, and returns a slice where the additional elements are added to the
+// end of the original slice.
+func sliceAdd(in []int, elements ...int) []int {
+	for _, el := range elements {
+		in = append(in, el)
+	}
+	return in
+}

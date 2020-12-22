@@ -7,8 +7,7 @@ import (
 	"strings"
 )
 
-//const filename = "day22/input.txt"
-const filename = "day22/example_input.txt"
+const filename = "day22/input.txt"
 
 // getInputs reads the input.txt file and returns the two decks. Player 1 is the first return, Player 2 is the second.
 func getInputs() ([]int, []int) {

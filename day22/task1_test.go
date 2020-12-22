@@ -104,3 +104,42 @@ func Test_sliceAdd(t *testing.T) {
 		})
 	}
 }
+
+func Test_play(t *testing.T) {
+	type args struct {
+		playerOne []int
+		playerTwo []int
+	}
+	tests := []struct {
+		name  string
+		args  args
+		want  []int
+		want1 []int
+	}{
+		{
+			name: "plays a round correctly, round 1 of example",
+			args: args{
+				playerOne: []int{9, 2, 6, 3, 1},
+				playerTwo: []int{5, 8, 4, 7, 10},
+			},
+			want:  []int{2, 6, 3, 1, 9, 5},
+			want1: []int{8, 4, 7, 10},
+		},
+		{
+			name: "plays a round correctly, round 2 of example",
+			args: args{
+				playerOne: []int{2, 6, 3, 1, 9, 5},
+				playerTwo: []int{8, 4, 7, 10},
+			},
+			want:  []int{6, 3, 1, 9, 5},
+			want1: []int{4, 7, 10, 8, 2},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, got1 := play(tt.args.playerOne, tt.args.playerTwo)
+			assert.Equal(t, tt.want, got)
+			assert.Equal(t, tt.want1, got1)
+		})
+	}
+}

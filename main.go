@@ -1,8 +1,6 @@
 package main
 
-import (
-	"github.com/javorszky/adventofcode2020/day20"
-)
+import "github.com/javorszky/adventofcode2020/day21"
 
 func main() {
 	//day1.Tasks()
@@ -43,5 +41,7 @@ func main() {
 
 	//day19.Tasks()
 
-	day20.Tasks()
+	//day20.Tasks()
+
+	day21.Tasks()
 }

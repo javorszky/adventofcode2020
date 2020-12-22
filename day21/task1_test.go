@@ -170,3 +170,125 @@ func Test_reduceElementsToCommon(t *testing.T) {
 		})
 	}
 }
+
+func Test_unionElements(t *testing.T) {
+	type args struct {
+		a []string
+		b []string
+	}
+	tests := []struct {
+		name string
+		args args
+		want []string
+	}{
+		{
+			name: "returns the union of two slices",
+			args: args{
+				a: []string{"a", "b", "c", "d"},
+				b: []string{"c", "d", "e", "f"},
+			},
+			want: []string{"a", "b", "c", "d", "e", "f"},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.ElementsMatch(t, tt.want, unionElements(tt.args.a, tt.args.b))
+		})
+	}
+}
+
+func Test_differenceElements(t *testing.T) {
+	type args struct {
+		presentInThis []string
+		butNotThis    []string
+	}
+	tests := []struct {
+		name string
+		args args
+		want []string
+	}{
+		{
+			name: "returns the elements from A that are not in B",
+			args: args{
+				presentInThis: []string{"a", "b", "c", "d", "e", "f", "g", "h"},
+				butNotThis:    []string{"a", "b", "c", "e", "f", "h", "i", "j", "k"},
+			},
+			want: []string{
+				"d", "g",
+			},
+		},
+		{
+			name: "returns the elements from A that are not in B",
+			args: args{
+				presentInThis: []string{"a", "b", "c", "e", "f", "h", "i", "j", "k"},
+				butNotThis:    []string{"a", "b", "c", "d", "e", "f", "g", "h"},
+			},
+			want: []string{
+				"i", "j", "k",
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.ElementsMatch(t, tt.want, differenceElements(tt.args.presentInThis, tt.args.butNotThis))
+		})
+	}
+}
+
+func Test_expandElementsToCover(t *testing.T) {
+	type args struct {
+		slices [][]string
+	}
+	tests := []struct {
+		name string
+		args args
+		want []string
+	}{
+		{
+			name: "unions all the slices",
+			args: args{
+				slices: [][]string{
+					{"a", "b", "c", "d"},
+					{"a", "c", "e"},
+					{"b", "c", "e", "f"},
+				},
+			},
+			want: []string{"a", "b", "c", "d", "e", "f"},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.ElementsMatch(t, tt.want, expandElementsToCover(tt.args.slices...))
+		})
+	}
+}
+
+func Test_findHowManyTimesNoAllergenFoodsAppear(t *testing.T) {
+	type args struct {
+		s []string
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{
+			name: "given an input, finds how many no-allergen foods can there be",
+			args: args{
+				s: []string{
+					"mxmxvkd kfcds sqjhc nhms (contains dairy, fish)",
+					"trh fvjkl sbzzf mxmxvkd (contains dairy)",
+					"sqjhc fvjkl (contains soy)",
+					"sqjhc mxmxvkd sbzzf (contains fish)",
+				},
+			},
+			want: 5,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, findHowManyTimesNoAllergenFoodsAppear(tt.args.s))
+		})
+	}
+}

@@ -6,7 +6,25 @@ import (
 )
 
 func task1() {
-	_, _ = getInputs()
+	p1, p2 := getInputs()
+
+	for {
+		// if either of the decks is now empty, stop the game, we have won
+		if len(p1) == 0 || len(p2) == 0 {
+			break
+		}
+		p1, p2 = play(p1, p2)
+	}
+
+	message := ""
+
+	if len(p2) == 0 {
+		message = fmt.Sprintf("player 1 won with a score of %d", calculateScore(p1))
+	} else {
+		message = fmt.Sprintf("player 2 won with a score of %d", calculateScore(p2))
+	}
+
+	fmt.Printf("\nDay 22 task 1: %s\n", message)
 }
 
 // slicePop takes in a slice, pops the first value off, and returns the value, and the slice without the first value.

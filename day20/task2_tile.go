@@ -13,7 +13,7 @@ import (
 // Left - left from top to bottom
 type tilev2 struct {
 	ID, Top, Right, Bottom, Left string
-	Content                      []string
+	Content, WithBorders         []string
 }
 
 // flipV returns a tilev2 that's been vertically flipped, which means Right and Left were reversed, and Top and Bottom
@@ -25,6 +25,7 @@ func (t tilev2) flipV() tilev2 {
 	t.Top = t.Bottom
 	t.Bottom = tempS1
 	t.Content = vFlipContent(t.Content)
+	t.WithBorders = vFlipContent(t.WithBorders)
 
 	tempID := t.ID[:4]
 	switch t.ID[4:5] {
@@ -50,6 +51,7 @@ func (t tilev2) flipH() tilev2 {
 	t.Right = t.Left
 	t.Left = tempS2
 	t.Content = hFlipContent(t.Content)
+	t.WithBorders = hFlipContent(t.WithBorders)
 
 	tempID := t.ID[:5]
 	switch t.ID[5:6] {
@@ -79,6 +81,7 @@ func (t tilev2) rotate() tilev2 {
 	t.Bottom = reverseString(t.Right) // bottom becomes right
 	t.Right = tempS1
 	t.Content = rotateContent(t.Content)
+	t.WithBorders = rotateContent(t.WithBorders)
 
 	tempID := ""
 	switch t.ID[6:7] {
@@ -167,11 +170,13 @@ func parseTileTask2(s string) tilev2 {
 	}
 
 	var (
-		s2     strings.Builder
-		s4     strings.Builder
-		inside = make([]string, 0)
+		s2          strings.Builder
+		s4          strings.Builder
+		inside      = make([]string, 0)
+		withBorders = make([]string, 0)
 	)
 	for idx, row := range rows[1:] {
+
 		s4.WriteString(row[0:1])
 		s2.WriteString(row[9:10])
 		switch idx {
@@ -182,9 +187,12 @@ func parseTileTask2(s string) tilev2 {
 		default:
 			inside = append(inside, row[1:9])
 		}
+
+		withBorders = append(withBorders, row)
 	}
 	t.Right = s2.String()
 	t.Left = s4.String()
 	t.Content = inside
+	t.WithBorders = withBorders
 	return t
 }

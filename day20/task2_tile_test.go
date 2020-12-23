@@ -224,10 +224,11 @@ func Test_integrity(t *testing.T) {
 		s string
 	}
 	tests := []struct {
-		name    string
-		args    args
-		want    tilev2
-		content []string
+		name        string
+		args        args
+		want        tilev2
+		content     []string
+		withBorders []string
 	}{
 		{
 			name: "correctly parses tile image into tile struct 2",
@@ -260,6 +261,18 @@ func Test_integrity(t *testing.T) {
 					".#....#.",
 					"##...#.#",
 				},
+				WithBorders: []string{
+					"..##.#..#.",
+					"##..#.....",
+					"#...##..#.",
+					"####.#...#",
+					"##.##.###.",
+					"##...#.###",
+					".#.#.#..##",
+					"..#....#..",
+					"###...#.#.",
+					"..###..###",
+				},
 			},
 			content: []string{
 				"##...#.#",
@@ -271,6 +284,18 @@ func Test_integrity(t *testing.T) {
 				"...##..#",
 				"#..#....",
 			},
+			withBorders: []string{
+				"..###..###",
+				"###...#.#.",
+				"..#....#..",
+				".#.#.#..##",
+				"##...#.###",
+				"##.##.###.",
+				"####.#...#",
+				"#...##..#.",
+				"##..#.....",
+				"..##.#..#.",
+			},
 		},
 	}
 	for _, tt := range tests {
@@ -278,45 +303,15 @@ func Test_integrity(t *testing.T) {
 			tile := parseTileTask2(tt.args.s)
 			assert.Equal(t, tt.want, tile)
 
-			if Equal(tt.content, tile.Content) {
-				return
+			if !oneMatches(tt.content, tile.Content) {
+				assert.FailNow(t, "no version of tile content matched what was expected")
 			}
-			if Equal(tt.content, rotateContent(tile.Content)) {
-				return
+
+			if !oneMatches(tt.withBorders, tile.WithBorders) {
+				assert.FailNow(t, "no version of tile with borders matched what was expected")
 			}
-			if Equal(tt.content, hFlipContent(tile.Content)) {
-				return
-			}
-			if Equal(tt.content, rotateContent(hFlipContent(tile.Content))) {
-				return
-			}
-			if Equal(tt.content, vFlipContent(tile.Content)) {
-				return
-			}
-			if Equal(tt.content, rotateContent(vFlipContent(tile.Content))) {
-				return
-			}
-			if Equal(tt.content, hFlipContent(vFlipContent(tile.Content))) {
-				return
-			}
-			if Equal(tt.content, rotateContent(hFlipContent(vFlipContent(tile.Content)))) {
-				return
-			}
-			assert.FailNow(t, "no version of tile content matched what was expected")
 		})
 	}
-}
-
-func Equal(a, b []string) bool {
-	if len(a) != len(b) {
-		return false
-	}
-	for i, v := range a {
-		if v != b[i] {
-			return false
-		}
-	}
-	return true
 }
 
 func Test_tilev2_rotate(t *testing.T) {
@@ -508,4 +503,44 @@ func Test_Orientations(t *testing.T) {
 			assert.Equal(t, tt.orientation1, tt.orientation2)
 		})
 	}
+}
+
+func Equal(a, b []string) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i, v := range a {
+		if v != b[i] {
+			return false
+		}
+	}
+	return true
+}
+
+func oneMatches(a, b []string) bool {
+	if Equal(a, b) {
+		return true
+	}
+	if Equal(a, rotateContent(b)) {
+		return true
+	}
+	if Equal(a, hFlipContent(b)) {
+		return true
+	}
+	if Equal(a, rotateContent(hFlipContent(b))) {
+		return true
+	}
+	if Equal(a, vFlipContent(b)) {
+		return true
+	}
+	if Equal(a, rotateContent(vFlipContent(b))) {
+		return true
+	}
+	if Equal(a, hFlipContent(vFlipContent(b))) {
+		return true
+	}
+	if Equal(a, rotateContent(hFlipContent(vFlipContent(b)))) {
+		return true
+	}
+	return false
 }

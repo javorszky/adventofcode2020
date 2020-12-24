@@ -2,12 +2,14 @@ package day23
 
 import (
 	"fmt"
+	"sort"
+	"time"
 )
 
 const (
-	cupsInCircle          = 1000000
-	moveCupsThisManyTimes = 10000000
-	//moveCupsThisManyTimes = 8
+	cupsInCircle = 1000000
+	//moveCupsThisManyTimes = 10000000
+	moveCupsThisManyTimes = 25
 )
 
 type bigOof struct {
@@ -111,16 +113,49 @@ func (b bigOof) step() bigOof {
 
 func task2() {
 	start := getInputs()
-	bigOof := newBigOof(start, cupsInCircle)
-	fmt.Printf("got our big oof\n")
+	bslice := generateTenPlusNCups(start, cupsInCircle-len(start))
+	t := time.Now()
 	for i := 0; i < moveCupsThisManyTimes; i++ {
-
-		bigOof = bigOof.step()
-		fmt.Printf("simulated %d rounds so far...\n", i)
-
+		bslice = round(bslice)
+		fmt.Printf("have done %d rounds of slice manipulation so far...\n", i)
 	}
+	end := time.Since(t)
+	fmt.Printf("average time for bslice per round was %s\n\n", end/moveCupsThisManyTimes)
 
-	fmt.Printf("Day 23 Task 2: after the crab played ten million rounds of crab cups with one million cups, the product of the two cups clockwise to cup \"1\" is %d\n", gimmeProduct(bigOof))
+	bigOof := newBigOof(start, cupsInCircle)
+
+	t2 := time.Now()
+	for i := 0; i < moveCupsThisManyTimes; i++ {
+		bigOof = bigOof.step()
+		fmt.Printf("have done %d rounds of bigoof step so far...\n", i)
+	}
+	t2end := time.Since(t2)
+	fmt.Printf("average time for bigoof per step was %s\n\n", t2end/moveCupsThisManyTimes)
+
+	fmt.Printf("Day 23 Task 2: after teh crab played ten million rounds of crab cups with one million cups, the product of the two cups clockwise to cup \"1\" is %d\n", productOfCupsClockwiseToOne(bslice))
+}
+
+func generateTenPlusNCups(in []int, n int) []int {
+	maxHelper := make([]int, len(in))
+	copy(maxHelper, in)
+	sort.Ints(maxHelper)
+	max := maxHelper[len(maxHelper)-1]
+	for i := max + 1; i <= max+n; i++ {
+		in = append(in, i)
+	}
+	return in
+}
+
+func productOfCupsClockwiseToOne(in []int) int {
+	idx := 0
+	l := len(in)
+	for i, v := range in {
+		if v == 1 {
+			idx = i
+			break
+		}
+	}
+	return in[(idx+1)%l] * in[(idx+2)%l]
 }
 
 // this will also have the

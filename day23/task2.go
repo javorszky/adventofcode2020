@@ -2,13 +2,12 @@ package day23
 
 import (
 	"fmt"
-	"sort"
 )
 
 const (
-	cupsInCircle = 1000000
-	//moveCupsThisManyTimes = 10000000
-	moveCupsThisManyTimes = 8
+	cupsInCircle          = 1000000
+	moveCupsThisManyTimes = 10000000
+	//moveCupsThisManyTimes = 8
 )
 
 type bigOof struct {
@@ -111,39 +110,17 @@ func (b bigOof) step() bigOof {
 }
 
 func task2() {
-	//start := getInputs()
-	start := []int{5, 4, 3, 2, 1}
-	bigOof := generateTenPlusNCups(start, 10-len(start))
-	fmt.Printf("bigoof to start with is %v\n", bigOof)
+	start := getInputs()
+	bigOof := newBigOof(start, cupsInCircle)
+	fmt.Printf("got our big oof\n")
 	for i := 0; i < moveCupsThisManyTimes; i++ {
-		bigOof = round(bigOof)
-		fmt.Printf("after round %2d, big oof is %v\n", i, bigOof)
+
+		bigOof = bigOof.step()
+		fmt.Printf("simulated %d rounds so far...\n", i)
+
 	}
 
-	fmt.Printf("Day 23 Task 2: after teh crab played ten million rounds of crab cups with one million cups, the product of the two cups clockwise to cup \"1\" is %d\n", productOfCupsClockwiseToOne(bigOof))
-}
-
-func generateTenPlusNCups(in []int, n int) []int {
-	maxHelper := make([]int, len(in))
-	copy(maxHelper, in)
-	sort.Ints(maxHelper)
-	max := maxHelper[len(maxHelper)-1]
-	for i := max + 1; i <= max+n; i++ {
-		in = append(in, i)
-	}
-	return in
-}
-
-func productOfCupsClockwiseToOne(in []int) int {
-	idx := 0
-	l := len(in)
-	for i, v := range in {
-		if v == 1 {
-			idx = i
-			break
-		}
-	}
-	return in[(idx+1)%l] * in[(idx+2)%l]
+	fmt.Printf("Day 23 Task 2: after the crab played ten million rounds of crab cups with one million cups, the product of the two cups clockwise to cup \"1\" is %d\n", gimmeProduct(bigOof))
 }
 
 // this will also have the

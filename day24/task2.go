@@ -81,3 +81,48 @@ func getExpandedWorldCoordinates(in map[string]string) map[string]struct{} {
 	}
 	return out
 }
+
+func flip(in map[string]string, world map[string]struct{}) map[string]string {
+	var getBlackTiles func([]string) int
+	getBlackTiles = func(addresses []string) int {
+		blacks := 0
+		for _, address := range addresses {
+			colour, ok := in[address]
+			if !ok {
+				continue
+			}
+			if colour == black {
+				blacks++
+			}
+		}
+		return blacks
+	}
+	out := make(map[string]string, 0)
+	for address := range world {
+		colour, ok := in[address]
+		if !ok {
+			colour = white
+		}
+		blackTiles := getBlackTiles(getAdjacentAddresses(address))
+		switch blackTiles {
+		case 2:
+			// if we have a white tile with 2 black tiles adjacent, it turns black. If we have a black tile with two
+			// adjacent black tiles, black remains.
+			out[address] = black
+		case 1:
+			// Any tile with 1 black tile next to it retains its colour. If the tile did not exist (we're in expanded
+			// universe territory), then the colour has already been set to white by this point, and it's safe to assign
+			// it to the outgoing map.
+			out[address] = colour
+		default:
+			// Cases 0, 3, 4, 5, 6
+			// Any black tile that has no black tiles adjacent will flip to white. White tiles only change if there are
+			// exactly two black tiles next to them, which has been handled.
+			//
+			// Any black tile with more than 2 black tiles adjacent will flip to white. White tiles only flip if there
+			// are exactly 2 black tiles next to them, which has already been handled.
+			out[address] = white
+		}
+	}
+	return out
+}

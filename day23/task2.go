@@ -14,7 +14,89 @@ const (
 type bigOof struct {
 	whatsOn, whereIs map[int]int
 	current, length  int
-	pickedUp         []int
+}
+
+func (b bigOof) step() bigOof {
+	// get the index of current
+	idxCurrent := b.whereIs[b.current]
+
+	p1, p2, p3 := b.whatsOn[((idxCurrent)%b.length)+1], b.whatsOn[((idxCurrent+1)%b.length)+1], b.whatsOn[((idxCurrent+2)%b.length)+1]
+
+	// let's find the next one
+	next := b.current - 1
+	for {
+		// if it was supposed to be 0, then we loop around, and start from the top.
+		if next == 0 {
+			next = b.length
+		}
+		// if the next is none of the picked up values, break, we found it!
+		if next != p1 && next != p2 && next != p3 {
+			break
+		}
+		// otherwise subtract one more, and try again.
+		next--
+	}
+
+	// where is next
+	idxNext := b.whereIs[next]
+
+	fmt.Printf("whatson: %#v\ncurrent: %d: %d\nnext: %d: %d\np1, p2, p3: %d %d %d\n",
+		b.whatsOn, idxCurrent, b.current, idxNext, next, p1, p2, p3)
+
+	// if we can partition the elements moved into two groups, do it.
+	if idxCurrent-idxNext > 5 {
+		fmt.Printf("the gap is big\n")
+		// make sure we calculate the modulo index for the first three elements. This was we don't need to calculate it
+		// it for hundreds of thousands of elements.
+		for i := idxCurrent; i > idxCurrent-3; i-- {
+			shift := ((i + 2) % b.length) + 1
+			fmt.Printf("shifting (with mod) %d to %d\n", i, shift)
+			n := b.whatsOn[i]
+			b.whatsOn[shift] = n
+			b.whereIs[n] = shift
+		}
+
+		// all others will not wrap around, we are okay to use the straight indexes without modulo.
+		for j := idxCurrent - 3; j > idxNext; j-- {
+			shift := j + 3
+			fmt.Printf("shifting (no mod) %d to %d\n", j, shift)
+			n := b.whatsOn[j]
+			b.whatsOn[shift] = n
+			b.whereIs[n] = shift
+		}
+	} else {
+		fmt.Printf("the gap is smol\n")
+		// if the gap is small, we might as well just calculate the modulos.
+		for j := idxCurrent; j > idxNext; j-- {
+			shift := ((j + 2) % b.length) + 1
+
+			fmt.Printf("shifting (with mod) %d -> %d\n", j, shift)
+			n := b.whatsOn[j]
+			b.whatsOn[shift] = n
+			b.whereIs[n] = shift
+		}
+	}
+
+	idxp1 := ((idxNext) % b.length) + 1
+	idxp2 := ((idxNext + 1) % b.length) + 1
+	idxp3 := ((idxNext + 2) % b.length) + 1
+	fmt.Printf("picked idxes: %d, %d, %d\n", idxp1, idxp2, idxp3)
+
+	b.whatsOn[idxp1] = p1
+	b.whereIs[p1] = idxp1
+
+	b.whatsOn[idxp2] = p2
+	b.whereIs[p2] = idxp2
+
+	b.whatsOn[idxp3] = p3
+	b.whereIs[p3] = idxp3
+
+	// after having moved numbers, where's the current again?
+	idxCurrentMoved := b.whereIs[b.current]
+	fmt.Printf("\n\ncurrent is %d at %d\nwhatson: %#v\nnext idx should be %d\n", b.current, idxCurrentMoved, b.whatsOn, ((idxCurrentMoved)%b.length)+1)
+
+	b.current = b.whatsOn[((idxCurrentMoved)%b.length)+1]
+	return b
 }
 
 func task2() {
@@ -67,10 +149,9 @@ func newBigOof(input []int, cups int) bigOof {
 	}
 
 	return bigOof{
-		length:   cups,
-		current:  whatisthere[1],
-		whatsOn:  whatisthere,
-		whereIs:  whereisit,
-		pickedUp: nil,
+		length:  cups,
+		current: whatisthere[1],
+		whatsOn: whatisthere,
+		whereIs: whereisit,
 	}
 }

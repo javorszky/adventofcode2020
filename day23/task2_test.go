@@ -109,9 +109,8 @@ func Test_newBigOof(t *testing.T) {
 				cups:  12,
 			},
 			want: bigOof{
-				length:   12,
-				current:  1,
-				pickedUp: nil,
+				length:  12,
+				current: 1,
 				whatsOn: map[int]int{
 					1:  1,
 					2:  3,
@@ -146,6 +145,197 @@ func Test_newBigOof(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			assert.Equal(t, tt.want, newBigOof(tt.args.input, tt.args.cups))
+		})
+	}
+}
+
+func Test_bigOof_step(t *testing.T) {
+	type fields struct {
+		whatsOn map[int]int
+		whereIs map[int]int
+		current int
+		length  int
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		want   bigOof
+	}{
+		//{
+		//	name: "correctly calculates step when next number is lower",
+		//	fields: fields{
+		//		whatsOn: map[int]int{
+		//			1: 6,
+		//			2: 8,
+		//			3: 4,
+		//			4: 7,
+		//			5: 3,
+		//			6: 2,
+		//			7: 1,
+		//			8: 9,
+		//			9: 5,
+		//		},
+		//		whereIs: map[int]int{
+		//			1: 7,
+		//			2: 6,
+		//			3: 5,
+		//			4: 3,
+		//			5: 9,
+		//			6: 1,
+		//			7: 4,
+		//			8: 2,
+		//			9: 8,
+		//		},
+		//		current: 3,
+		//		length:  9,
+		//	},
+		//	want: bigOof{
+		//		whatsOn: map[int]int{
+		//			1: 6,
+		//			2: 8,
+		//			3: 2,
+		//			4: 1,
+		//			5: 9,
+		//			6: 4,
+		//			7: 7,
+		//			8: 3,
+		//			9: 5,
+		//		},
+		//		whereIs: map[int]int{
+		//			1: 4,
+		//			2: 3,
+		//			3: 8,
+		//			4: 6,
+		//			5: 9,
+		//			6: 1,
+		//			7: 7,
+		//			8: 2,
+		//			9: 5,
+		//		},
+		//		current: 5,
+		//		length:  9,
+		//	},
+		//},
+		//{
+		//	name: "correctly calculates step when next number is lower and pickup wraps",
+		//	fields: fields{
+		//		whatsOn: map[int]int{
+		//			1: 9,
+		//			2: 5,
+		//			3: 6,
+		//			4: 8,
+		//			5: 4,
+		//			6: 7,
+		//			7: 3,
+		//			8: 2,
+		//			9: 1,
+		//		},
+		//		whereIs: map[int]int{
+		//			1: 9,
+		//			2: 8,
+		//			3: 7,
+		//			4: 5,
+		//			5: 2,
+		//			6: 3,
+		//			7: 6,
+		//			8: 4,
+		//			9: 1,
+		//		},
+		//		current: 3,
+		//		length:  9,
+		//	},
+		//	want: bigOof{
+		//		whatsOn: map[int]int{
+		//			1: 3,
+		//			2: 5,
+		//			3: 6,
+		//			4: 8,
+		//			5: 2,
+		//			6: 1,
+		//			7: 9,
+		//			8: 4,
+		//			9: 7,
+		//		},
+		//		whereIs: map[int]int{
+		//			1: 6,
+		//			2: 5,
+		//			3: 1,
+		//			4: 8,
+		//			5: 2,
+		//			6: 3,
+		//			7: 9,
+		//			8: 4,
+		//			9: 7,
+		//		},
+		//		current: 5,
+		//		length:  9,
+		//	},
+		//},
+		{
+			name: "correctly calculates step when next number is higher",
+			fields: fields{
+				whatsOn: map[int]int{
+					1: 1,
+					2: 3,
+					3: 8,
+					4: 6,
+					5: 4,
+					6: 5,
+					7: 7,
+					8: 2,
+					9: 9,
+				},
+				whereIs: map[int]int{
+					1: 1,
+					2: 8,
+					3: 2,
+					4: 5,
+					5: 6,
+					6: 5,
+					7: 7,
+					8: 3,
+					9: 9,
+				},
+				current: 3,
+				length:  9,
+			},
+			want: bigOof{
+				whatsOn: map[int]int{
+					1: 1,
+					2: 3,
+					3: 5,
+					4: 7,
+					5: 2,
+					6: 8,
+					7: 6,
+					8: 4,
+					9: 9,
+				},
+				whereIs: map[int]int{
+					1: 1,
+					2: 5,
+					3: 2,
+					4: 8,
+					5: 3,
+					6: 7,
+					7: 4,
+					8: 6,
+					9: 9,
+				},
+				current: 5,
+				length:  9,
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			b := bigOof{
+				whatsOn: tt.fields.whatsOn,
+				whereIs: tt.fields.whereIs,
+				current: tt.fields.current,
+				length:  tt.fields.length,
+			}
+			assert.Equal(t, tt.want, b.step())
 		})
 	}
 }

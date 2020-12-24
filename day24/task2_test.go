@@ -306,3 +306,44 @@ func Test_blackTilesAfterNFlips(t *testing.T) {
 		})
 	}
 }
+
+func Test_filterOutWhiteTiles(t *testing.T) {
+	type args struct {
+		in map[string]string
+	}
+	tests := []struct {
+		name string
+		args args
+		want map[string]string
+	}{
+		{
+			name: "filters out white tiles from world",
+			args: args{
+				in: map[string]string{
+					"0.0.0.0.0.0": black,
+					"1.0.0.0.0.0": white,
+					"0.1.0.0.0.0": white,
+					"0.0.1.0.0.0": black,
+					"0.0.0.1.0.0": black,
+					"0.0.0.0.1.0": black,
+					"0.0.0.0.0.1": white,
+					"0.0.0.2.0.0": white,
+					"0.0.0.1.1.0": white,
+					"0.0.0.0.2.0": white,
+					"0.0.0.0.1.1": white,
+				},
+			},
+			want: map[string]string{
+				"0.0.0.0.0.0": black,
+				"0.0.1.0.0.0": black,
+				"0.0.0.1.0.0": black,
+				"0.0.0.0.1.0": black,
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, filterOutWhiteTiles(tt.args.in))
+		})
+	}
+}

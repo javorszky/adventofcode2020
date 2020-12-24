@@ -142,3 +142,12 @@ func flip(in map[string]string, world map[string]struct{}) map[string]string {
 	}
 	return out
 }
+
+func filterOutWhiteTiles(in map[string]string) map[string]string {
+	for address, colour := range in {
+		if colour == white {
+			delete(in, address)
+		}
+	}
+	return in
+}

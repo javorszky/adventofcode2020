@@ -26,7 +26,22 @@ var (
 type directions map[string]int
 
 func task1() {
-	_ = getInputs()
+	fmt.Printf("\nDay 24 task 1: There will be %d black tiles at the end\n", countBlackTiles(getInputs()))
+}
+
+func countBlackTiles(tiles []string) int {
+	world := make(map[string]int, 0)
+	for _, tile := range tiles {
+		world[getCoordinate(collapseDirections(parseDirections(tile)))]++
+	}
+
+	black := 0
+	for _, flipped := range world {
+		if flipped%2 == 1 {
+			black++
+		}
+	}
+	return black
 }
 
 func parseDirections(s string) directions {
@@ -58,32 +73,61 @@ func parseDirections(s string) directions {
 	return d
 }
 
-func collapseDirections(d directions) directions {
-	// se / nw
-	if d[se] > d[nw] {
-		d[se] = d[se] - d[nw]
-		d[nw] = 0
-	} else {
-		d[nw] = d[nw] - d[se]
-		d[se] = 0
+func collapseDirections(in directions) directions {
+	d := make(directions, 0)
+	// copy the thing
+	for k, v := range in {
+		d[k] = v
 	}
 
-	// sw / ne
-	if d[sw] > d[ne] {
-		d[sw] = d[sw] - d[ne]
-		d[ne] = 0
-	} else {
-		d[ne] = d[ne] - d[sw]
-		d[sw] = 0
-	}
+	coordinate := getCoordinate(d)
+	for {
+		collapseHelper := [][]string{
+			{se, w, sw},
+			{sw, nw, w},
+			{w, ne, nw},
+			{nw, e, ne},
+			{ne, se, e},
+			{e, sw, se},
+		}
+		for _, triplets := range collapseHelper {
+			absd := smoler(d[triplets[0]], d[triplets[1]])
+			d[triplets[0]] = d[triplets[0]] - absd
+			d[triplets[1]] = d[triplets[1]] - absd
+			d[triplets[2]] = d[triplets[2]] + absd
+		}
 
-	// e / w
-	if d[e] > d[w] {
-		d[e] = d[e] - d[w]
-		d[w] = 0
-	} else {
-		d[w] = d[w] - d[e]
-		d[e] = 0
+		// se / nw
+		if d[se] > d[nw] {
+			d[se] = d[se] - d[nw]
+			d[nw] = 0
+		} else {
+			d[nw] = d[nw] - d[se]
+			d[se] = 0
+		}
+
+		// sw / ne
+		if d[sw] > d[ne] {
+			d[sw] = d[sw] - d[ne]
+			d[ne] = 0
+		} else {
+			d[ne] = d[ne] - d[sw]
+			d[sw] = 0
+		}
+
+		// e / w
+		if d[e] > d[w] {
+			d[e] = d[e] - d[w]
+			d[w] = 0
+		} else {
+			d[w] = d[w] - d[e]
+			d[e] = 0
+		}
+
+		if coordinate == getCoordinate(d) {
+			break
+		}
+		coordinate = getCoordinate(d)
 	}
 
 	return d
@@ -98,4 +142,21 @@ func getCoordinate(d directions) string {
 		d[w],
 		d[nw],
 	)
+}
+
+// absDiff will return the absolute difference between two numbers.
+func absDiff(a, b int) int {
+	d := a - b
+	if d < 0 {
+		return -d
+	}
+	return d
+}
+
+// smoler takes two ints and returns the smaller of the two.
+func smoler(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
 }

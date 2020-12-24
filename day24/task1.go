@@ -26,15 +26,18 @@ var (
 type directions map[string]int
 
 func task1() {
-	fmt.Printf("\nDay 24 task 1: There will be %d black tiles at the end\n", countBlackTiles(getInputs()))
+	fmt.Printf("\nDay 24 task 1: There will be %d black tiles at the end\n", countBlackTiles(getWorld(getInputs())))
 }
 
-func countBlackTiles(tiles []string) int {
+func getWorld(tiles []string) map[string]int {
 	world := make(map[string]int, 0)
 	for _, tile := range tiles {
 		world[getCoordinate(collapseDirections(parseDirections(tile)))]++
 	}
+	return world
+}
 
+func countBlackTiles(world map[string]int) int {
 	black := 0
 	for _, flipped := range world {
 		if flipped%2 == 1 {

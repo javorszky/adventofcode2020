@@ -103,44 +103,20 @@ func (b bigOof) step() bigOof {
 	} else {
 		fmt.Printf("we're shifting things left, as idx next is higher\n")
 
-		// we're moving the things left, to a lower place
-		// if we can partition the elements moved into two groups, do it.
-		if idxCurrent-idxNext > 3 {
-			fmt.Printf("the gap is big\n")
-			// make sure we calculate the modulo index for the first three elements. This was we don't need to calculate it
-			// it for hundreds of thousands of elements.
-			for i := idxNext; i > idxNext-3; i-- {
-				shift := ((i + 2) % b.length) + 1
-				fmt.Printf("shifting (with mod) %d to %d\n", i, shift)
-				n := b.whatsOn[i]
-				b.whatsOn[shift] = n
-				b.whereIs[n] = shift
-			}
+		fmt.Printf("the gap is smol\n")
+		// if the gap is small, we might as well just calculate the modulos.
+		for j := idxCurrent + 4; j <= idxNext; j++ {
+			shift := j - 3
 
-			// all others will not wrap around, we are okay to use the straight indexes without modulo.
-			for j := idxCurrent - 3; j > idxNext; j-- {
-				shift := j + 3
-				fmt.Printf("shifting (no mod) %d to %d\n", j, shift)
-				n := b.whatsOn[j]
-				b.whatsOn[shift] = n
-				b.whereIs[n] = shift
-			}
-		} else {
-			fmt.Printf("the gap is smol\n")
-			// if the gap is small, we might as well just calculate the modulos.
-			for j := idxCurrent; j > idxNext; j-- {
-				shift := ((j + 2) % b.length) + 1
-
-				fmt.Printf("shifting (with mod) %d -> %d\n", j, shift)
-				n := b.whatsOn[j]
-				b.whatsOn[shift] = n
-				b.whereIs[n] = shift
-			}
+			fmt.Printf("shifting (with mod) %d -> %d\n", j, shift)
+			n := b.whatsOn[j]
+			b.whatsOn[shift] = n
+			b.whereIs[n] = shift
 		}
 
-		idxp1 := ((idxNext) % b.length) + 1
-		idxp2 := ((idxNext + 1) % b.length) + 1
-		idxp3 := ((idxNext + 2) % b.length) + 1
+		idxp1 := idxNext - 2
+		idxp2 := idxNext - 1
+		idxp3 := idxNext
 		fmt.Printf("picked idxes: %d, %d, %d\n", idxp1, idxp2, idxp3)
 		b.whatsOn[idxp1] = p1
 		b.whereIs[p1] = idxp1

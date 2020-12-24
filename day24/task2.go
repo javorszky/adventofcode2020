@@ -20,6 +20,7 @@ func task2() {
 
 func blackTilesAfterNFlips(in map[string]string, n int) int {
 	for i := 0; i < n; i++ {
+		in = filterOutWhiteTiles(in)
 		edged := getExpandedWorldCoordinates(in)
 		in = flip(in, edged)
 	}

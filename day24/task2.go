@@ -70,3 +70,14 @@ func getDirectionsFromCoordinate(coordinate string) directions {
 		nw: ints[5],
 	}
 }
+
+func getExpandedWorldCoordinates(in map[string]string) map[string]struct{} {
+	out := make(map[string]struct{}, 0)
+	for coordinate := range in {
+		out[coordinate] = struct{}{}
+		for _, neighbour := range getAdjacentAddresses(coordinate) {
+			out[neighbour] = struct{}{}
+		}
+	}
+	return out
+}

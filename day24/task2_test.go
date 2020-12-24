@@ -124,3 +124,58 @@ func Test_getAdjacentAddresses(t *testing.T) {
 		})
 	}
 }
+
+func Test_getExpandedWorldCoordinates(t *testing.T) {
+	type args struct {
+		in map[string]string
+	}
+	tests := []struct {
+		name string
+		args args
+		want map[string]struct{}
+	}{
+		{
+			name: "creates expanded coordinates from one tile",
+			args: args{
+				in: map[string]string{
+					"0.0.0.0.0.0": white,
+				},
+			},
+			want: map[string]struct{}{
+				"0.0.0.0.0.0": {},
+				"1.0.0.0.0.0": {},
+				"0.1.0.0.0.0": {},
+				"0.0.1.0.0.0": {},
+				"0.0.0.1.0.0": {},
+				"0.0.0.0.1.0": {},
+				"0.0.0.0.0.1": {},
+			},
+		},
+		{
+			name: "creates expanded coordinates from two tile",
+			args: args{
+				in: map[string]string{
+					"0.0.0.0.0.0": white,
+					"1.0.0.0.0.0": white,
+				},
+			},
+			want: map[string]struct{}{
+				"0.0.0.0.0.0": {},
+				"1.0.0.0.0.0": {},
+				"2.0.0.0.0.0": {},
+				"1.1.0.0.0.0": {},
+				"1.0.0.0.0.1": {},
+				"0.1.0.0.0.0": {},
+				"0.0.1.0.0.0": {},
+				"0.0.0.1.0.0": {},
+				"0.0.0.0.1.0": {},
+				"0.0.0.0.0.1": {},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, getExpandedWorldCoordinates(tt.args.in))
+		})
+	}
+}

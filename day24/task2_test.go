@@ -233,3 +233,76 @@ func Test_flip(t *testing.T) {
 		})
 	}
 }
+
+func Test_blackTilesAfterNFlips(t *testing.T) {
+	tiles := getWorldBlackWhite(getWorld([]string{
+		"sesenwnenenewseeswwswswwnenewsewsw",
+		"neeenesenwnwwswnenewnwwsewnenwseswesw",
+		"seswneswswsenwwnwse",
+		"nwnwneseeswswnenewneswwnewseswneseene",
+		"swweswneswnenwsewnwneneseenw",
+		"eesenwseswswnenwswnwnwsewwnwsene",
+		"sewnenenenesenwsewnenwwwse",
+		"wenwwweseeeweswwwnwwe",
+		"wsweesenenewnwwnwsenewsenwwsesesenwne",
+		"neeswseenwwswnwswswnw",
+		"nenwswwsewswnenenewsenwsenwnesesenew",
+		"enewnwewneswsewnwswenweswnenwsenwsw",
+		"sweneswneswneneenwnewenewwneswswnese",
+		"swwesenesewenwneswnwwneseswwne",
+		"enesenwswwswneneswsenwnewswseenwsese",
+		"wnwnesenesenenwwnenwsewesewsesesew",
+		"nenewswnwewswnenesenwnesewesw",
+		"eneswnwswnwsenenwnwnwwseeswneewsenese",
+		"neswnwewnwnwseenwseesewsenwsweewe",
+		"wseweeenwnesenwwwswnew",
+	}))
+
+	type args struct {
+		in map[string]string
+		n  int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{
+			name: "counts black tiles in example input after 1 round",
+			args: args{
+				in: tiles,
+				n:  1,
+			},
+			want: 15,
+		},
+		{
+			name: "counts black tiles in example input after 2 rounds",
+			args: args{
+				in: tiles,
+				n:  2,
+			},
+			want: 12,
+		},
+		{
+			name: "counts black tiles in example input after 10 rounds",
+			args: args{
+				in: tiles,
+				n:  10,
+			},
+			want: 37,
+		},
+		{
+			name: "counts black tiles in example input after 100 rounds",
+			args: args{
+				in: tiles,
+				n:  100,
+			},
+			want: 2208,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, blackTilesAfterNFlips(tt.args.in, tt.args.n))
+		})
+	}
+}

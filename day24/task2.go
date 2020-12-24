@@ -14,7 +14,23 @@ const (
 var wheel = []string{se, sw, ne, nw, e, w}
 
 func task2() {
-	_ = getInputs()
+	//position := getWorldBlackWhite(getWorld(getInputs()))
+
+}
+
+func blackTilesAfterNFlips(in map[string]string, n int) int {
+	for i := 0; i < n; i++ {
+		edged := getExpandedWorldCoordinates(in)
+		in = flip(in, edged)
+	}
+
+	blackTiles := 0
+	for _, colour := range in {
+		if colour == black {
+			blackTiles++
+		}
+	}
+	return blackTiles
 }
 
 func getWorldBlackWhite(in map[string]int) map[string]string {

@@ -147,15 +147,6 @@ func getCoordinate(d directions) string {
 	)
 }
 
-// absDiff will return the absolute difference between two numbers.
-func absDiff(a, b int) int {
-	d := a - b
-	if d < 0 {
-		return -d
-	}
-	return d
-}
-
 // smoler takes two ints and returns the smaller of the two.
 func smoler(a, b int) int {
 	if a < b {

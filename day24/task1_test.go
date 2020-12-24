@@ -363,49 +363,7 @@ func Test_countBlackTiles(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, countBlackTiles(tt.args.tiles))
-		})
-	}
-}
-
-func Test_absDiff(t *testing.T) {
-	type args struct {
-		a int
-		b int
-	}
-	tests := []struct {
-		name string
-		args args
-		want int
-	}{
-		{
-			name: "abs diff when a is larger",
-			args: args{
-				a: 8,
-				b: 7,
-			},
-			want: 1,
-		},
-		{
-			name: "abs diff when b is larger",
-			args: args{
-				a: 5,
-				b: 7,
-			},
-			want: 2,
-		},
-		{
-			name: "abs diff when a==b",
-			args: args{
-				a: 5,
-				b: 5,
-			},
-			want: 0,
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, absDiff(tt.args.a, tt.args.b))
+			assert.Equal(t, tt.want, countBlackTiles(getWorld(tt.args.tiles)))
 		})
 	}
 }

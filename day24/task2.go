@@ -14,8 +14,7 @@ const (
 var wheel = []string{se, sw, ne, nw, e, w}
 
 func task2() {
-	//position := getWorldBlackWhite(getWorld(getInputs()))
-
+	fmt.Printf("Day 24 task 2: after 100 days there will be %d black tiles facing up from our input\n", blackTilesAfterNFlips(getWorldBlackWhite(getWorld(getInputs())), 100))
 }
 
 func blackTilesAfterNFlips(in map[string]string, n int) int {

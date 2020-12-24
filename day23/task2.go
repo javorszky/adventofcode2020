@@ -166,3 +166,8 @@ func newBigOof(input []int, cups int) bigOof {
 		whereIs: whereisit,
 	}
 }
+
+func gimmeProduct(in bigOof) int {
+	idxCurrent := in.whereIs[in.current]
+	return in.whatsOn[(idxCurrent%in.length)+1] * in.whatsOn[((idxCurrent+1)%in.length)+1]
+}

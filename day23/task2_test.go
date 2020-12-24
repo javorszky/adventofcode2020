@@ -473,3 +473,86 @@ func Test_bigOof_step(t *testing.T) {
 		})
 	}
 }
+
+func Test_gimmeProduct(t *testing.T) {
+	type args struct {
+		in bigOof
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{
+			name: "gives product when current is somewhere in the middle",
+			args: args{
+				in: bigOof{
+					whatsOn: map[int]int{
+						1: 4,
+						2: 3,
+						3: 2,
+						4: 1,
+					},
+					whereIs: map[int]int{
+						1: 4,
+						2: 3,
+						3: 2,
+						4: 1,
+					},
+					current: 4,
+					length:  4,
+				},
+			},
+			want: 6,
+		},
+		{
+			name: "gives product when current is one but last",
+			args: args{
+				in: bigOof{
+					whatsOn: map[int]int{
+						1: 4,
+						2: 3,
+						3: 2,
+						4: 1,
+					},
+					whereIs: map[int]int{
+						1: 4,
+						2: 3,
+						3: 2,
+						4: 1,
+					},
+					current: 2,
+					length:  4,
+				},
+			},
+			want: 4,
+		},
+		{
+			name: "gives product when current is last",
+			args: args{
+				in: bigOof{
+					whatsOn: map[int]int{
+						1: 4,
+						2: 3,
+						3: 2,
+						4: 1,
+					},
+					whereIs: map[int]int{
+						1: 4,
+						2: 3,
+						3: 2,
+						4: 1,
+					},
+					current: 1,
+					length:  4,
+				},
+			},
+			want: 12,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, gimmeProduct(tt.args.in))
+		})
+	}
+}

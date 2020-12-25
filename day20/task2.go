@@ -10,7 +10,7 @@ import (
 func task2() {
 	tss := make(tileSets2, 0)
 	// there are 144 tiles, so that's a 12x12 grid.
-	tiles := getInputs()
+	tiles := getInputs(filename)
 	for _, tileString := range tiles {
 		tss.addTileSet(newTileSet2(parseTileTask2(tileString)))
 	}

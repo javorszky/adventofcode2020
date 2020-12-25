@@ -213,7 +213,7 @@ func Test_parseTileTask2(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := parseTileTask2(tt.args.s); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("parseTileTask2() = %v, want %v", got, tt.want)
+				t.Errorf("parseTileTask2() = %v, row %v", got, tt.want)
 			}
 		})
 	}

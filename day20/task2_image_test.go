@@ -1,7 +1,6 @@
 package day20
 
 import (
-	"fmt"
 	"math"
 	"testing"
 
@@ -285,81 +284,11 @@ Tile 3079:
 				Tiles: make(map[int]map[int]tilev2, 0),
 			}
 
-			var img image2
-			for {
-				imgOut, err := fitTileIntoImage2(i, 1, tss)
-				img = imgOut
-				if err != nil {
-					assert.FailNow(t, "could not fit tiles into an image")
-				}
-				if imgOut.Tiles[0][0].ID[:4] == "1951" {
-					break
-				}
+			img, err := fitTileIntoImage2(i, 1, tss)
+
+			if err != nil {
+				assert.FailNow(t, "could not fit tiles into an image")
 			}
-
-			simg := stitchImage(img)
-
-			// print out the current orientation of the tiles in the image.
-			fmt.Printf("%s  %s  %s\n\n%s  %s  %s\n\n%s  %s  %s\n",
-				img.Tiles[0][0].ID,
-				img.Tiles[0][1].ID,
-				img.Tiles[0][2].ID,
-
-				img.Tiles[1][0].ID,
-				img.Tiles[1][1].ID,
-				img.Tiles[1][2].ID,
-
-				img.Tiles[2][0].ID,
-				img.Tiles[2][1].ID,
-				img.Tiles[2][2].ID,
-			)
-
-			// print out the first line of the image
-			fmt.Printf("\n%s\n", simg[0])
-			fmt.Printf("%s\n%#v\n"+ // tile 00 id and content
-				"%s R: %s\n"+ //  tile 00 id right
-				"%s L: %s\n"+ // tile 01 id and left
-
-				"%s\n%#v\n"+ // tile 01 id and content
-
-				"%s R: %s\n"+ //  tile 01 id and right
-				"%s L: %s\n"+ // tile 02 id and left
-				"%s\n%#v\n", // tile 02 id and content,
-				img.Tiles[0][0].ID,
-				img.Tiles[0][0].WithBorders,
-				img.Tiles[0][0].ID,
-				img.Tiles[0][0].Right,
-
-				img.Tiles[0][1].ID,
-				img.Tiles[0][1].Right,
-				img.Tiles[0][1].ID,
-				img.Tiles[0][1].WithBorders,
-				img.Tiles[0][1].ID,
-				img.Tiles[0][1].Right,
-
-				img.Tiles[0][2].ID,
-				img.Tiles[0][2].Left,
-				img.Tiles[0][2].ID,
-				img.Tiles[0][2].WithBorders,
-				//
-				//img.Tiles[1][0].ID,
-				//img.Tiles[1][0].WithBorders,
-				//
-				//img.Tiles[1][1].ID,
-				//img.Tiles[1][1].WithBorders,
-				//
-				//img.Tiles[1][2].ID,
-				//img.Tiles[1][2].WithBorders,
-				//
-				//img.Tiles[2][0].ID,
-				//img.Tiles[2][0].WithBorders,
-				//
-				//img.Tiles[2][1].ID,
-				//img.Tiles[2][1].WithBorders,
-				//
-				//img.Tiles[2][2].ID,
-				//img.Tiles[2][2].WithBorders,
-			)
 
 			assert.True(t, oneMatches(tt.want, stitchImage(img)))
 		})

@@ -20,16 +20,11 @@ func fitTileIntoImage2(i image2, tileNumber int, tss tileSets2) (image2, error) 
 		return i, fmt.Errorf("fitTileIntoImage: %w", err)
 	}
 
-	indent := strings.Repeat("--", tileNumber)
-	fmt.Printf("%s----\n%srow: %d\n%scol: %d\n%s----\n", indent, indent, row, indent, col, indent)
-
 	for tileID, ts := range tss {
-		fmt.Printf("%strying tileset for tile %s\n", indent, tileID)
 		// we're using a tileset, we can't use the same tileset for the next move, so remove it from the possibilities.
 		ntss := make(tileSets2, 0)
 		for tid, tsToCopy := range tss {
 			if tid == tileID {
-				fmt.Printf("%sremoving tileset for %s to try\n", indent, tid)
 				continue
 			}
 			ntss[tid] = tsToCopy
@@ -49,7 +44,6 @@ func fitTileIntoImage2(i image2, tileNumber int, tss tileSets2) (image2, error) 
 			for _, tileFromSet := range ts {
 				// compare the right side of leftTile to the left side of the current tile
 				if leftTile.Right == tileFromSet.Left {
-					fmt.Printf("%scomparing tile\n%s%s Right %s and\n%s%s Left  %s\n", indent, indent, leftTile.ID, leftTile.Right, indent, tileFromSet.ID, tileFromSet.Left)
 					leftTilesToCheck = append(leftTilesToCheck, tileFromSet)
 				}
 			}
@@ -58,7 +52,6 @@ func fitTileIntoImage2(i image2, tileNumber int, tss tileSets2) (image2, error) 
 			topTilesToCheck = make([]tilev2, len(leftTilesToCheck))
 			copy(topTilesToCheck, leftTilesToCheck)
 		} else {
-			fmt.Printf("%sat left edge, not checking left/right match\n", indent)
 
 			// we have not whittled down any tiles from the tileset because there are no tiles to the left of this one,
 			// so create a slice to hold tiles to check for the top the same length as the entire tileset, and copy the
@@ -80,12 +73,10 @@ func fitTileIntoImage2(i image2, tileNumber int, tss tileSets2) (image2, error) 
 			for _, tileFromSet := range topTilesToCheck {
 				// compare the bottom side of top tile to the top side of the current tile
 				if topTile.Bottom == tileFromSet.Top {
-					fmt.Printf("%scomparing tile\n%s%s Top    %s and\n%s%s Bottom %s\n", indent, indent, topTile.ID, topTile.Bottom, indent, tileFromSet.ID, tileFromSet.Top)
 					tilesToTry = append(tilesToTry, tileFromSet)
 				}
 			}
 		} else {
-			fmt.Printf("%sat top edge, not checking top/bottom match\n", indent)
 			tilesToTry = make([]tilev2, len(topTilesToCheck))
 			copy(tilesToTry, topTilesToCheck)
 		}
@@ -95,21 +86,17 @@ func fitTileIntoImage2(i image2, tileNumber int, tss tileSets2) (image2, error) 
 				i.Tiles[row] = make(map[int]tilev2, 0)
 			}
 
-			fmt.Printf("%strying %s at %d:%d\n", indent, tileToTry.ID, row, col)
 			i.Tiles[row][col] = tileToTry
 			if len(ntss) > 0 {
 				newImage, err = fitTileIntoImage2(i, tileNumber+1, ntss)
 				if err == nil {
-					fmt.Printf("%sFound it!\n", indent)
 					return newImage, nil
 				}
 			} else {
-				fmt.Printf("%snope...\n", indent)
 				return i, nil
 			}
 		}
 	}
-	fmt.Printf("%sreturning because no more tiles left to try in current tilesets\n", indent)
 
 	return newImage, fmt.Errorf("reached the end with no more possible fit")
 }

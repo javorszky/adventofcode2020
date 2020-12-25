@@ -5,9 +5,9 @@ import (
 	"strings"
 )
 
-const filename = "day20/input_example.txt"
+//const filename = "day20/input_example.txt"
 
-//const filename = "day20/input.txt"
+const filename = "day20/input.txt"
 
 // getInputs reads the input.txt file and returns them as a slice of strings for each row.
 func getInputs() []string {

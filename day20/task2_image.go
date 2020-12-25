@@ -103,38 +103,31 @@ func getXY2(i image2, n int) (int, int, error) {
 
 func stitchImage(img image2) []string {
 	stitchedImage := make([]string, 0)
-	stitchedImageRowBatch := make([][]string, len(img.Tiles))
-	stitchHelper := make(map[int]strings.Builder, 0)
 
-	for idx := range img.Tiles[0][0].Content {
-		var builder strings.Builder
-		stitchHelper[idx] = builder
-	}
+	// image has rows and columns of tiles. A 5x5 image will have 5 rows, each row will hae 5 columns, and each tile
+	// will have n lines. The order of indexes is [row][line][col]
+	// create a 3d slice as long as however many rows there are in the tiles
+	stitchedImageRowBatch := make([][][]string, len(img.Tiles))
 
 	// for ever row of tiles in image.
-	for ridx, cols := range img.Tiles {
-		stitchedImageBatch := make([]string, len(img.Tiles[0][0].Content))
+	for rowIDX, cols := range img.Tiles {
+		// create the second level of the slice, this time the index is the line number
+		stitchedImageRowBatch[rowIDX] = make([][]string, len(cols[0].Content))
 		// for every tile in the row.
-		for _, tile := range cols {
-			for idx, line := range tile.Content {
-				builder := stitchHelper[idx]
-				builder.WriteString(line)
-				stitchHelper[idx] = builder
+		for columnIDX, tile := range cols {
+			// for every line in a tile's content
+			for lineIDX, line := range tile.Content {
+				if stitchedImageRowBatch[rowIDX][lineIDX] == nil {
+					stitchedImageRowBatch[rowIDX][lineIDX] = make([]string, len(cols))
+				}
+				stitchedImageRowBatch[rowIDX][lineIDX][columnIDX] = line
 			}
 		}
-
-		for idx := range stitchHelper {
-			builder := stitchHelper[idx]
-			stitchedImageBatch[idx] = builder.String()
-			builder.Reset()
-			stitchHelper[idx] = builder
-		}
-		stitchedImageRowBatch[ridx] = stitchedImageBatch
 	}
 
-	for _, rowBatch := range stitchedImageRowBatch {
-		for _, line := range rowBatch {
-			stitchedImage = append(stitchedImage, line)
+	for _, row := range stitchedImageRowBatch {
+		for _, line := range row {
+			stitchedImage = append(stitchedImage, strings.Join(line, ""))
 		}
 	}
 

@@ -1,6 +1,7 @@
 package day20
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -109,7 +110,12 @@ func Test_stitchImage(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, stitchImage(tt.args.img))
+			for i := 0; i < 1000; i++ {
+				if !assert.Equal(t, tt.want, stitchImage(tt.args.img)) {
+					assert.Fail(t, fmt.Sprintf("failed on iteration %d\n", i))
+					break
+				}
+			}
 		})
 	}
 }

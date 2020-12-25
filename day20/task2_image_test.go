@@ -110,7 +110,9 @@ func Test_stitchImage(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			for i := 0; i < 1000; i++ {
-				assert.Equal(t, tt.want, stitchImage(tt.args.img))
+				if !assert.Equal(t, tt.want, stitchImage(tt.args.img)) {
+					assert.FailNow(t, "failed at iteration %d\n", i)
+				}
 			}
 		})
 	}

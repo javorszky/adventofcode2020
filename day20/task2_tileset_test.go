@@ -28,6 +28,12 @@ func Test_newTileSet2(t *testing.T) {
 						"890a",
 						"defg",
 					},
+					WithBorders: []string{
+						"123456",
+						"7890ab",
+						"cdefgh",
+						"ijklmn",
+					},
 				},
 			},
 			want: tileSet2{
@@ -40,6 +46,12 @@ func Test_newTileSet2(t *testing.T) {
 					Content: []string{
 						"890a",
 						"defg",
+					},
+					WithBorders: []string{
+						"123456",
+						"7890ab",
+						"cdefgh",
+						"ijklmn",
 					},
 				},
 				{ // upright rotated
@@ -54,6 +66,14 @@ func Test_newTileSet2(t *testing.T) {
 						"f0",
 						"ga",
 					},
+					WithBorders: []string{
+						"ic71",
+						"jd82",
+						"ke93",
+						"lf04",
+						"mga5",
+						"nhb6",
+					},
 				},
 				{ // fliph
 					ID:     "2311010",
@@ -64,6 +84,12 @@ func Test_newTileSet2(t *testing.T) {
 					Content: []string{
 						"a098",
 						"gfed",
+					},
+					WithBorders: []string{
+						"654321",
+						"ba0987",
+						"hgfedc",
+						"nmlkji",
 					},
 				},
 				{ // fliph rotated
@@ -78,6 +104,14 @@ func Test_newTileSet2(t *testing.T) {
 						"e9",
 						"d8",
 					},
+					WithBorders: []string{
+						"nhb6",
+						"mga5",
+						"lf04",
+						"ke93",
+						"jd82",
+						"ic71",
+					},
 				},
 				{ // flipv
 					ID:     "2311100",
@@ -88,6 +122,12 @@ func Test_newTileSet2(t *testing.T) {
 					Content: []string{
 						"defg",
 						"890a",
+					},
+					WithBorders: []string{
+						"ijklmn",
+						"cdefgh",
+						"7890ab",
+						"123456",
 					},
 				},
 				{ // flipv rotated
@@ -102,6 +142,14 @@ func Test_newTileSet2(t *testing.T) {
 						"0f",
 						"ag",
 					},
+					WithBorders: []string{
+						"17ci",
+						"28dj",
+						"39ek",
+						"40fl",
+						"5agm",
+						"6bhn",
+					},
 				},
 				{ // flipv fliph
 					ID:     "2311110",
@@ -112,6 +160,12 @@ func Test_newTileSet2(t *testing.T) {
 					Content: []string{
 						"gfed",
 						"a098",
+					},
+					WithBorders: []string{
+						"nmlkji",
+						"hgfedc",
+						"ba0987",
+						"654321",
 					},
 				},
 				{ // flipv fliph rotated
@@ -125,6 +179,14 @@ func Test_newTileSet2(t *testing.T) {
 						"0f",
 						"9e",
 						"8d",
+					},
+					WithBorders: []string{
+						"6bhn",
+						"5agm",
+						"40fl",
+						"39ek",
+						"28dj",
+						"17ci",
 					},
 				},
 			},

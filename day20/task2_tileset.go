@@ -21,6 +21,7 @@ func newTileSet2(t tilev2) tileSet2 {
 	tiles = append(tiles, tr)
 
 	// 3: save the vflipped 100
+
 	tv := t.flipV()
 	tiles = append(tiles, tv)
 

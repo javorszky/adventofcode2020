@@ -20,7 +20,7 @@ func reverseString(s string) string {
 func task1() {
 	tss := make(tileSets, 0)
 	// there are 144 tiles, so that's a 12x12 grid.
-	for _, tileString := range getInputs() {
+	for _, tileString := range getInputs(filename) {
 		tss.addTileSet(newTileSet(parseTile(tileString)))
 	}
 	i := image{

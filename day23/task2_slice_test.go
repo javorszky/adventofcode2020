@@ -31,3 +31,31 @@ func Test_createInputSlice(t *testing.T) {
 		})
 	}
 }
+
+func Test_getProduct(t *testing.T) {
+	type args struct {
+		start []int
+		total int
+		n     int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{
+			name: "gets product of two cup labels clockwise to 1 after 10 mil moves, aoc t2 example",
+			args: args{
+				start: []int{3, 8, 9, 1, 2, 5, 4, 6, 7},
+				total: 1000000,
+				n:     10000000,
+			},
+			want: 149245887792,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, getProduct(createInputSlice(tt.args.start, tt.args.total), tt.args.n))
+		})
+	}
+}

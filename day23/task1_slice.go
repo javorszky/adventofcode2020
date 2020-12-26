@@ -70,7 +70,7 @@ func printElements(c *cupGame) {
 }
 
 func task1slice() {
-	getLabel(getInputs(), 100)
+	fmt.Printf("\nDay23 task 1: the label after 100 moves is '%s'\n", getLabel(getInputs(), 100))
 }
 
 func getLabel(in []int, step int) string {

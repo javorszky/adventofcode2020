@@ -67,7 +67,7 @@ func Test_removeThreeCups(t *testing.T) {
 		want1 []int
 	}{
 		{
-			name: "removes three cups from the circle where the idx 0 is the current one",
+			name: "removes three cups from the circle where the idx 0 is the Current one",
 			args: args{
 				in: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 0},
 			},
@@ -94,21 +94,21 @@ func Test_findIndexOfNextCurrentCup(t *testing.T) {
 		want int
 	}{
 		{
-			name: "finds the next current cup when all elements are present",
+			name: "finds the next Current cup when all elements are present",
 			args: args{
 				in: []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 0},
 			},
 			want: 9,
 		},
 		{
-			name: "finds the next current cup when all elements are present, order is random",
+			name: "finds the next Current cup when all elements are present, order is random",
 			args: args{
 				in: []int{1, 9, 5, 7, 3, 0, 2, 4, 8, 6},
 			},
 			want: 5,
 		},
 		{
-			name: "finds the next current cup when some elements are missing, order is random",
+			name: "finds the next Current cup when some elements are missing, order is random",
 			args: args{
 				in: []int{1, 5, 7, 3, 2, 4, 6},
 			},

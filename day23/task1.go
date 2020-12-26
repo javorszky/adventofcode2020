@@ -26,7 +26,7 @@ func rotateCircleBy(in []int, n int) []int {
 }
 
 // removeThreeCups will remove three elements from the slice. The elements removed are always the 1,2,3 indexed parts,
-// because in our solution the 0 idx element is the "current" cup.
+// because in our solution the 0 idx element is the "Current" cup.
 func removeThreeCups(in []int) ([]int, []int) {
 	snip := make([]int, 3)
 	short := make([]int, len(in)-3)
@@ -35,9 +35,9 @@ func removeThreeCups(in []int) ([]int, []int) {
 	return short, snip
 }
 
-// findIndexOfNextCurrentCup will return the index of the next current cup.
+// findIndexOfNextCurrentCup will return the index of the next Current cup.
 func findIndexOfNextCurrentCup(in []int) int {
-	// current cup is the 0 idx one
+	// Current cup is the 0 idx one
 	current := in[0]
 	existenceHelper := make(map[int]int, 0)
 	highest := 0
@@ -87,7 +87,7 @@ func insertSnippetIntoAt(short, snippet []int, idx int) []int {
 // round will play a round of Crab Cups per the rules of Advent Of Code 2020 Day 23 Task 1.
 func round(in []int) []int {
 
-	// n=0 idx is the "current" cup
+	// n=0 idx is the "Current" cup
 	// step 1: remove the snippet
 	short, snippet := removeThreeCups(in)
 	// n+1,2,3 are picked up and removed from the circle

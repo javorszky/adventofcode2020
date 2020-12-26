@@ -18,7 +18,7 @@ type bigOof struct {
 }
 
 func (b bigOof) step() bigOof {
-	// get the index of current
+	// get the index of Current
 	idxCurrent := b.whereIs[b.current]
 
 	p1, p2, p3 := b.whatsOn[((idxCurrent)%b.length)+1], b.whatsOn[((idxCurrent+1)%b.length)+1], b.whatsOn[((idxCurrent+2)%b.length)+1]
@@ -104,7 +104,7 @@ func (b bigOof) step() bigOof {
 		b.whereIs[p3] = idxp3
 	}
 
-	// after having moved numbers, where's the current again?
+	// after having moved numbers, where's the Current again?
 	idxCurrentMoved := b.whereIs[b.current]
 
 	b.current = b.whatsOn[((idxCurrentMoved)%b.length)+1]

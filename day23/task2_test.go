@@ -484,7 +484,7 @@ func Test_gimmeProduct(t *testing.T) {
 		want int
 	}{
 		{
-			name: "gives product when current is somewhere in the middle",
+			name: "gives product when Current is somewhere in the middle",
 			args: args{
 				in: bigOof{
 					whatsOn: map[int]int{
@@ -506,7 +506,7 @@ func Test_gimmeProduct(t *testing.T) {
 			want: 6,
 		},
 		{
-			name: "gives product when current is one but last",
+			name: "gives product when Current is one but last",
 			args: args{
 				in: bigOof{
 					whatsOn: map[int]int{
@@ -528,7 +528,7 @@ func Test_gimmeProduct(t *testing.T) {
 			want: 4,
 		},
 		{
-			name: "gives product when current is last",
+			name: "gives product when Current is last",
 			args: args{
 				in: bigOof{
 					whatsOn: map[int]int{

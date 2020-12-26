@@ -7,9 +7,9 @@ import (
 )
 
 const (
-	cupsInCircle = 1000000
-	//moveCupsThisManyTimes = 10000000
-	moveCupsThisManyTimes = 25
+	cupsInCircle          = 1000000
+	moveCupsThisManyTimes = 10000000
+	//moveCupsThisManyTimes = 25
 )
 
 type bigOof struct {

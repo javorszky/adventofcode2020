@@ -91,3 +91,64 @@ func Test_task1GetLabels(t *testing.T) {
 		})
 	}
 }
+
+func Test_generateRing(t *testing.T) {
+	type args struct {
+		start []int
+		total int
+	}
+	tests := []struct {
+		name string
+		args args
+		want []int
+	}{
+		{
+			name: "generates tail padded ring",
+			args: args{
+				start: []int{9, 3, 6, 1, 2, 4, 7, 8, 5},
+				total: 15,
+			},
+			want: []int{9, 3, 6, 1, 2, 4, 7, 8, 5, 10, 11, 12, 13, 14, 15},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			r := generateRing(tt.args.start, tt.args.total)
+			printRing("generated ring", r)
+			helper := make([]int, 0)
+			for i := 0; i < r.Len(); i++ {
+				helper = append(helper, r.Value.(cup).Value)
+				r = r.Next()
+			}
+			assert.Equal(t, tt.want, helper)
+		})
+	}
+}
+
+func Test_task2GetProducts(t *testing.T) {
+	type args struct {
+		inputs    []int
+		totalCups int
+		steps     int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		{
+			name: "do the example task 2",
+			args: args{
+				inputs:    []int{3, 8, 9, 1, 2, 5, 4, 6, 7},
+				totalCups: cupsInCircle,
+				steps:     moveCupsThisManyTimes,
+			},
+			want: 149245887792,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, task2GetProducts(tt.args.inputs, tt.args.totalCups, tt.args.steps))
+		})
+	}
+}

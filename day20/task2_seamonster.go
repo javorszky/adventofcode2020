@@ -37,16 +37,20 @@ func newSeaMonsters(s string, lineLength int) []seaMonster {
 	monstarz = append(monstarz, originalMonster, smR, smvFlip, smrvFlip, smhFlip, smrhFlip, smhvFlip, smrhvFlip)
 
 	for _, monstar := range monstarz {
-		first, offsets := seaMonsterOffsets(monstar, lineLength)
-		seaMonsters = append(seaMonsters, seaMonster{
-			W:       len(monstar[0]),
-			H:       len(monstar),
-			First:   first,
-			Offsets: offsets,
-		})
+		seaMonsters = append(seaMonsters, newSeaMonster(monstar, lineLength))
 	}
 
 	return seaMonsters
+}
+
+func newSeaMonster(pattern []string, lineLength int) seaMonster {
+	first, offsets := seaMonsterOffsets(pattern, lineLength)
+	return seaMonster{
+		W:       len(pattern[0]),
+		H:       len(pattern),
+		First:   first,
+		Offsets: offsets,
+	}
 }
 
 func seaMonsterOffsets(sm []string, lineLength int) (int, []int) {

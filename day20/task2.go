@@ -3,7 +3,6 @@ package day20
 import (
 	"fmt"
 	"math"
-	"os"
 	"strings"
 )
 
@@ -25,8 +24,6 @@ func task2() {
 
 	img, err := fitTileIntoImage2(i, 1, tss)
 
-	writeFlattenedToFile(fmt.Sprintf("%#v", img))
-
 	if err != nil {
 		panic("\nDay 20 task 2 failed")
 	}
@@ -34,52 +31,31 @@ func task2() {
 	// orig and rotated
 	//oimg := stitchImage(img2)
 	oimg := stitchImage(img)
-	writeUnflattenedToFile(oimg)
-	roimg := rotateContent(oimg)
-	writeUnflattenedToFile(roimg)
 
-	// horizontal flip and rotated
-	hoimg := hFlipContent(oimg)
-	writeUnflattenedToFile(hoimg)
-	rhoimg := rotateContent(hoimg)
-	writeUnflattenedToFile(rhoimg)
+	roughness := seaRoughness(oimg)
 
-	// vertical flip and rotated
-	voimg := vFlipContent(oimg)
-	writeUnflattenedToFile(voimg)
-	rvoimg := rotateContent(voimg)
-	writeUnflattenedToFile(rvoimg)
+	fmt.Printf("Day 20 task 2: the roughness of the seas is %d\n", roughness)
+}
 
-	// v and h flipped and rotated
-	vhoimg := vFlipContent(hFlipContent(oimg))
-	writeUnflattenedToFile(vhoimg)
-	rvhoimg := rotateContent(vhoimg)
-	writeUnflattenedToFile(rvhoimg)
-
-	images := [][]string{
-		oimg, roimg, hoimg, rhoimg, voimg, rvoimg, vhoimg, rvhoimg,
+func replaceMonster(image string, coords []int) string {
+	for _, coord := range coords {
+		image = image[:coord] + "O" + image[coord+1:]
 	}
+	return image
+}
 
-	lineLength := len(oimg[0])
-	originalMonster := strings.Split(seaMonsterPattern, "\n")
+func flattenImage(img []string) (string, int) {
+	lineLength := len(img[0]) // should be 120?
+	flattenedImage := strings.Join(img, "")
 
-	first, offsets := seaMonsterOffsets(originalMonster, lineLength)
-	seamonster := seaMonster{
-		W:       len(originalMonster[0]),
-		H:       len(originalMonster),
-		First:   first,
-		Offsets: offsets,
-	}
+	return flattenedImage, lineLength
+}
 
-	fmt.Printf("seamonster with line length of %d:\n%#v\n", lineLength, seamonster)
-
-	var flattenedImage string
-	for _, imgToCheck := range images {
-		flattenedImage, lineLength = flattenImage(imgToCheck)
-		// copyimage is going to be the one that gets modified
-		copyImage := flattenedImage
-		//checkCoords := make([]int, 0)
-		// let's loop through the entire original image
+func seaRoughness(stitchedImage []string) int {
+	flattenedImage, lineLength := flattenImage(stitchedImage)
+	seamonsters := newSeaMonsters(seaMonsterPattern, lineLength)
+	for _, seamonster := range seamonsters {
+		replaceMonsters := make([][]int, 0)
 		for idx, char := range flattenedImage {
 			lastOffset := seamonster.Offsets[len(seamonster.Offsets)-1]
 			lenFlattenedImage := len(flattenedImage)
@@ -112,67 +88,133 @@ func task2() {
 				monsterCoords = append(monsterCoords, idx+offset)
 			}
 			if foundMonster {
-				copyImage = replaceMonster(copyImage, monsterCoords)
-				flattenedImage = copyImage
-				break
+				replaceMonsters = append(replaceMonsters, monsterCoords)
 			}
+		}
+
+		fmt.Printf("number of monsters found: %d\n", len(replaceMonsters))
+
+		for _, monsterCoords := range replaceMonsters {
+			flattenedImage = replaceMonster(flattenedImage, monsterCoords)
 		}
 	}
 
-	fmt.Printf("Day 20 task 2: the roughness of the seas is %d\n", strings.Count(flattenedImage, "#"))
+	return strings.Count(flattenedImage, "#")
 }
 
-func replaceMonster(image string, coords []int) string {
-	for _, coord := range coords {
-		image = image[:coord] + "O" + image[coord+1:]
+func seaRoughnessRotatedMap(stitchedImage []string) int {
+	images := [][]string{
+		stitchedImage,
+		rotateContent(stitchedImage),
+		rotateContent(rotateContent(stitchedImage)),
+		rotateContent(rotateContent(rotateContent(stitchedImage))),
+		hFlipContent(stitchedImage),
+		rotateContent(hFlipContent(stitchedImage)),
+		rotateContent(rotateContent(hFlipContent(stitchedImage))),
+		rotateContent(rotateContent(rotateContent(hFlipContent(stitchedImage)))),
 	}
-	return image
+
+	monstar := strings.Split(seaMonsterPattern, "\n")
+	first, offsets := seaMonsterOffsets(monstar, len(stitchedImage[0]))
+	seaMonster := seaMonster{
+		W:       len(monstar[0]),
+		H:       len(monstar),
+		First:   first,
+		Offsets: offsets,
+	}
+
+	for _, image := range images {
+		flattenedImage, lineLength := flattenImage(image)
+
+		replaceMonsters := make([][]int, 0)
+		for idx, char := range flattenedImage {
+			lastOffset := seaMonster.Offsets[len(seaMonster.Offsets)-1]
+			lenFlattenedImage := len(flattenedImage)
+			// skip characters that are either too close to the left, or too close to the right edge, or are not hash.
+			// We're looking to find all the hashes that can be starter points for sea monsters.
+			if idx%lineLength > lineLength-seaMonster.W+seaMonster.First || // it's not too close to the right side.
+				idx%lineLength < seaMonster.First || // not too close to the left side
+				idx+lastOffset > lenFlattenedImage || // make sure the last part of the sea monster is still in pic.
+				string(char) != "#" { // not a hash character
+				continue
+			}
+
+			//checkCoords = append(checkCoords, idx)
+
+			//for each hash that is in the zone of suitable candidates, let's assume we found the monster.
+			foundMonster := true
+
+			// and make sure we save the coordinates for this monster, so we can change them later.
+			monsterCoords := make([]int, 0, 15)
+
+			// let's step through the offsets for the seamonster we're trying to find, and check whether all the other
+			// characters are also #. If not, break, and move on to the next character.
+			for _, offset := range seaMonster.Offsets {
+				//fmt.Printf("checking for character %d at offset %d with total offset %d\n", sidx, offset, offset+idx)
+				// the next char at specified offset from first is not a hash, break off.
+				if flattenedImage[idx+offset-1:idx+offset] != "#" {
+					foundMonster = false
+					break
+				}
+				monsterCoords = append(monsterCoords, idx+offset)
+			}
+			if foundMonster {
+				replaceMonsters = append(replaceMonsters, monsterCoords)
+			}
+		}
+
+		fmt.Printf("number of monsters found: %d\n", len(replaceMonsters))
+
+		for _, monsterCoords := range replaceMonsters {
+			flattenedImage = replaceMonster(flattenedImage, monsterCoords)
+		}
+	}
+
+	return 0
 }
 
-func flattenImage(img []string) (string, int) {
-	lineLength := len(img[0]) // should be 120?
-	flattenedImage := strings.Join(img, "")
+func findMonsterCoords(flattenedImage string, lineLength int, seaMonster seaMonster) [][]int {
+	fmt.Printf("%#v\n", seaMonster.Offsets)
+	replaceMonsters := make([][]int, 0)
+	for idx, char := range flattenedImage {
+		lastOffset := seaMonster.Offsets[len(seaMonster.Offsets)-1]
+		lenFlattenedImage := len(flattenedImage)
+		// skip characters that are either too close to the left, or too close to the right edge, or are not hash.
+		// We're looking to find all the hashes that can be starter points for sea monsters.
+		if idx%lineLength > lineLength-seaMonster.W+seaMonster.First || // it's not too close to the right side.
+			idx%lineLength < seaMonster.First || // not too close to the left side
+			idx+lastOffset > lenFlattenedImage || // make sure the last part of the sea monster is still in pic.
+			string(char) != "#" { // not a hash character
+			continue
+		}
+		fmt.Printf("found hash char at idx %d: '%s'\n", idx, flattenedImage[idx:idx+1])
 
-	return flattenedImage, lineLength
-}
+		//checkCoords = append(checkCoords, idx)
 
-func unflattenImage(img string, linelength int) []string {
-	s := make([]string, 0)
-	l := len(img)
-	previous := 0
-	for i := linelength; i <= l; i = i + linelength {
-		s = append(s, img[previous:i])
-		previous = i
+		//for each hash that is in the zone of suitable candidates, let's assume we found the monster.
+		foundMonster := true
+
+		// and make sure we save the coordinates for this monster, so we can change them later.
+		monsterCoords := make([]int, 0, 15)
+
+		// let's step through the offsets for the seamonster we're trying to find, and check whether all the other
+		// characters are also #. If not, break, and move on to the next character.
+		for _, offset := range seaMonster.Offsets {
+			//fmt.Printf("checking for character %d at offset %d with total offset %d\n", sidx, offset, offset+idx)
+			// the next char at specified offset from first is not a hash, break off.
+			shiftedMonsterOffset := idx + offset
+			fmt.Printf("checking char at offset %d, which is '%s'\n", shiftedMonsterOffset, flattenedImage[shiftedMonsterOffset:shiftedMonsterOffset+1])
+			if flattenedImage[shiftedMonsterOffset:shiftedMonsterOffset+1] != "#" {
+				foundMonster = false
+				fmt.Printf("whoops, did not find a monster part, aborting...\n")
+				break
+			}
+			monsterCoords = append(monsterCoords, idx+offset)
+		}
+		if foundMonster {
+			replaceMonsters = append(replaceMonsters, monsterCoords)
+		}
 	}
-	return s
-}
 
-func writeFlattenedToFile(s string) {
-	f, err := os.OpenFile("day20/images.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		panic(fmt.Sprintf("opening file failed: %s", err))
-	}
-
-	defer f.Close()
-
-	if _, err := f.WriteString("\n\n" + s); err != nil {
-		panic(fmt.Sprintf("writing string to file failed: %s", err))
-	}
-}
-
-func writeUnflattenedToFile(img []string) {
-	f, err := os.OpenFile("day20/images.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		panic(fmt.Sprintf("opening file failed: %s", err))
-	}
-
-	defer f.Close()
-	//
-	//if _, err := f.WriteString(strings.Join(sm, "\n")); err != nil {
-	//	panic(fmt.Sprintf("writing string to file failed: %s", err))
-	//}
-
-	if _, err := f.WriteString("\n\n" + strings.Join(img, "\n")); err != nil {
-		panic(fmt.Sprintf("writing string to file failed: %s", err))
-	}
+	return replaceMonsters
 }

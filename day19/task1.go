@@ -28,10 +28,11 @@ func task1() {
 	fmt.Printf("\nDay 19 task 1: there are %d messages matching the ruleset\n\nbtw the regex needed for it is:\n----\n%s\n----\n\n", n, ruleZero)
 }
 
-func findRule(s string, rules map[string]string) string {
-	rule, ok := rules[s]
+func findRule(lookup string, rules map[string]string) string {
+	rule, ok := rules[lookup]
+
 	if !ok {
-		panic(fmt.Sprintf("could not find rule %s in rules map", s))
+		panic(fmt.Sprintf("could not find rule '%s' in rules map\n%#v", lookup, rules))
 	}
 	switch rule {
 	case `"a"`, `"b"`:

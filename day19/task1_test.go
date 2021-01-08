@@ -51,7 +51,7 @@ func Test_findRule(t *testing.T) {
 			args: args{
 				s: "0",
 				rules: map[string]string{
-					"0": "a",
+					"0": `"a"`,
 				},
 			},
 			want: `a`,
@@ -61,7 +61,7 @@ func Test_findRule(t *testing.T) {
 			args: args{
 				s: "0",
 				rules: map[string]string{
-					"0": "b",
+					"0": `"b"`,
 				},
 			},
 			want: `b`,
@@ -72,7 +72,7 @@ func Test_findRule(t *testing.T) {
 				s: "0",
 				rules: map[string]string{
 					"0": "1",
-					"1": "a",
+					"1": `"a"`,
 				},
 			},
 			want: `( a )`,
@@ -83,8 +83,8 @@ func Test_findRule(t *testing.T) {
 				s: "0",
 				rules: map[string]string{
 					"0": "1 | 2",
-					"1": "a",
-					"2": "b",
+					"1": `"a"`,
+					"2": `"b"`,
 				},
 			},
 			want: `( a | b )`,
@@ -95,8 +95,8 @@ func Test_findRule(t *testing.T) {
 				s: "0",
 				rules: map[string]string{
 					"0": "1 1 | 2 2",
-					"1": "a",
-					"2": "b",
+					"1": `"a"`,
+					"2": `"b"`,
 				},
 			},
 			want: `( a a | b b )`,
@@ -108,10 +108,10 @@ func Test_findRule(t *testing.T) {
 				rules: map[string]string{
 					"0": "1 1 | 2 2",
 					"1": "3 4 | 4 3",
-					"2": "b",
+					"2": `"b"`,
 					"3": "2 5",
 					"4": "3 2 | 2 3",
-					"5": "a",
+					"5": `"a"`,
 				},
 			},
 			want: `( ( ( b a ) ( ( b a ) b | b ( b a ) ) | ( ( b a ) b | b ( b a ) ) ( b a ) ) ( ( b a ) ( ( b a ) b | b ( b a ) ) | ( ( b a ) b | b ( b a ) ) ( b a ) ) | b b )`,

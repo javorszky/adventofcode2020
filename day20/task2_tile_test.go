@@ -332,6 +332,12 @@ func Test_tilev2_rotate(t *testing.T) {
 					"890a",
 					"defg",
 				},
+				WithBorders: []string{
+					"123456",
+					"7890ab",
+					"cdefgh",
+					"ijklmn",
+				},
 			},
 			want: tilev2{
 				ID:     "2311001",
@@ -344,6 +350,14 @@ func Test_tilev2_rotate(t *testing.T) {
 					"e9",
 					"f0",
 					"ga",
+				},
+				WithBorders: []string{
+					"ic71",
+					"jd82",
+					"ke93",
+					"lf04",
+					"mga5",
+					"nhb6",
 				},
 			},
 		},
@@ -373,6 +387,12 @@ func Test_tilev2_flipV(t *testing.T) {
 					"890a",
 					"defg",
 				},
+				WithBorders: []string{
+					"123456",
+					"7890ab",
+					"cdefgh",
+					"ijklmn",
+				},
 			},
 			want: tilev2{
 				ID:     "2311100",
@@ -383,6 +403,12 @@ func Test_tilev2_flipV(t *testing.T) {
 				Content: []string{
 					"defg",
 					"890a",
+				},
+				WithBorders: []string{
+					"ijklmn",
+					"cdefgh",
+					"7890ab",
+					"123456",
 				},
 			},
 		},
@@ -412,6 +438,12 @@ func Test_tilev2_flipH(t *testing.T) {
 					"890a",
 					"defg",
 				},
+				WithBorders: []string{
+					"123456",
+					"7890ab",
+					"cdefgh",
+					"ijklmn",
+				},
 			},
 			want: tilev2{
 				ID:     "2311010",
@@ -422,6 +454,12 @@ func Test_tilev2_flipH(t *testing.T) {
 				Content: []string{
 					"a098",
 					"gfed",
+				},
+				WithBorders: []string{
+					"654321",
+					"ba0987",
+					"hgfedc",
+					"nmlkji",
 				},
 			},
 		},
@@ -443,6 +481,12 @@ func Test_Orientations(t *testing.T) {
 		Content: []string{
 			"890a",
 			"defg",
+		},
+		WithBorders: []string{
+			"123456",
+			"7890ab",
+			"cdefgh",
+			"ijklmn",
 		},
 	}
 

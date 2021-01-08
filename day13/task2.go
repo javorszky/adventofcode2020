@@ -8,6 +8,9 @@ import (
 
 // the numbers are all primes.
 func task2() {
+	t1, t2, t3 := togetherBus(12, 17, 0, 9, 23, 8)
+	fmt.Printf("togetherbus is start %d, frequency %d, offset %d\n", t1, t2, t3)
+
 	start := earliestTime(t2formatInput(getInputs()))
 	fmt.Printf("Day 13 task 2: the timestamp is %d\n", start)
 }

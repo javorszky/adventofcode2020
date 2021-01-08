@@ -115,7 +115,6 @@ func Test_generateRing(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			r := generateRing(tt.args.start, tt.args.total)
-			printRing("generated ring", r)
 			helper := make([]int, 0)
 			for i := 0; i < r.Len(); i++ {
 				helper = append(helper, r.Value.(cup).Value)

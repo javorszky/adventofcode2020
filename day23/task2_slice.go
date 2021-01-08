@@ -4,7 +4,7 @@ import "fmt"
 
 func task2slice() {
 	product := getProduct(createInputSlice(getInputs(), cupsInCircle), moveCupsThisManyTimes)
-	fmt.Printf("day23 task 2: the product of the two cups clockwise to 1 is %d\n", product)
+	fmt.Printf("Day 23 task 2: the product of the two cups clockwise to 1 is %d\n", product)
 }
 
 func createInputSlice(start []int, total int) []int {

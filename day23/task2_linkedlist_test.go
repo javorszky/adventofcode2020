@@ -3,6 +3,7 @@ package day23
 import (
 	"container/ring"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -148,7 +149,21 @@ func Test_task2GetProducts(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, task2GetProducts(tt.args.inputs, tt.args.totalCups, tt.args.steps))
+			// timeout implementation from https://erikwinter.nl/notes/2020/setting-a-timeout-on-golang-unit-tests/.
+			timeout := time.After(4 * time.Second)
+			done := make(chan bool)
+
+			go func() {
+				assert.Equal(t, tt.want, task2GetProducts(tt.args.inputs, tt.args.totalCups, tt.args.steps))
+
+				done <- true
+			}()
+
+			select {
+			case <-timeout:
+				t.Fatal("test didn't finish in 4 seconds")
+			case <-done:
+			}
 		})
 	}
 }

@@ -35,7 +35,6 @@ func task1GetLabel(inputs []int, steps int) string {
 
 	var sb strings.Builder
 	rout := addresses[1]
-	printRing("rout", rout)
 	for i := 0; i < rout.Len(); i++ {
 		sb.WriteString(strconv.Itoa(rout.Value.(cup).Value))
 		rout = rout.Next()
@@ -70,13 +69,4 @@ func step(r *ring.Ring) *ring.Ring {
 
 	a[v].Link(subRing)
 	return a[currentValue].Next()
-}
-
-func printRing(name string, r *ring.Ring) {
-	fmt.Printf("printing %s\n", name)
-	for i := 0; i < r.Len(); i++ {
-		fmt.Printf("%d ", r.Value.(cup).Value)
-		r = r.Next()
-	}
-	fmt.Printf("\ndone printing %s\n\n", name)
 }

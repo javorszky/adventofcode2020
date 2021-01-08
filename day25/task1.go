@@ -45,12 +45,12 @@ func transformOnce(what, subject int) int {
 }
 
 func findLoopSize(what, subject, target int) (int, error) {
-	for i := 1; i < 10000000; i++ {
+	for i := 1; i < 10000; i++ {
 		what = transformOnce(what, subject)
 		if what == target {
 			return i, nil
 		}
 	}
 
-	return 0, errors.New("could not find loop in 10,000 tries")
+	return 0, errors.New("could not find loop in 1,000,000,000 tries")
 }

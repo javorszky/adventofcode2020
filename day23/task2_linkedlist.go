@@ -13,11 +13,7 @@ func task2LinkedList() {
 
 func task2GetProducts(inputs []int, totalCups, steps int) int {
 	r := generateRing(inputs, totalCups)
-	fmt.Printf("generated the ring\n")
 	for i := 0; i < steps; i++ {
-		if i%50000 == 0 {
-			fmt.Printf("did %8d steps\n", i)
-		}
 		r = step(r)
 	}
 

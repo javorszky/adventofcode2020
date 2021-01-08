@@ -1,5 +1,7 @@
 # advent of code 2020
 
+https://adventofcode.com/2020
+
 This is the first year I managed to complete everything. I wrote tests for all, but the most trivial tasks. You can see for yourself if you clone the repository, and start the tests by running the following from the folder.
 ```bash
 $ go mod tidy

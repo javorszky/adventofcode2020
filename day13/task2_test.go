@@ -13,7 +13,7 @@ func Test_t2formatInput(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want map[int]int
+		want map[int][]int
 	}{
 		{
 			name: "turns input string into map correctly",
@@ -23,13 +23,12 @@ func Test_t2formatInput(t *testing.T) {
 					"7,x,3,x,x,x,9,10,42,x,x,6,x",
 				},
 			},
-			want: map[int]int{
-				0:  7,
-				2:  3,
-				6:  9,
-				7:  10,
-				8:  42,
-				11: 6,
+			want: map[int][]int{
+				2: {3},
+				5: {6},
+				6: {9},
+				7: {10, 7},
+				8: {42},
 			},
 		},
 	}

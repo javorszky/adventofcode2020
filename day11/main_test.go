@@ -127,7 +127,8 @@ func Test_tl(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, topLeft(tt.args.c, tt.args.lineLength, tt.args.input))
+			_, c := topLeft(tt.args.c, tt.args.lineLength, tt.args.input)
+			assert.Equal(t, tt.want, c)
 		})
 	}
 }
@@ -210,7 +211,8 @@ func Test_top(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, top(tt.args.c, tt.args.lineLength, tt.args.input))
+			_, c := top(tt.args.c, tt.args.lineLength, tt.args.input)
+			assert.Equal(t, tt.want, c)
 		})
 	}
 }
@@ -293,7 +295,8 @@ func Test_topRight(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, topRight(tt.args.c, tt.args.lineLength, tt.args.input))
+			_, c := topRight(tt.args.c, tt.args.lineLength, tt.args.input)
+			assert.Equal(t, tt.want, c)
 		})
 	}
 }
@@ -377,7 +380,8 @@ func Test_right(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, right(tt.args.c, tt.args.lineLength, tt.args.input))
+			_, c := right(tt.args.c, tt.args.lineLength, tt.args.input)
+			assert.Equal(t, tt.want, c)
 		})
 	}
 }
@@ -461,7 +465,8 @@ func Test_bottomRight(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, bottomRight(tt.args.c, tt.args.lineLength, tt.args.input))
+			_, c := bottomRight(tt.args.c, tt.args.lineLength, tt.args.input)
+			assert.Equal(t, tt.want, c)
 		})
 	}
 }
@@ -545,7 +550,8 @@ func Test_bottom(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, bottom(tt.args.c, tt.args.lineLength, tt.args.input))
+			_, c := bottom(tt.args.c, tt.args.lineLength, tt.args.input)
+			assert.Equal(t, tt.want, c)
 		})
 	}
 }
@@ -629,7 +635,8 @@ func Test_bottomLeft(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, bottomLeft(tt.args.c, tt.args.lineLength, tt.args.input))
+			_, c := bottomLeft(tt.args.c, tt.args.lineLength, tt.args.input)
+			assert.Equal(t, tt.want, c)
 		})
 	}
 }
@@ -713,7 +720,8 @@ func Test_left(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, left(tt.args.c, tt.args.lineLength, tt.args.input))
+			_, c := left(tt.args.c, tt.args.lineLength, tt.args.input)
+			assert.Equal(t, tt.want, c)
 		})
 	}
 }

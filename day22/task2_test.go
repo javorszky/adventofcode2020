@@ -37,7 +37,6 @@ func Test_game(t *testing.T) {
 	type args struct {
 		p1Deck []int
 		p2Deck []int
-		level  int
 	}
 	tests := []struct {
 		name  string
@@ -51,7 +50,6 @@ func Test_game(t *testing.T) {
 			args: args{
 				p1Deck: []int{9, 2, 6, 3, 1},
 				p2Deck: []int{5, 8, 4, 7, 10},
-				level:  1,
 			},
 			want:  2,
 			want1: []int{},
@@ -60,7 +58,7 @@ func Test_game(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, got1, got2 := game(tt.args.p1Deck, tt.args.p2Deck, tt.args.level)
+			got, got1, got2 := game(tt.args.p1Deck, tt.args.p2Deck)
 			if got != tt.want {
 				t.Errorf("game() got = %v, want %v", got, tt.want)
 			}

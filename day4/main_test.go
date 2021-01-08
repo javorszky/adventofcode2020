@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_identity_IsValid(t *testing.T) {
+func Test_identity_IsValidv1(t *testing.T) {
 	type fields struct {
 		ECL string
 		PID string
@@ -50,7 +50,7 @@ func Test_identity_IsValid(t *testing.T) {
 				HGT: tt.fields.HGT,
 			}
 
-			assert.Equal(t, tt.want, i.IsValid())
+			assert.Equal(t, tt.want, i.IsValidv1())
 		})
 	}
 }
@@ -121,7 +121,6 @@ func Test_identity_eclValid(t *testing.T) {
 }
 
 func Test_identity_pidValid(t *testing.T) {
-
 	tests := []struct {
 		name string
 		pid  string

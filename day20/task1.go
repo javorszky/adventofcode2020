@@ -72,12 +72,10 @@ func extractIDsAndMultiplyThem(tiles ...tile) int {
 	for _, tile := range tiles {
 		tid := tile.ID[:4]
 		tidint, err := strconv.Atoi(tid)
-		fmt.Printf("multiplying %d by new tid %d\n", product, tidint)
 		if err != nil {
 			panic(fmt.Sprintf("extract ids and multiplythem: could not turn '%s' into int: %s", tid, err))
 		}
 		product = product * tidint
-		fmt.Printf("-- this gave us %d\n", product)
 	}
 
 	return product
